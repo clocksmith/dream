@@ -1,10 +1,6 @@
-# Dream (**D**ynamic **R**eimagined **E**xpressive **A**ccessible **M**aterial)
+# DREAM (**D**ynamic **R**eimagined **E**xpressive **A**ccessible **M**aterial)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-**hctjs** is a Javascript library for dynamic color theming, forked from Google's excellent [material-color-utilities](https://github.com/material-foundation/material-color-utilities) project. It provides utilities for color science and dynamic color scheme generation, based on the principles of Material Design 3.
-
-This fork, **hctjs**, is maintained and distributed under the **MIT License**.
+**dream** is a Javascript library for dynamic color theming, forked from Google's excellent [material-color-utilities](https://github.com/material-foundation/material-color-utilities) project. It provides utilities for color science and dynamic color scheme generation, based on the principles of Material Design 3.
 
 ## Key Features
 
@@ -16,7 +12,7 @@ This fork, **hctjs**, is maintained and distributed under the **MIT License**.
 
 ## Acknowledgement
 
-**hctjs** is built upon the foundation of Google's open-source `material-color-utilities` project.
+**dream** is built upon the foundation of Google's open-source `material-color-utilities` project.
 
 The original `material-color-utilities` project is licensed under the Apache License 2.0. You can find the full license text here:
 
@@ -24,4 +20,6 @@ The original `material-color-utilities` project is licensed under the Apache Lic
 
 ## License
 
-**hctjs** is distributed under the **MIT License**. See the `LICENSE` file for details.
+**dream** is distributed under the **MIT License**. See the `LICENSE` file for details.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
