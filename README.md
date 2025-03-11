@@ -1,4 +1,4 @@
-# hctjs (Fork of material-color-utilities)
+# Dream (**D**ynamic **R**eimagined **E**xpressive **A**ccessible **M**aterial)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
