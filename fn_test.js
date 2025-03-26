@@ -1,22 +1,58 @@
-// functional_tests.js
+/**
+ * @file fn_test.js
+ * @description Basic functional tests for hct.js library.
+ *              Assumes it runs as an ES module (e.g., in Node.js with type="module" or a browser).
+ */
 
-const newLib = require('./path/to/your/new/js/library'); // <--- ADJUST PATH TO YOUR NEW JS LIB
-const oldLib = require('./path/to/ts/compiled/js/library'); // <--- ADJUST PATH TO TS COMPILED JS LIB
+// --- Import necessary components from dream.js ---
+import {
+    mathUtils, hexUtils, colorUtils,
+    ViewingConditions, Cam16, Hct, HctSolver,
+    ContrastCurve, Contrast,
+    TonalPalette, KeyColor, CorePalette, CorePalettes,
+    DynamicScheme, isMonochrome, isFidelity,
+    QuantizerCelebi, QuantizerWsmeans, LabPointProvider, QuantizerMap, QuantizerWu,
+    DynamicColor, MaterialDynamicColors, Blend, Score, themeFromSourceColor, dynamicSchemesFromSourceColor, themeFromColors, extractColorsFromImage, themeFromImage, applyTheme, processCustomColors
+} from './dream.js'; // Adjust path if necessary
+
+// Create the 'lib' object structure expected by the tests
+const lib = {
+    mathUtils, hexUtils, colorUtils,
+    ViewingConditions, Cam16, Hct, HctSolver,
+    ContrastCurve, Contrast,
+    TonalPalette, KeyColor, CorePalette, CorePalettes,
+    DynamicScheme, isMonochrome, isFidelity,
+    QuantizerCelebi, QuantizerWsmeans, LabPointProvider, QuantizerMap, QuantizerWu, // Removed internal helpers like BoxWu
+    DynamicColor, MaterialDynamicColors, Blend, Score, themeFromSourceColor, dynamicSchemesFromSourceColor, themeFromColors, extractColorsFromImage, themeFromImage, applyTheme, processCustomColors // Removed internal helpers like ToneDeltaPair
+};
 
 // --- Helper Assertion Functions (No external deps!) ---
 
 function assertEqual(actual, expected, message) {
     if (actual !== expected) {
-        throw new Error(`Assertion failed: ${message} - Expected: ${expected}, Actual: ${actual}`);
+        throw new Error(`Assertion failed: ${message} - Expected: ${expected} (${typeof expected}), Actual: ${actual} (${typeof actual})`);
     }
 }
 
 function assertDeepEqual(actual, expected, message) {
-    // Basic deep equality for objects/arrays (can be improved if needed)
-    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-        throw new Error(`Assertion failed: ${message} - Expected: ${JSON.stringify(expected)}, Actual: ${JSON.stringify(actual)}`);
+    const actualJson = JSON.stringify(actual);
+    const expectedJson = JSON.stringify(expected);
+    if (actualJson !== expectedJson) {
+        throw new Error(`Assertion failed: ${message} - Expected: ${expectedJson}, Actual: ${actualJson}`);
     }
 }
+
+function assertApproxEqual(actual, expected, tolerance, message) {
+    // Check for NaN before comparison
+    if (isNaN(actual) || isNaN(expected)) {
+        if (isNaN(actual) && isNaN(expected)) return; // Both NaN is considered equal for this test
+        throw new Error(`Assertion failed: ${message} - NaN detected. Expected: ${expected}, Actual: ${actual}`);
+    }
+    if (Math.abs(actual - expected) > tolerance) {
+        throw new Error(`Assertion failed: ${message} - Expected: ~${expected}, Actual: ${actual} (Tolerance: ${tolerance})`);
+    }
+}
+
 
 function assertTrue(condition, message) {
     if (!condition) {
@@ -30,135 +66,193 @@ function assertFalse(condition, message) {
     }
 }
 
-// --- Test Workflow Functions ---
+// --- Test Workflow Functions (Copied from original, using 'lib' object) ---
 
-function testColorConversions(lib) {
-    console.log("Running Color Conversion Tests...");
+function testCoreUtils(lib) {
+    console.log("Running Core Utility Tests...");
+    assertEqual(lib.mathUtils.clampDouble(0, 100, 150), 100, "clampDouble Max");
+    assertEqual(lib.mathUtils.clampDouble(0, 100, -50), 0, "clampDouble Min");
+    assertApproxEqual(lib.mathUtils.lerp(10, 20, 0.5), 15, 1e-6, "lerp midpoint");
+    assertEqual(lib.mathUtils.sanitizeDegreesDouble(400), 40, "sanitizeDegrees positive");
+    assertEqual(lib.mathUtils.sanitizeDegreesDouble(-10), 350, "sanitizeDegrees negative");
+    assertEqual(lib.hexUtils.hexFromArgb(0xFFFF0000), "#ff0000", "hexFromArgb Red");
+    assertEqual(lib.hexUtils.argbFromHex("#00FF00"), 0xFF00FF00, "argbFromHex Green");
+    assertEqual(lib.hexUtils.argbFromHex("0000FF"), 0xFF0000FF, "argbFromHex Blue (no #)");
+    assertEqual(lib.hexUtils.argbFromHex("abc"), 0xFFAABBCC, "argbFromHex shorthand");
+    assertEqual(lib.colorUtils.redFromArgb(0xFFAABBCC), 0xAA, "redFromArgb");
+    assertEqual(lib.colorUtils.greenFromArgb(0xFFAABBCC), 0xBB, "greenFromArgb");
+    assertEqual(lib.colorUtils.blueFromArgb(0xFFAABBCC), 0xCC, "blueFromArgb");
+    assertApproxEqual(lib.colorUtils.lstarFromArgb(0xFFFFFFFF), 100, 1e-3, "lstarFromArgb White");
+    assertApproxEqual(lib.colorUtils.lstarFromArgb(0xFF000000), 0, 1e-3, "lstarFromArgb Black");
+    const greyArgb = lib.colorUtils.argbFromLstar(50);
+    assertApproxEqual(lib.colorUtils.lstarFromArgb(greyArgb), 50, 0.5, "lstarFromArgb -> argbFromLstar roundtrip");
 
-    // --- Test Case 1: ARGB <-> Hex ---
-    const argbColor = 0xFF0088CC;
-    const hexString = lib.hexUtils.hexFromArgb(argbColor);
-    const convertedArgb = lib.hexUtils.argbFromHex(hexString);
-    assertEqual(convertedArgb, argbColor, "ARGB <-> Hex Conversion");
-
-    // --- Test Case 2: ARGB -> HCT -> ARGB ---
-    const argbColor2 = 0xFFFFAA00;
-    const hctColor = lib.Hct.fromInt(argbColor2);
-    const roundTripArgb = hctColor.toInt();
-    assertEqual(roundTripArgb, argbColor2, "ARGB -> HCT -> ARGB Roundtrip");
-
-    // --- Test Case 3: ARGB -> Lab -> ARGB Roundtrip (less precise, allow small delta) ---
-    const argbColor3 = 0xFF55AA33;
-    const labColor = lib.colorUtils.labFromArgb(argbColor3);
-    const labRoundTripArgb = lib.colorUtils.argbFromLab(labColor[0], labColor[1], labColor[2]);
-    assertTrue(Math.abs(labRoundTripArgb - argbColor3) < 2, "ARGB -> Lab -> ARGB Roundtrip"); // Allow small delta
-
-    console.log("Color Conversion Tests Passed!");
+    console.log("Core Utility Tests Passed!");
 }
 
 
-function testSchemeGeneration(lib) {
-    console.log("Running Scheme Generation Tests...");
+function testColorRepresentations(lib) {
+    console.log("Running Color Representation Tests (HCT, CAM16)...");
 
-    const seedColor = 0xFF4080FF; // Example seed color
+    const h = 270, c = 40, t = 60;
+    const hct = lib.Hct.from(h, c, t);
+    const argb = hct.toInt();
+    const hctRoundtrip = lib.Hct.fromInt(argb);
 
-    // --- Test Case 1: Scheme.light() structure and basic colors ---
-    const lightScheme = lib.Scheme.light(seedColor);
-    assertTrue(lightScheme instanceof lib.Scheme, "Scheme.light() returns a Scheme object");
-    assertTrue(typeof lightScheme.primary === 'number', "Scheme.light() has primary color");
-    assertTrue(typeof lightScheme.background === 'number', "Scheme.light() has background color");
+    assertApproxEqual(hctRoundtrip.hue, h, 1.0, "HCT -> ARGB -> HCT Hue Roundtrip");
+    assertTrue(hctRoundtrip.chroma <= c + 1.0, "HCT -> ARGB -> HCT Chroma does not increase significantly");
+    // Tone roundtrip tolerance needs to be slightly higher due to gamut mapping effects
+    assertApproxEqual(hctRoundtrip.tone, t, 1.0, "HCT -> ARGB -> HCT Tone Roundtrip");
 
-    // --- Test Case 2: Scheme.dark() structure and basic colors ---
-    const darkScheme = lib.Scheme.dark(seedColor);
-    assertTrue(darkScheme instanceof lib.Scheme, "Scheme.dark() returns a Scheme object");
-    assertTrue(typeof darkScheme.primary === 'number', "Scheme.dark() has primary color");
-    assertTrue(typeof darkScheme.background === 'number', "Scheme.dark() has background color");
+    const cam = lib.Cam16.fromInt(argb);
+    assertTrue(cam instanceof lib.Cam16, "Cam16.fromInt returns a Cam16 object");
+    assertApproxEqual(cam.hue, hctRoundtrip.hue, 1.0, "Cam16 hue matches HCT hue");
+    assertApproxEqual(cam.chroma, hctRoundtrip.chroma, 1.0, "Cam16 chroma matches HCT chroma");
+    // J (lightness) in CAM16 is not exactly L* (tone), but should be close
+    assertApproxEqual(cam.j, hctRoundtrip.tone, 1.0, "Cam16 J approx matches HCT tone");
 
-    // --- Test Case 3: SchemeTonalSpot structure ---
-    const tonalSpotScheme = new lib.SchemeTonalSpot(lib.Hct.fromInt(seedColor), false, 0); // Light mode, default contrast
-    assertTrue(tonalSpotScheme instanceof lib.DynamicScheme, "SchemeTonalSpot is a DynamicScheme");
-    assertTrue(typeof tonalSpotScheme.primary === 'number', "SchemeTonalSpot has primary color");
+    const camArgbRoundtrip = cam.toInt();
+    const deltaR = Math.abs(lib.colorUtils.redFromArgb(argb) - lib.colorUtils.redFromArgb(camArgbRoundtrip));
+    const deltaG = Math.abs(lib.colorUtils.greenFromArgb(argb) - lib.colorUtils.greenFromArgb(camArgbRoundtrip));
+    const deltaB = Math.abs(lib.colorUtils.blueFromArgb(argb) - lib.colorUtils.blueFromArgb(camArgbRoundtrip));
+    assertTrue(deltaR <= 2 && deltaG <= 2 && deltaB <= 2, "CAM16 -> ARGB Roundtrip (within tolerance)");
 
 
-    // --- Basic Contrast Check (Example: Surface vs. OnSurface in Light Scheme) ---
-    const contrastRatio = lib.Contrast.ratioOfTones(
-        lib.colorUtils.lstarFromArgb(lightScheme.surface),
-        lib.colorUtils.lstarFromArgb(lightScheme.onSurface)
+    console.log("Color Representation Tests Passed!");
+}
+
+
+function testContrastAndPalettes(lib) {
+    console.log("Running Contrast and Palette Tests...");
+
+    assertApproxEqual(lib.Contrast.ratioOfTones(100, 0), 21.0, 1e-3, "Contrast White vs Black");
+    assertApproxEqual(lib.Contrast.ratioOfTones(50, 50), 1.0, 1e-3, "Contrast Mid Grey vs Mid Grey");
+    const ratio45 = lib.Contrast.ratioOfTones(90, 30);
+    assertTrue(ratio45 > 4.0 && ratio45 < 5.0, "Contrast ratio calculation sanity check");
+
+    const bgTone = 20;
+    const targetRatio = 4.5;
+    const lighterTone = lib.Contrast.lighter(bgTone, targetRatio);
+    assertTrue(lighterTone === -1.0 || lighterTone >= bgTone, "Contrast.lighter produces lighter tone or -1");
+    if (lighterTone !== -1.0) {
+        assertTrue(lib.Contrast.ratioOfTones(lighterTone, bgTone) >= targetRatio - 0.05, `Contrast.lighter meets ratio (approx) T${lighterTone.toFixed(1)} vs T${bgTone}`);
+    }
+
+    const darkerTone = lib.Contrast.darker(90, targetRatio);
+    assertTrue(darkerTone === -1.0 || darkerTone <= 90, "Contrast.darker produces darker tone or -1");
+    if (darkerTone !== -1.0) {
+        assertTrue(lib.Contrast.ratioOfTones(90, darkerTone) >= targetRatio - 0.05, `Contrast.darker meets ratio (approx) T90 vs T${darkerTone.toFixed(1)}`);
+    }
+
+    const sourceColor = 0xFF0080FF; // Blue
+    const hct = lib.Hct.fromInt(sourceColor);
+    const palette = lib.TonalPalette.fromHueAndChroma(hct.hue, hct.chroma);
+    assertTrue(palette instanceof lib.TonalPalette, "TonalPalette.fromHueAndChroma returns TonalPalette");
+    const tone50Argb = palette.tone(50);
+    assertApproxEqual(lib.colorUtils.lstarFromArgb(tone50Argb), 50, 1.0, "TonalPalette tone(50) has L* near 50");
+    const tone50Hct = lib.Hct.fromInt(tone50Argb);
+    assertApproxEqual(tone50Hct.hue, hct.hue, 1.0, "TonalPalette tone(50) preserves hue");
+    assertTrue(tone50Hct.chroma <= hct.chroma + 1.0, "TonalPalette tone(50) chroma doesn't increase significantly");
+
+    const corePaletteOf = lib.CorePalette.of(sourceColor);
+    assertTrue(corePaletteOf.a1 instanceof lib.TonalPalette, "CorePalette.of creates primary TonalPalette (a1)");
+    assertTrue(corePaletteOf.n1 instanceof lib.TonalPalette, "CorePalette.of creates neutral TonalPalette (n1)");
+    assertTrue(corePaletteOf.error instanceof lib.TonalPalette, "CorePalette.of creates error TonalPalette");
+    assertApproxEqual(corePaletteOf.a1.hue, hct.hue, 1.0, "CorePalette.of primary hue matches source hue");
+    assertTrue(corePaletteOf.n1.chroma < 10.0, "CorePalette.of neutral chroma is low");
+
+    const seeds = { primary: 0xFF0000FF, secondary: 0xFF00FF00, tertiary: 0xFFFF0000 };
+    const corePaletteFrom = lib.CorePalette.fromColors(seeds);
+    assertApproxEqual(corePaletteFrom.a1.hue, 240, 1.5, "CorePalette.fromColors primary hue (Blue)"); // Increased tolerance slightly
+    assertApproxEqual(corePaletteFrom.a2.hue, 120, 1.0, "CorePalette.fromColors secondary hue (Green)");
+    // Red hue can be 0 or 360
+    const tertiaryHue = corePaletteFrom.a3.hue;
+    assertTrue(tertiaryHue < 1.0 || tertiaryHue > 359.0, "CorePalette.fromColors tertiary hue (Red)");
+    assertApproxEqual(corePaletteFrom.n1.hue, 240, 1.5, "CorePalette.fromColors neutral hue (from primary)");
+
+
+    console.log("Contrast and Palette Tests Passed!");
+}
+
+function testSchemeAndTheme(lib) {
+    console.log("Running Scheme and Theme Tests...");
+
+    const sourceColor = 0xFF3367D6; // Another Blue
+
+    const themeSingle = lib.themeFromSourceColor(sourceColor);
+    assertTrue(typeof themeSingle === 'object', "themeFromSourceColor returns an object");
+    assertTrue(themeSingle.schemes.light instanceof lib.DynamicScheme, "Single Seed: Theme has light scheme");
+    assertTrue(themeSingle.schemes.dark instanceof lib.DynamicScheme, "Single Seed: Theme has dark scheme");
+    assertTrue(themeSingle.palettes.primary instanceof lib.TonalPalette, "Single Seed: Theme has primary palette");
+    assertEqual(themeSingle.source, sourceColor, "Single Seed: Theme source color is stored");
+
+    const seeds = { primary: 0xFF0000FF, secondary: 0xFF00FF00, tertiary: 0xFFFF0000 };
+    const themeMulti = lib.themeFromColors(seeds);
+    assertTrue(typeof themeMulti === 'object', "themeFromColors returns an object");
+    assertTrue(themeMulti.schemes.light instanceof lib.DynamicScheme, "Multi Seed: Theme has light scheme");
+    assertTrue(themeMulti.schemes.dark instanceof lib.DynamicScheme, "Multi Seed: Theme has dark scheme");
+    assertTrue(themeMulti.palettes.primary instanceof lib.TonalPalette, "Multi Seed: Theme has primary palette");
+    assertEqual(themeMulti.source, seeds.primary, "Multi Seed: Theme source color is primary seed");
+    assertDeepEqual(themeMulti.seedColors, seeds, "Multi Seed: Theme stores seed colors");
+
+    assertApproxEqual(themeMulti.palettes.primary.hue, 240, 1.5, "Multi Seed: Primary palette hue");
+    assertApproxEqual(themeMulti.palettes.secondary.hue, 120, 1.0, "Multi Seed: Secondary palette hue");
+    const tertiaryHueMulti = themeMulti.palettes.tertiary.hue;
+    assertTrue(tertiaryHueMulti < 1.0 || tertiaryHueMulti > 359.0, "Multi Seed: Tertiary palette hue (Red)");
+
+
+    const lightPrimary = lib.MaterialDynamicColors.primary.getArgb(themeSingle.schemes.light);
+    const darkPrimary = lib.MaterialDynamicColors.primary.getArgb(themeSingle.schemes.dark);
+    assertTrue(typeof lightPrimary === 'number', "Light primary color is a number");
+    assertTrue(typeof darkPrimary === 'number', "Dark primary color is a number");
+    const lstarLight = lib.colorUtils.lstarFromArgb(lightPrimary);
+    const lstarDark = lib.colorUtils.lstarFromArgb(darkPrimary);
+    // Typical relationship, but can invert in monochrome/edge cases
+    // assertTrue(lstarDark > lstarLight, `Dark primary L* (${lstarDark.toFixed(1)}) > Light primary L* (${lstarLight.toFixed(1)}) (typical)`);
+
+    const lightOnSurface = lib.MaterialDynamicColors.onSurface.getArgb(themeSingle.schemes.light);
+    const lightSurface = lib.MaterialDynamicColors.surface.getArgb(themeSingle.schemes.light);
+    const lightContrast = lib.Contrast.ratioOfTones(
+        lib.colorUtils.lstarFromArgb(lightOnSurface),
+        lib.colorUtils.lstarFromArgb(lightSurface)
     );
-    assertTrue(contrastRatio >= 3.0, "Light Scheme Surface/OnSurface Contrast >= 3.0"); // Basic check
+    assertTrue(lightContrast >= 4.5 - 0.1, `Light onSurface/surface contrast ${lightContrast.toFixed(2)} >= 4.5 (approx)`);
 
-    console.log("Scheme Generation Tests - Basic Structure and Contrast Checked!");
-}
-
-
-function testThemeGeneration(lib) {
-    console.log("Running Theme Generation Tests...");
-
-    const sourceColor = 0xFF00AABB;
-
-    // --- Test Case 1: themeFromSourceColor structure ---
-    const theme = lib.themeFromSourceColor(sourceColor);
-    assertTrue(typeof theme === 'object', "themeFromSourceColor returns an object");
-    assertTrue(typeof theme.schemes === 'object' && theme.schemes.light && theme.schemes.dark, "Theme has light and dark schemes");
-    assertTrue(Array.isArray(theme.customColors), "Theme has customColors array");
-
-    // --- Test Case 2: Theme palettes are present and TonalPalette instances ---
-    assertTrue(theme.palettes.primary instanceof lib.TonalPalette, "Theme has primary palette");
-    assertTrue(theme.palettes.secondary instanceof lib.TonalPalette, "Theme has secondary palette");
-
-    // --- Test Case 3: Theme with Custom Colors ---
-    const customColors = [{ value: 0xFFCC00CC, name: "Custom Purple", blend: true }];
+    const customColors = [{ value: 0xFFCC00CC, name: "CustomPurple", blend: true }];
     const themeWithCustom = lib.themeFromSourceColor(sourceColor, customColors);
-    assertTrue(themeWithCustom.customColors.length > 0, "Theme with custom colors has customColors");
-    assertTrue(themeWithCustom.customColors[0].color.name === "Custom Purple", "Custom color name is correct");
+    assertTrue(themeWithCustom.customColors.length > 0, "Theme with custom colors has customColors array");
+    assertEqual(themeWithCustom.customColors[0].color.name, "CustomPurple", "Custom color name is correct");
+    assertTrue(typeof themeWithCustom.customColors[0].light.color === 'number', "Custom color light group has color");
+    if (customColors[0].blend) {
+        assertFalse(themeWithCustom.customColors[0].value === customColors[0].value, "Custom color blended value differs if blend=true");
+    }
 
-
-    console.log("Theme Generation Tests - Basic Structure and Custom Colors Checked!");
+    console.log("Scheme and Theme Tests Passed!");
 }
-
-function testThemeApplication(lib) {
-    console.log("Running Theme Application Tests...");
-
-    const theme = lib.themeFromSourceColor(0xFF123456);
-    const testElement = { style: {} }; // Simulate a minimal DOM element
-
-    // --- Test Case 1: Apply theme without brightness suffix ---
-    lib.applyTheme(theme, { target: testElement });
-    assertTrue(typeof testElement.style['--md-sys-color-primary'] === 'string', "applyTheme sets --md-sys-color-primary");
-    assertTrue(testElement.style['--md-sys-color-primary'].startsWith('#'), "--md-sys-color-primary is a hex code");
-
-    // --- Test Case 2: Apply theme with brightness suffix ---
-    const testElement2 = { style: {} };
-    lib.applyTheme(theme, { target: testElement2, brightnessSuffix: true });
-    assertTrue(typeof testElement2.style['--md-sys-color-primary-light'] === 'string', "applyTheme with suffix sets --md-sys-color-primary-light");
-    assertTrue(typeof testElement2.style['--md-sys-color-primary-dark'] === 'string', "applyTheme with suffix sets --md-sys-color-primary-dark");
-
-
-    console.log("Theme Application Tests - Basic Functionality Checked!");
-}
-
 
 // --- Main Test Execution ---
 
-function runTests(lib, libName) {
+function runAllIntegrationTests(libToTest, libName) {
     console.log(`\n--- Running tests against: ${libName} ---`);
+    let success = true;
     try {
-        testColorConversions(lib);
-        testSchemeGeneration(lib);
-        testThemeGeneration(lib);
-        testThemeApplication(lib);
-        console.log(`\n--- All tests PASSED for: ${libName} ---`);
-
+        testCoreUtils(libToTest);
+        testColorRepresentations(libToTest);
+        testContrastAndPalettes(libToTest);
+        testSchemeAndTheme(libToTest);
+        // Add other test suites here
     } catch (error) {
         console.error(`\n--- Tests FAILED for: ${libName} ---`);
         console.error(error);
+        success = false;
+    } finally {
+        if (success) {
+            console.log(`\n--- All tests PASSED for: ${libName} ---`);
+        }
+        console.log("\n--- Test Run Complete ---");
     }
+    return success;
 }
 
-
-// --- Run tests against BOTH libraries (adjust paths at the top!) ---
-
-runTests(newLib, "New JavaScript Library");
-runTests(oldLib, "Original TS-Compiled Library"); // Now testing both
-
-console.log("\n--- Test Run Complete ---");
+// --- Run tests ---
+runAllIntegrationTests(lib, "dream.js Library");

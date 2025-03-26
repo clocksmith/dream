@@ -1,5 +1,5 @@
 /**
- * @file dream.js
+ * @file main.js
  * @module DynamicColor
  * @description
  * Consolidated library for Material Dynamic Color generation and manipulation.
@@ -988,7 +988,6 @@ class Hct {
     }
 }
 
-
 /**
  * Internal solver for converting between HCT and ARGB.
  * Uses CAM16 and searches within the sRGB gamut.
@@ -1025,24 +1024,49 @@ class HctSolver {
         while (Math.abs(lowChroma - highChroma) >= 0.4) {
             // Check the midpoint chroma.
             midChroma = lowChroma + (highChroma - lowChroma) / 2.0;
-            const hct = Hct.from(hue, midChroma, tone);
-            const int = hct.toInt(); // Check if this candidate is in gamut
 
-            // Test if the color is in gamut and has the intended tone.
-            // Sometimes, solveToInt returns a color with a different tone than requested.
-            if (Math.round(hct.tone) === Math.round(tone) && Math.round(hct.chroma) === Math.round(midChroma)) {
-                // This chroma is possible. Try higher.
-                answer = int;
+            // Generate HCT from candidate chroma/hue/tone
+            // Hct.from internally uses HctSolver.solveToInt, creating recursion.
+            // We need a direct CAM16 -> ARGB check here.
+            const cam = Cam16.fromJch(tone, midChroma, hue);
+            const candidateArgb = cam.toInt();
+
+            // Check if the candidate ARGB, when converted back to HCT,
+            // retains the intended hue, chroma, and tone within tolerance.
+            const hctCandidate = Hct.fromInt(candidateArgb);
+
+            // Check tone first, as it's most critical.
+            if (Math.abs(hctCandidate.tone - tone) > 0.5) {
+                // If the tone is wrong, likely means we're out of gamut in a way
+                // that significantly shifts lightness. Usually happens when requested
+                // chroma is too high. Try lower chroma.
+                highChroma = midChroma;
+                continue; // Skip chroma/hue checks if tone is already off
+            }
+
+            // Check chroma match (within a tolerance)
+            // Allow slightly lower chroma than requested if it's the max possible.
+            const chromaMatches = hctCandidate.chroma >= midChroma - 0.5;
+
+            // Check hue match (within a tolerance, handling wrap-around)
+            const hueMatches = mathUtils.differenceDegrees(hctCandidate.hue, hue) < 0.5;
+
+
+            if (chromaMatches && hueMatches) {
+                // This chroma is possible or very close. Store it and try higher.
+                answer = candidateArgb;
                 lowChroma = midChroma;
                 isFirstLoop = false;
             } else {
-                // This chroma is not possible. Try lower.
+                // This chroma/hue combination is likely out of gamut. Try lower chroma.
                 highChroma = midChroma;
             }
         }
 
-        // If no solution was found in the loop (possible for extreme tones/chromas),
-        // return the L* equivalent.
+        // If no solution was found in the loop (answer is still null),
+        // it implies even very low chroma was out of gamut for this tone/hue,
+        // which is unlikely but possible at extremes. Return the achromatic color.
+        // If a solution *was* found (answer is not null), return the last valid ARGB found.
         return answer === null ? colorUtils.argbFromLstar(tone) : answer;
     }
 }
@@ -1199,40 +1223,28 @@ class Contrast {
         // lightY = ratio * (darkY + 5) - 5
         const lightY = ratio * (darkY + 5.0) - 5.0;
 
-        // If target luminance is impossible (>= Y of white), no solution exists
-        if (lightY < 0.0 || lightY > 100.0) {
-            return -1.0;
+        // If target luminance is impossible (>= Y of white), no solution exists, try 100
+        if (lightY > 100.0) {
+            return (Contrast.ratioOfTones(100.0, tone) >= ratio) ? 100.0 : -1.0;
         }
+        // If target luminance is impossible (< Y of input), no lighter solution exists
+        if (lightY < darkY) {
+            return (Contrast.ratioOfTones(100.0, tone) >= ratio) ? 100.0 : -1.0;
+        }
+
 
         // Convert target luminance back to L* tone
         const resultTone = colorUtils.lstarFromY(lightY);
 
-        // Check if the resulting tone is valid and actually lighter
-        if (resultTone < 0.0 || resultTone > 100.0 || resultTone < tone) {
-            // It might be possible that L*100 is the only solution
-            if (Contrast.ratioOfTones(100.0, tone) >= ratio) {
-                return 100.0;
-            }
-            return -1.0;
+        // Due to the non-linear relationship, the calculated L* might be slightly off.
+        // Check if the actual result meets the ratio. Check T100 as a backup.
+        if (Contrast.ratioOfTones(resultTone, tone) < ratio - 0.01) { // Use small tolerance
+            return (Contrast.ratioOfTones(100.0, tone) >= ratio) ? 100.0 : -1.0;
         }
 
-        // Verify the actual contrast achieved (due to potential rounding/precision issues)
-        const realContrast = Contrast.ratioOfTones(resultTone, tone);
-        const delta = Math.abs(realContrast - ratio);
 
-        // If the achieved contrast is slightly below target due to precision,
-        // but very close, consider it acceptable. Otherwise, if clearly below, fail.
-        // Also handle cases where the found tone is actually darker due to function shapes.
-        if (realContrast < ratio && delta > 0.04) {
-            // Re-check if L* 100 works as a fallback
-            if (Contrast.ratioOfTones(100.0, tone) >= ratio) {
-                return 100.0;
-            }
-            return -1.0;
-        }
-
-        // Return the found tone, ensuring it's within bounds
-        return mathUtils.clampDouble(0.0, 100.0, resultTone);
+        // Return the found tone, ensuring it's within bounds and actually lighter
+        return mathUtils.clampDouble(tone, 100.0, resultTone); // Ensure it's >= original tone
     };
 
     /**
@@ -1259,40 +1271,25 @@ class Contrast {
         // darkY = (lightY + 5) / ratio - 5
         const darkY = (lightY + 5.0) / ratio - 5.0;
 
-        // If target luminance is impossible (< Y of black), no solution exists
-        if (darkY < 0.0 || darkY > 100.0) {
-            return -1.0;
+        // If target luminance is impossible (< Y of black), no solution exists, try 0
+        if (darkY < 0.0) {
+            return (Contrast.ratioOfTones(tone, 0.0) >= ratio) ? 0.0 : -1.0;
+        }
+        // If target luminance is impossible (> Y of input), no darker solution exists
+        if (darkY > lightY) {
+            return (Contrast.ratioOfTones(tone, 0.0) >= ratio) ? 0.0 : -1.0;
         }
 
         // Convert target luminance back to L* tone
         const resultTone = colorUtils.lstarFromY(darkY);
 
-        // Check if the resulting tone is valid and actually darker
-        if (resultTone < 0.0 || resultTone > 100.0 || resultTone > tone) {
-            // It might be possible that L*0 is the only solution
-            if (Contrast.ratioOfTones(0.0, tone) >= ratio) {
-                return 0.0;
-            }
-            return -1.0;
+        // Check if the actual result meets the ratio. Check T0 as a backup.
+        if (Contrast.ratioOfTones(tone, resultTone) < ratio - 0.01) { // Use small tolerance
+            return (Contrast.ratioOfTones(tone, 0.0) >= ratio) ? 0.0 : -1.0;
         }
 
-        // Verify the actual contrast achieved
-        const realContrast = Contrast.ratioOfTones(resultTone, tone);
-        const delta = Math.abs(realContrast - ratio);
-
-        // If the achieved contrast is slightly below target due to precision,
-        // but very close, consider it acceptable. Otherwise, if clearly below, fail.
-        // Also handle cases where the found tone is actually lighter.
-        if (realContrast < ratio && delta > 0.04) {
-            // Re-check if L* 0 works as a fallback
-            if (Contrast.ratioOfTones(0.0, tone) >= ratio) {
-                return 0.0;
-            }
-            return -1.0;
-        }
-
-        // Return the found tone, ensuring it's within bounds
-        return mathUtils.clampDouble(0.0, 100.0, resultTone);
+        // Return the found tone, ensuring it's within bounds and actually darker
+        return mathUtils.clampDouble(0.0, tone, resultTone); // Ensure it's <= original tone
     };
 
     /**
@@ -1470,40 +1467,28 @@ class KeyColor {
         let upperTone = 100.0;
         let bestTone = KeyColor.targetTone; // Start assuming target tone is best
 
-        while (lowerTone < upperTone) {
+        // Use a slightly wider tolerance for the loop condition
+        while (Math.abs(upperTone - lowerTone) > 0.01) {
             const midTone = lowerTone + (upperTone - lowerTone) / 2.0;
             const midChroma = this.maxChroma(midTone);
 
             if (midChroma < this.requestedChroma) {
-                // Chroma at midTone is too low. Need higher chroma, which might mean
-                // moving towards the tone that naturally has peak chroma for this hue.
-                // Explore tones potentially closer to the peak chroma tone.
-                lowerTone = midTone + 0.01; // Adjust slightly to avoid infinite loops
-
-                // Check if peak chroma tone is above or below midTone
-                const peakTone = this.toneOfMaxChroma(midTone);
-                if (peakTone > midTone) {
-                    lowerTone = midTone + 0.01;
-                } else {
-                    upperTone = midTone - 0.01;
-                }
-
+                // Chroma at midTone is too low. Search higher tones (closer to peak chroma tone).
+                lowerTone = midTone;
             } else {
-                // Chroma at midTone is sufficient or higher.
-                // This tone is a candidate. Try exploring tones closer to targetTone (50)
-                // within the valid range [lowerTone, midTone].
+                // Chroma at midTone is sufficient. This tone is a candidate.
+                // Store it and search lower tones (potentially closer to 50).
                 bestTone = midTone;
-                upperTone = midTone - 0.01; // Explore lower tones (potentially closer to 50)
+                upperTone = midTone;
             }
-            // Break if range is very small
-            if (Math.abs(upperTone - lowerTone) < 0.02) break;
         }
 
-        // Use the best tone found that could support the chroma (or close to it)
-        // and generate the final HCT color, capping chroma at the requested level.
+        // Use the best tone found and generate the final HCT color,
+        // ensuring chroma doesn't exceed the maximum for that tone or the requested chroma.
         const actualChroma = Math.min(this.maxChroma(bestTone), this.requestedChroma);
         return Hct.from(this.hue, actualChroma, bestTone);
     }
+
 
     /**
      * Finds the maximum achievable chroma for the given hue at a specific tone.
@@ -1522,29 +1507,20 @@ class KeyColor {
 
         // Generate an HCT color with a very high chroma target.
         // The actual chroma of the resulting HCT object will be the maximum achievable.
-        const chroma = Hct.from(this.hue, KeyColor.maxChromaValue, roundedTone).chroma;
+        // Use the direct CAM16 -> ARGB -> HCT path to avoid solver recursion.
+        const cam = Cam16.fromJch(roundedTone, KeyColor.maxChromaValue, this.hue);
+        const chroma = Hct.fromInt(cam.toInt()).chroma;
+
 
         this.chromaCache.set(roundedTone, chroma);
         return chroma;
     }
 
-    /**
-    * Helper to estimate if the tone providing peak chroma is above or below the current tone.
-    * This is a heuristic based on checking a nearby tone.
-    * @param {number} tone Current tone.
-    * @returns {number} A tone likely closer to the peak chroma tone.
-    */
-    toneOfMaxChroma(tone) {
-        const delta = 0.5;
-        const lowChroma = this.maxChroma(tone - delta);
-        const highChroma = this.maxChroma(tone + delta);
-        return lowChroma > highChroma ? tone - delta : tone + delta;
-    }
 }
 
 /**
  * Represents the set of core accent and neutral palettes in Material Design.
- * Generated from a single source color.
+ * Generated from a single source color or multiple seed colors.
  */
 class CorePalette {
     /** Primary accent palette (A1). */
@@ -1561,18 +1537,19 @@ class CorePalette {
     error;
 
     /**
-     * Creates a new CorePalette. Use static factory methods `of()` or `contentOf()`.
-     * @param {number} argb The source color ARGB value.
+     * Creates a new CorePalette. Prefer using static factory methods:
+     * `of()` (single source), `contentOf()` (single source, content style),
+     * or `fromColors()` (multiple seeds).
+     * @param {number} primarySeedArgb The primary seed color ARGB value.
      * @param {boolean} isContent If true, generates content-specific chroma levels.
-     *                           If false, generates standard platform chroma levels.
      * @hideconstructor
      */
-    constructor(argb, isContent) {
-        const hct = Hct.fromInt(argb);
+    constructor(primarySeedArgb, isContent) {
+        const hct = Hct.fromInt(primarySeedArgb);
         const hue = hct.hue;
         const chroma = hct.chroma;
 
-        // Define chroma levels based on content vs. platform context
+        // Standard platform chroma logic (used as fallback in fromColors)
         const primaryChroma = isContent ? chroma : Math.max(48.0, chroma);
         const secondaryChroma = isContent ? chroma / 3.0 : 16.0;
         const tertiaryChroma = isContent ? chroma / 2.0 : 24.0;
@@ -1580,19 +1557,16 @@ class CorePalette {
         const neutralVariantChroma = isContent ? Math.min(chroma / 6.0, 8.0) : 8.0;
         const tertiaryHue = mathUtils.sanitizeDegreesDouble(hue + 60.0);
 
-        // Create the TonalPalettes
         this.a1 = TonalPalette.fromHueAndChroma(hue, primaryChroma);
         this.a2 = TonalPalette.fromHueAndChroma(hue, secondaryChroma);
         this.a3 = TonalPalette.fromHueAndChroma(tertiaryHue, tertiaryChroma);
         this.n1 = TonalPalette.fromHueAndChroma(hue, neutralChroma);
         this.n2 = TonalPalette.fromHueAndChroma(hue, neutralVariantChroma);
-
-        // Error palette is fixed
-        this.error = TonalPalette.fromHueAndChroma(25.0, 84.0);
+        this.error = TonalPalette.fromHueAndChroma(25.0, 84.0); // Fixed error palette
     }
 
     /**
-     * Creates a CorePalette using standard platform chroma levels.
+     * Creates a CorePalette using standard platform chroma levels from a single source color.
      * @param {number} argb Source color ARGB value.
      * @return {CorePalette} A new CorePalette instance.
      */
@@ -1601,7 +1575,7 @@ class CorePalette {
     }
 
     /**
-     * Creates a CorePalette using content-specific chroma levels,
+     * Creates a CorePalette using content-specific chroma levels from a single source color,
      * preserving more of the source color's original chroma.
      * @param {number} argb Source color ARGB value.
      * @return {CorePalette} A new CorePalette instance.
@@ -1610,14 +1584,74 @@ class CorePalette {
         return new CorePalette(argb, true /* isContent */);
     }
 
-    // Note: fromColors and contentFromColors were less standard and potentially complex
-    // to implement identically without the original TS context.
-    // Focusing on the primary `of` and `contentOf` methods based on a single seed.
+    /**
+     * Creates a CorePalette from one, two, or three seed colors.
+     *
+     * @param {object} seeds Seed colors.
+     * @param {number} seeds.primary The ARGB value for the primary seed color.
+     * @param {number} [seeds.secondary] Optional ARGB value for the secondary seed color.
+     * @param {number} [seeds.tertiary] Optional ARGB value for the tertiary seed color.
+     * @param {boolean} [isContent=false] Whether to use content-specific chroma rules (affects fallbacks).
+     * @return {CorePalette} A new CorePalette instance.
+     */
+    static fromColors(seeds, isContent = false) {
+        if (!seeds || seeds.primary === undefined) {
+            throw new Error("CorePalette.fromColors requires at least a 'primary' seed color.");
+        }
+
+        const primaryHct = Hct.fromInt(seeds.primary);
+        const primaryHue = primaryHct.hue;
+        const primaryChroma = primaryHct.chroma;
+
+        // Instantiate a dummy palette to hold results
+        // We use the constructor logic as fallback for missing seeds
+        const palette = new CorePalette(seeds.primary, isContent);
+
+        // --- Primary ---
+        // Always derived from the primary seed, using standard platform chroma minimum
+        palette.a1 = TonalPalette.fromHueAndChroma(primaryHue, Math.max(48.0, primaryChroma));
+
+        // --- Secondary ---
+        if (seeds.secondary !== undefined) {
+            const secondaryHct = Hct.fromInt(seeds.secondary);
+            // Use secondary seed's hue and chroma directly
+            palette.a2 = TonalPalette.fromHueAndChroma(secondaryHct.hue, secondaryHct.chroma);
+        } else {
+            // Fallback: Use primary hue, standard secondary chroma
+            const secondaryChroma = isContent ? primaryChroma / 3.0 : 16.0;
+            palette.a2 = TonalPalette.fromHueAndChroma(primaryHue, secondaryChroma);
+        }
+
+        // --- Tertiary ---
+        if (seeds.tertiary !== undefined) {
+            const tertiaryHct = Hct.fromInt(seeds.tertiary);
+            // Use tertiary seed's hue and chroma directly
+            palette.a3 = TonalPalette.fromHueAndChroma(tertiaryHct.hue, tertiaryHct.chroma);
+        } else {
+            // Fallback: Use primary hue + 60 deg, standard tertiary chroma
+            const tertiaryHue = mathUtils.sanitizeDegreesDouble(primaryHue + 60.0);
+            const tertiaryChroma = isContent ? primaryChroma / 2.0 : 24.0;
+            palette.a3 = TonalPalette.fromHueAndChroma(tertiaryHue, tertiaryChroma);
+        }
+
+        // --- Neutrals ---
+        // Always derived from the primary seed's hue for consistency
+        const neutralChroma = isContent ? Math.min(primaryChroma / 12.0, 4.0) : 4.0;
+        const neutralVariantChroma = isContent ? Math.min(primaryChroma / 6.0, 8.0) : 8.0;
+        palette.n1 = TonalPalette.fromHueAndChroma(primaryHue, neutralChroma);
+        palette.n2 = TonalPalette.fromHueAndChroma(primaryHue, neutralVariantChroma);
+
+        // --- Error ---
+        // Remains fixed
+        palette.error = TonalPalette.fromHueAndChroma(25.0, 84.0);
+
+        return palette;
+    }
 }
 
 /**
- * A container for the five core tonal palettes (Primary, Secondary, Tertiary, Neutral, Neutral Variant).
- * This simplifies passing palettes around.
+ * A container for the five core tonal palettes (Primary, Secondary, Tertiary, Neutral, Neutral Variant)
+ * plus the Error palette. This simplifies passing palettes around.
  */
 class CorePalettes {
     /** Primary Tonal Palette. */
@@ -1634,33 +1668,19 @@ class CorePalettes {
     error;
 
     /**
-     * Creates a CorePalettes collection from individual TonalPalettes or a CorePalette object.
-     * @param {TonalPalette | CorePalette} primary Primary palette or a CorePalette object.
-     * @param {TonalPalette} [secondary] Secondary palette (if primary is not a CorePalette).
-     * @param {TonalPalette} [tertiary] Tertiary palette (if primary is not a CorePalette).
-     * @param {TonalPalette} [neutral] Neutral palette (if primary is not a CorePalette).
-     * @param {TonalPalette} [neutralVariant] Neutral variant palette (if primary is not a CorePalette).
-     * @param {TonalPalette} [error] Error palette (if primary is not a CorePalette).
+     * Creates a CorePalettes collection from a CorePalette object.
+     * @param {CorePalette} corePalette A CorePalette object containing a1, a2, a3, n1, n2, error palettes.
      */
-    constructor(primary, secondary, tertiary, neutral, neutralVariant, error) {
-        if (primary instanceof CorePalette) {
-            // Initialize from a CorePalette object
-            const corePalette = primary;
-            this.primary = corePalette.a1;
-            this.secondary = corePalette.a2;
-            this.tertiary = corePalette.a3;
-            this.neutral = corePalette.n1;
-            this.neutralVariant = corePalette.n2;
-            this.error = corePalette.error;
-        } else {
-            // Initialize from individual TonalPalettes
-            this.primary = primary;
-            this.secondary = secondary;
-            this.tertiary = tertiary;
-            this.neutral = neutral;
-            this.neutralVariant = neutralVariant;
-            this.error = error || TonalPalette.fromHueAndChroma(25.0, 84.0); // Ensure error exists
+    constructor(corePalette) {
+        if (!(corePalette instanceof CorePalette)) {
+            throw new Error("CorePalettes constructor requires a CorePalette instance.");
         }
+        this.primary = corePalette.a1;
+        this.secondary = corePalette.a2;
+        this.tertiary = corePalette.a3;
+        this.neutral = corePalette.n1;
+        this.neutralVariant = corePalette.n2;
+        this.error = corePalette.error;
     }
 }
 
@@ -1742,6 +1762,8 @@ class DynamicScheme {
 /**
  * Checks if the scheme is considered "Monochrome".
  * In Material Design, this often means the primary color comes from the neutral palette.
+ * Note: This check might be less relevant or accurate when using multiple seed colors
+ * where palettes are derived independently. It primarily applies to single-seed generation.
  *
  * @param {DynamicScheme} scheme The scheme to check.
  * @return {boolean} True if the scheme is monochrome, false otherwise.
@@ -1753,6 +1775,7 @@ const isMonochrome = (scheme) => scheme.primaryPalette === scheme.neutralPalette
  * In Material Design, this often relates to how closely secondary/tertiary colors
  * relate to the source color vs. being shifted for visual variety. A common fidelity
  * check involves comparing the secondary palette to the neutral variant.
+ * Note: This check might be less relevant or accurate when using multiple seed colors.
  *
  * @param {DynamicScheme} scheme The scheme to check.
  * @return {boolean} True if the scheme meets the fidelity criteria, false otherwise.
@@ -1803,7 +1826,7 @@ const isFidelity = (scheme) => scheme.secondaryPalette === scheme.neutralVariant
 
 // Constants for Wu Quantizer
 const INDEX_BITS_WU = 5; // 5 bits per color component (32 levels)
-const SIDE_LENGTH_WU = (1 << INDEX_BITS_WU); // 32 + 1 = 33
+const SIDE_LENGTH_WU = (1 << INDEX_BITS_WU) + 1; // 32 + 1 = 33
 const TOTAL_SIZE_WU = SIDE_LENGTH_WU * SIDE_LENGTH_WU * SIDE_LENGTH_WU; // 33 * 33 * 33
 
 // Constants for WSMeans Quantizer
@@ -1991,15 +2014,21 @@ class QuantizerWu {
 
         // Initialize the first box to encompass the entire color space
         const firstBox = this.cubes[0];
-        firstBox.r0 = firstBox.g0 = firstBox.b0 = 0;
-        firstBox.r1 = firstBox.g1 = firstBox.b1 = SIDE_LENGTH_WU - 1;
-        firstBox.vol = (firstBox.r1 - firstBox.r0) * (firstBox.g1 - firstBox.g0) * (firstBox.b1 - firstBox.b0);
+        firstBox.r0 = firstBox.g0 = firstBox.b0 = 1; // Start from 1 (due to +1 in histogram)
+        firstBox.r1 = firstBox.g1 = firstBox.b1 = SIDE_LENGTH_WU - 1; // End at 32
+        firstBox.vol = (firstBox.r1 - firstBox.r0 + 1) * (firstBox.g1 - firstBox.g0 + 1) * (firstBox.b1 - firstBox.b0 + 1);
+        volumeVariance[0] = this.variance(firstBox); // Calculate initial variance
 
-        let generatedColorCount = 0;
+
+        let generatedColorCount = 1;
         let next = 0; // Index of the box to cut next
 
         // Iteratively cut boxes until maxColors is reached or no more cuts are possible
         for (let i = 1; i < maxColors; i++) {
+            if (volumeVariance[next] <= 0) { // Stop if the box with highest variance can't be split
+                generatedColorCount = i;
+                break;
+            }
             const currentBox = this.cubes[next];
             const nextBox = this.cubes[i];
 
@@ -2007,33 +2036,30 @@ class QuantizerWu {
                 // Successfully cut the box 'next' into 'next' and 'i'
                 volumeVariance[next] = currentBox.vol > 1 ? this.variance(currentBox) : 0.0;
                 volumeVariance[i] = nextBox.vol > 1 ? this.variance(nextBox) : 0.0;
+                generatedColorCount++;
             } else {
                 // Could not cut the box 'next', its variance is now effectively 0
                 volumeVariance[next] = 0.0;
-                i--; // Retry with the next highest variance box
+                i--; // Retry cutting a different box in the next iteration
             }
 
             // Find the box with the highest variance to cut next
             next = 0;
-            let maxVariance = volumeVariance[0];
-            for (let j = 1; j <= i; j++) {
+            let maxVariance = -1.0; // Use -1 to ensure the first positive variance is picked
+            for (let j = 0; j < generatedColorCount; j++) { // Only check generated boxes
                 if (volumeVariance[j] > maxVariance) {
                     maxVariance = volumeVariance[j];
                     next = j;
                 }
             }
 
-            // If max variance is 0, it means no more boxes can be cut
+            // If max variance is 0 or less, no more boxes can be effectively cut
             if (maxVariance <= 0.0) {
-                generatedColorCount = i + 1; // Found i+1 distinct colors
+                // generatedColorCount is already correct from the last successful cut
                 break;
             }
         }
 
-        // If loop finished without breaking, we generated maxColors
-        if (generatedColorCount === 0) {
-            generatedColorCount = maxColors;
-        }
 
         return { requestedCount: maxColors, resultCount: generatedColorCount };
     }
@@ -2067,7 +2093,7 @@ class QuantizerWu {
      * Calculates the variance of color within a box.
      * Variance is used to decide which box to split next (higher variance = more diverse colors).
      * @param {BoxWu} cube The box to calculate variance for.
-     * @return {number} The variance value.
+     * @return {number} The variance value. Returns 0 if the box has no weight.
      * @protected
      */
     variance(cube) {
@@ -2075,6 +2101,8 @@ class QuantizerWu {
         const dg = this.volume(cube, this.momentsG);
         const db = this.volume(cube, this.momentsB);
         const dw = this.volume(cube, this.weights);
+
+        if (dw === 0) return 0.0; // Avoid division by zero
 
         // Variance calculation using moments: Var = E[X^2] - (E[X])^2
         // E[X^2] is calculated from the 'moments' array (sum of r*r+g*g+b*b)
@@ -2100,11 +2128,13 @@ class QuantizerWu {
         const wholeW = this.volume(one, this.weights);
 
         // Find the best possible cut point and variance reduction for each dimension
+        // Note: Range for maximize should be exclusive of the last index (one.r1)
         const maxRResult = this.maximize(one, WuDirections.RED, one.r0 + 1, one.r1, wholeR, wholeG, wholeB, wholeW);
         const maxGResult = this.maximize(one, WuDirections.GREEN, one.g0 + 1, one.g1, wholeR, wholeG, wholeB, wholeW);
         const maxBResult = this.maximize(one, WuDirections.BLUE, one.b0 + 1, one.b1, wholeR, wholeG, wholeB, wholeW);
 
         let direction;
+        let cutLocation = -1;
         const maxR = maxRResult.maximum;
         const maxG = maxGResult.maximum;
         const maxB = maxBResult.maximum;
@@ -2113,30 +2143,43 @@ class QuantizerWu {
         if (maxR >= maxG && maxR >= maxB) {
             if (maxRResult.cutLocation < 0) return false; // No valid cut found in R
             direction = WuDirections.RED;
+            cutLocation = maxRResult.cutLocation;
         } else if (maxG >= maxR && maxG >= maxB) {
             if (maxGResult.cutLocation < 0) return false; // No valid cut found in G
             direction = WuDirections.GREEN;
-        } else {
+            cutLocation = maxGResult.cutLocation;
+        } else { // maxB is largest
             if (maxBResult.cutLocation < 0) return false; // No valid cut found in B
             direction = WuDirections.BLUE;
+            cutLocation = maxBResult.cutLocation;
         }
+
+        // Check if the cut is possible (box must have size > 1 in the cut dimension)
+        if (cutLocation < 0) {
+            return false;
+        }
+
 
         // Set up the second box ('two') to be the upper part initially matching 'one'
         two.r1 = one.r1; two.g1 = one.g1; two.b1 = one.b1;
         two.r0 = one.r0; two.g0 = one.g0; two.b0 = one.b0; // Also copy lower bounds initially
 
         // Adjust boundaries based on the chosen cut direction and location
+        // `cutLocation` is the index *before* the cut
         switch (direction) {
             case WuDirections.RED:
-                one.r1 = maxRResult.cutLocation;
+                if (one.r1 <= one.r0) return false; // Cannot cut if size is 1
+                one.r1 = cutLocation;
                 two.r0 = one.r1 + 1; // 'two' starts just after 'one' ends
                 break;
             case WuDirections.GREEN:
-                one.g1 = maxGResult.cutLocation;
+                if (one.g1 <= one.g0) return false;
+                one.g1 = cutLocation;
                 two.g0 = one.g1 + 1;
                 break;
             case WuDirections.BLUE:
-                one.b1 = maxBResult.cutLocation;
+                if (one.b1 <= one.b0) return false;
+                one.b1 = cutLocation;
                 two.b0 = one.b1 + 1;
                 break;
             default:
@@ -2174,9 +2217,9 @@ class QuantizerWu {
         let max = 0.0;
         let cut = -1;
 
-        // Iterate through possible cut locations 'i'
+        // Iterate through possible cut locations 'i' (exclusive of last)
         for (let i = first; i < last; i++) {
-            // Calculate moments for the 'lower' half (from start up to 'i')
+            // Calculate moments for the 'lower' half (includes index i)
             let halfR = bottomR + this.top(cube, direction, i, this.momentsR);
             let halfG = bottomG + this.top(cube, direction, i, this.momentsG);
             let halfB = bottomB + this.top(cube, direction, i, this.momentsB);
@@ -2188,7 +2231,7 @@ class QuantizerWu {
             // Calculate variance contribution of the lower half
             let temp = (halfR * halfR + halfG * halfG + halfB * halfB) / halfW;
 
-            // Calculate moments for the 'upper' half (from 'i' to end)
+            // Calculate moments for the 'upper' half (from i+1 to end)
             let upperR = wholeR - halfR;
             let upperG = wholeG - halfG;
             let upperB = wholeB - halfB;
@@ -2203,7 +2246,7 @@ class QuantizerWu {
             // If this cut yields higher total variance, update max
             if (temp > max) {
                 max = temp;
-                cut = i; // Store the cut location (index before the actual cut)
+                cut = i; // Store the cut location (index *before* the actual cut plane)
             }
         }
 
@@ -2212,27 +2255,32 @@ class QuantizerWu {
 
     /**
      * Calculates the sum of moments within a box using the Summed Area Table (SAT).
-     * @param {BoxWu} cube The box boundaries.
+     * Corrected to use indices starting from 1.
+     * @param {BoxWu} cube The box boundaries (r0,g0,b0 are inclusive lower bound index, r1,g1,b1 are inclusive upper bound index).
      * @param {number[]} moment The moment array (SAT) to use (e.g., weights, momentsR).
      * @return {number} The sum of the moment within the box volume.
      * @protected
      */
     volume(cube, moment) {
-        // Inclusion-Exclusion principle on the SAT
+        // Adjust indices for SAT lookup (SAT index corresponds to upper corner)
+        const r1 = cube.r1; const g1 = cube.g1; const b1 = cube.b1;
+        const r0 = cube.r0 - 1; const g0 = cube.g0 - 1; const b0 = cube.b0 - 1;
+
         return (
-            moment[this.getIndex(cube.r1, cube.g1, cube.b1)] -
-            moment[this.getIndex(cube.r1, cube.g1, cube.b0)] -
-            moment[this.getIndex(cube.r1, cube.g0, cube.b1)] +
-            moment[this.getIndex(cube.r1, cube.g0, cube.b0)] -
-            moment[this.getIndex(cube.r0, cube.g1, cube.b1)] +
-            moment[this.getIndex(cube.r0, cube.g1, cube.b0)] +
-            moment[this.getIndex(cube.r0, cube.g0, cube.b1)] -
-            moment[this.getIndex(cube.r0, cube.g0, cube.b0)]);
+            moment[this.getIndex(r1, g1, b1)]
+            - moment[this.getIndex(r1, g1, b0)]
+            - moment[this.getIndex(r1, g0, b1)]
+            + moment[this.getIndex(r1, g0, b0)]
+            - moment[this.getIndex(r0, g1, b1)]
+            + moment[this.getIndex(r0, g1, b0)]
+            + moment[this.getIndex(r0, g0, b1)]
+            - moment[this.getIndex(r0, g0, b0)]);
     }
 
     /**
-     * Calculates the sum of moments for the 'bottom' face of a box (relative to a dimension).
+     * Calculates the sum of moments for the 'bottom' face of a box (relative to a dimension), excluding the box itself.
      * Used in the maximize function for efficient calculation.
+     * Corrected for indices starting from 1.
      * @param {BoxWu} cube The box boundaries.
      * @param {WuDirections} direction The dimension defining the 'bottom'.
      * @param {number[]} moment The moment array (SAT).
@@ -2240,62 +2288,73 @@ class QuantizerWu {
      * @protected
      */
     bottom(cube, direction, moment) {
-        // Calculates volume "below" the box's minimum on the specified axis
+        // Calculates volume "below" the box's minimum on the specified axis (index r0-1, g0-1, or b0-1)
+        const r1 = cube.r1; const g1 = cube.g1; const b1 = cube.b1;
+        const r0 = cube.r0 - 1; const g0 = cube.g0 - 1; const b0 = cube.b0 - 1;
+
         switch (direction) {
             case WuDirections.RED:
                 return (
-                    -moment[this.getIndex(cube.r0, cube.g1, cube.b1)] +
-                    moment[this.getIndex(cube.r0, cube.g1, cube.b0)] +
-                    moment[this.getIndex(cube.r0, cube.g0, cube.b1)] -
-                    moment[this.getIndex(cube.r0, cube.g0, cube.b0)]);
+                    -moment[this.getIndex(r0, g1, b1)]
+                    + moment[this.getIndex(r0, g1, b0)]
+                    + moment[this.getIndex(r0, g0, b1)]
+                    - moment[this.getIndex(r0, g0, b0)]);
             case WuDirections.GREEN:
                 return (
-                    -moment[this.getIndex(cube.r1, cube.g0, cube.b1)] +
-                    moment[this.getIndex(cube.r1, cube.g0, cube.b0)] +
-                    moment[this.getIndex(cube.r0, cube.g0, cube.b1)] -
-                    moment[this.getIndex(cube.r0, cube.g0, cube.b0)]);
+                    -moment[this.getIndex(r1, g0, b1)]
+                    + moment[this.getIndex(r1, g0, b0)]
+                    + moment[this.getIndex(r0, g0, b1)]
+                    - moment[this.getIndex(r0, g0, b0)]);
             case WuDirections.BLUE:
                 return (
-                    -moment[this.getIndex(cube.r1, cube.g1, cube.b0)] +
-                    moment[this.getIndex(cube.r1, cube.g0, cube.b0)] +
-                    moment[this.getIndex(cube.r0, cube.g1, cube.b0)] -
-                    moment[this.getIndex(cube.r0, cube.g0, cube.b0)]);
+                    -moment[this.getIndex(r1, g1, b0)]
+                    + moment[this.getIndex(r1, g0, b0)]
+                    + moment[this.getIndex(r0, g1, b0)]
+                    - moment[this.getIndex(r0, g0, b0)]);
             default:
                 throw new Error('unexpected direction ' + direction);
         }
     }
 
     /**
-     * Calculates the sum of moments for the 'top' face of a box up to a specific position.
+     * Calculates the sum of moments for the volume slice at a specific position along a dimension, within the box's other bounds.
      * Used in the maximize function for efficient calculation.
+     * Corrected for indices starting from 1.
      * @param {BoxWu} cube The box boundaries.
-     * @param {WuDirections} direction The dimension defining the 'top'.
-     * @param {number} position The index along the dimension defining the top face.
+     * @param {WuDirections} direction The dimension defining the slice.
+     * @param {number} position The index along the dimension defining the slice (e.g., a specific r value).
      * @param {number[]} moment The moment array (SAT).
-     * @return {number} Sum of moments for the top face up to 'position'.
+     * @return {number} Sum of moments for the slice at 'position'.
      * @protected
      */
     top(cube, direction, position, moment) {
         // Calculates volume slice at 'position' on the specified axis
+        const g1 = cube.g1; const b1 = cube.b1;
+        const r0 = cube.r0 - 1; const g0 = cube.g0 - 1; const b0 = cube.b0 - 1;
+        const r1 = cube.r1; // Use r1 from cube for bounds check
+
         switch (direction) {
             case WuDirections.RED:
+                if (position > r1) position = r1; // Clamp position
                 return (
-                    moment[this.getIndex(position, cube.g1, cube.b1)] -
-                    moment[this.getIndex(position, cube.g1, cube.b0)] -
-                    moment[this.getIndex(position, cube.g0, cube.b1)] +
-                    moment[this.getIndex(position, cube.g0, cube.b0)]);
+                    moment[this.getIndex(position, g1, b1)]
+                    - moment[this.getIndex(position, g1, b0)]
+                    - moment[this.getIndex(position, g0, b1)]
+                    + moment[this.getIndex(position, g0, b0)]);
             case WuDirections.GREEN:
+                if (position > g1) position = g1;
                 return (
-                    moment[this.getIndex(cube.r1, position, cube.b1)] -
-                    moment[this.getIndex(cube.r1, position, cube.b0)] -
-                    moment[this.getIndex(cube.r0, position, cube.b1)] +
-                    moment[this.getIndex(cube.r0, position, cube.b0)]);
+                    moment[this.getIndex(r1, position, b1)]
+                    - moment[this.getIndex(r1, position, b0)]
+                    - moment[this.getIndex(r0, position, b1)]
+                    + moment[this.getIndex(r0, position, b0)]);
             case WuDirections.BLUE:
+                if (position > b1) position = b1;
                 return (
-                    moment[this.getIndex(cube.r1, cube.g1, position)] -
-                    moment[this.getIndex(cube.r1, cube.g0, position)] -
-                    moment[this.getIndex(cube.r0, cube.g1, position)] +
-                    moment[this.getIndex(cube.r0, cube.g0, position)]);
+                    moment[this.getIndex(r1, g1, position)]
+                    - moment[this.getIndex(r1, g0, position)]
+                    - moment[this.getIndex(r0, g1, position)]
+                    + moment[this.getIndex(r0, g0, position)]);
             default:
                 throw new Error('unexpected direction ' + direction);
         }
@@ -2303,23 +2362,24 @@ class QuantizerWu {
 
     /**
      * Calculates the 1D index into the moment arrays from 3D quantized coordinates.
-     * @param {number} r Red index (1-33).
-     * @param {number} g Green index (1-33).
-     * @param {number} b Blue index (1-33).
-     * @return {number} The 1D index.
+     * Assumes coordinates r, g, b are in the range [1, 33] or [0, 32] for SAT lookups.
+     * @param {number} r Red index.
+     * @param {number} g Green index.
+     * @param {number} b Blue index.
+     * @return {number} The 1D index. Returns 0 if any index is out of bounds (less than 0).
      * @protected
      */
     getIndex(r, g, b) {
-        // Efficient indexing using bit shifts, equivalent to:
-        // return r * SIDE_LENGTH_WU * SIDE_LENGTH_WU + g * SIDE_LENGTH_WU + b;
-        // Needs adjustment based on SIDE_LENGTH_WU=33 if not power of 2.
-        // The original seems based on SIDE_LENGTH=33, let's use direct multiplication.
+        // Handle boundary conditions for SAT lookups (index 0 represents volume up to -1)
+        if (r < 0 || g < 0 || b < 0) {
+            return 0;
+        }
+        // Ensure indices do not exceed bounds
+        r = Math.min(r, SIDE_LENGTH_WU - 1);
+        g = Math.min(g, SIDE_LENGTH_WU - 1);
+        b = Math.min(b, SIDE_LENGTH_WU - 1);
+
         return r * (SIDE_LENGTH_WU * SIDE_LENGTH_WU) + g * SIDE_LENGTH_WU + b;
-        // Original calculation seems slightly off if SIDE_LENGTH isn't power of 2.
-        // Let's use the most direct formula for clarity and correctness:
-        // return r * SIDE_LENGTH_WU * SIDE_LENGTH_WU + g * SIDE_LENGTH_WU + b;
-        // If the original `(r << (INDEX_BITS * 2)) + ...` was specifically optimized for a 32-size cube,
-        // it needs correction for size 33. Using direct multiplication is safer.
     }
 }
 
@@ -2418,19 +2478,40 @@ class QuantizerWsmeans {
             .slice(0, clusterCount) // Use only the required number of starting clusters
             .map(clusterArgb => pointProvider.fromInt(clusterArgb));
 
-        // If no starting clusters provided, initialize randomly (less ideal)
-        const additionalClustersNeeded = clusterCount - clusters.length;
-        if (startingClusters.length === 0 && additionalClustersNeeded > 0) {
-            console.warn("WSMeans: No starting clusters provided, using random initialization.");
-            // Seed random clusters (consider better seeding like k-means++ if needed)
+        // If no starting clusters provided or insufficient starting clusters, initialize randomly
+        const initialClusterCount = clusters.length;
+        const additionalClustersNeeded = clusterCount - initialClusterCount;
+
+        if (initialClusterCount === 0 && points.length > 0) {
+            console.warn("WSMeans: No starting clusters provided, using random initialization from pixels.");
             const randomIndexes = new Set();
-            while (randomIndexes.size < additionalClustersNeeded && randomIndexes.size < points.length) {
+            while (randomIndexes.size < clusterCount && randomIndexes.size < points.length) {
                 randomIndexes.add(Math.floor(Math.random() * points.length));
             }
-            for (const index of randomIndexes) {
-                clusters.push(points[index]);
+            clusters = Array.from(randomIndexes).map(index => points[index]);
+            clusterCount = clusters.length; // Update actual cluster count
+        } else if (additionalClustersNeeded > 0 && points.length > initialClusterCount) {
+            console.warn(`WSMeans: Insufficient starting clusters (${initialClusterCount} provided, ${clusterCount} needed). Adding random initial clusters.`);
+            // Add more random clusters, trying not to duplicate existing points used as starts
+            const existingPointsAsClusters = new Set(clusters.map(p => JSON.stringify(p)));
+            const availablePoints = points.filter(p => !existingPointsAsClusters.has(JSON.stringify(p)));
+            const randomIndexes = new Set();
+            while (randomIndexes.size < additionalClustersNeeded && randomIndexes.size < availablePoints.length) {
+                randomIndexes.add(Math.floor(Math.random() * availablePoints.length));
             }
-            clusterCount = clusters.length; // Update cluster count if fewer points than requested
+            for (const index of randomIndexes) {
+                clusters.push(availablePoints[index]);
+            }
+            clusterCount = clusters.length; // Update actual cluster count
+        } else if (points.length <= initialClusterCount) {
+            // Fewer unique points than requested clusters, reduce cluster count
+            clusterCount = points.length;
+            clusters = clusters.slice(0, clusterCount);
+        }
+
+        // Handle edge case: no points to cluster
+        if (clusterCount === 0 || points.length === 0) {
+            return new Map();
         }
 
 
@@ -2439,6 +2520,8 @@ class QuantizerWsmeans {
             let minDistance = Infinity;
             let index = 0;
             for (let i = 0; i < clusterCount; i++) {
+                // Handle potential undefined clusters if initialization failed unexpectedly
+                if (!clusters[i]) continue;
                 const distance = pointProvider.distance(point, clusters[i]);
                 if (distance < minDistance) {
                     minDistance = distance;
@@ -2464,6 +2547,8 @@ class QuantizerWsmeans {
             // --- Update Centroids ---
             for (let i = 0; i < points.length; i++) {
                 const clusterIndex = clusterIndices[i];
+                // Handle potential out-of-bounds index if clusterCount was reduced
+                if (clusterIndex >= clusterCount) continue;
                 const point = points[i];
                 const count = counts[i];
 
@@ -2481,6 +2566,11 @@ class QuantizerWsmeans {
                     // Empty cluster - keep its position (or reinitialize if desired)
                     continue;
                 }
+                // Handle potential undefined clusters
+                if (!clusters[i]) {
+                    clusters[i] = [0, 0, 0]; // Initialize if somehow undefined
+                }
+
                 const newL = componentASums[i] / pixelCount;
                 const newA = componentBSums[i] / pixelCount;
                 const newB = componentCSums[i] / pixelCount;
@@ -2505,11 +2595,16 @@ class QuantizerWsmeans {
                 const point = points[i];
                 const previousClusterIndex = clusterIndices[i];
 
+                // Handle potential out-of-bounds index
+                if (previousClusterIndex >= clusterCount || !clusters[previousClusterIndex]) continue;
+
                 let minDistance = pointProvider.distance(point, clusters[previousClusterIndex]);
                 let newClusterIndex = previousClusterIndex;
 
                 // Find the closest new centroid
                 for (let j = 0; j < clusterCount; j++) {
+                    // Handle potential undefined clusters
+                    if (!clusters[j]) continue;
                     const distance = pointProvider.distance(point, clusters[j]);
                     if (distance < minDistance) {
                         minDistance = distance;
@@ -2535,12 +2630,17 @@ class QuantizerWsmeans {
         // Recalculate final populations based on the last assignment
         clusterPixelCounts.fill(0);
         for (let i = 0; i < points.length; i++) {
+            // Handle potential out-of-bounds index
+            if (clusterIndices[i] >= clusterCount) continue;
             clusterPixelCounts[clusterIndices[i]] += counts[i];
         }
 
         for (let i = 0; i < clusterCount; i++) {
             const count = clusterPixelCounts[i];
             if (count === 0) continue; // Skip empty clusters
+
+            // Handle potential undefined clusters
+            if (!clusters[i]) continue;
 
             const clusterArgb = pointProvider.toInt(clusters[i]);
             // Add population to existing color if it maps to the same ARGB
@@ -2610,10 +2710,14 @@ class QuantizerCelebi {
 
 /**
  * @typedef {object} Theme
- * @property {number} source - The source ARGB color used to generate the theme.
+ * @property {number} source - The primary source ARGB color used to generate the theme.
  * @property {{light: DynamicScheme, dark: DynamicScheme}} schemes - The generated light and dark DynamicScheme configurations.
  * @property {CorePalettes} palettes - The set of core TonalPalettes (primary, secondary, etc.).
  * @property {CustomColorGroup[]} customColors - Array of processed custom color groups included in the theme.
+ * @property {object} [seedColors] - The original seed colors provided, if using `themeFromColors`.
+ * @property {number} [seedColors.primary] - Primary seed ARGB.
+ * @property {number} [seedColors.secondary] - Secondary seed ARGB (if provided).
+ * @property {number} [seedColors.tertiary] - Tertiary seed ARGB (if provided).
  */
 
 /**
@@ -2633,6 +2737,9 @@ class ToneDeltaPair {
     polarity;
     /** @type {boolean} If true, the tones should stay together even if one pushes the other into the 50-59 L* range. */
     stayTogether;
+    /** @type {DynamicColor} The background color role against which polarity is measured. */
+    background;
+
 
     /**
      * @param {DynamicColor} roleA
@@ -2640,13 +2747,15 @@ class ToneDeltaPair {
      * @param {number} delta
      * @param {'lighter' | 'darker' | 'nearer' | 'farther'} polarity
      * @param {boolean} stayTogether
+     * @param {DynamicColor} background Background color role for polarity check.
      */
-    constructor(roleA, roleB, delta, polarity, stayTogether) {
+    constructor(roleA, roleB, delta, polarity, stayTogether, background) {
         this.roleA = roleA;
         this.roleB = roleB;
         this.delta = delta;
         this.polarity = polarity;
         this.stayTogether = stayTogether;
+        this.background = background; // Store the background reference
     }
 }
 
@@ -2700,9 +2809,8 @@ class DynamicColor {
         if (!background && (secondBackground || contrastCurve)) {
             throw new Error(`DynamicColor ${name}: Background must be provided if secondBackground or contrastCurve is set.`);
         }
-        if (background && !contrastCurve) {
-            // Allow background without contrast curve for simple cases, maybe just for tone reference
-            // console.warn(`DynamicColor ${name}: Background provided without a contrastCurve.`);
+        if (background && !contrastCurve && !toneDeltaPairProvider) { // Allow background without curve if it's for a delta pair
+            console.warn(`DynamicColor ${name}: Background provided without a contrastCurve and not part of a ToneDeltaPair.`);
         }
     }
 
@@ -2716,7 +2824,7 @@ class DynamicColor {
      * @param {(scheme: DynamicScheme) => DynamicColor} [args.background] Primary background dependency.
      * @param {(scheme: DynamicScheme) => DynamicColor} [args.secondBackground] Secondary background dependency.
      * @param {ContrastCurve} [args.contrastCurve] Contrast requirements.
-     * @param {(scheme: DynamicScheme) => ToneDeltaPair} [args.toneDeltaPair] Tone delta relationship.
+     * @param {(scheme: DynamicScheme) => ToneDeltaPair} [args.toneDeltaPairProvider] Tone delta relationship provider.
      * @return {DynamicColor} A new DynamicColor instance.
      */
     static fromPalette(args) {
@@ -2732,7 +2840,7 @@ class DynamicColor {
             args.background,
             args.secondBackground,
             args.contrastCurve,
-            args.toneDeltaPair // Pass the provider function directly
+            args.toneDeltaPairProvider // Pass the provider function directly
         );
     }
 
@@ -2766,7 +2874,9 @@ class DynamicColor {
 
         // Cache the result (simple Map acts somewhat like LRU here)
         if (this.hctCache.size > 4) { // Limit cache size
-            this.hctCache.clear();
+            // Find the first key and delete it (basic LRU simulation)
+            const firstKey = this.hctCache.keys().next().value;
+            if (firstKey) this.hctCache.delete(firstKey);
         }
         this.hctCache.set(scheme, hct);
         return hct;
@@ -2785,7 +2895,7 @@ class DynamicColor {
         if (this.toneDeltaPairProvider) {
             const toneDeltaPair = this.toneDeltaPairProvider(scheme);
             if (!toneDeltaPair || !toneDeltaPair.roleA || !toneDeltaPair.roleB || !toneDeltaPair.background) {
-                console.error(`DynamicColor ${this.name}: Invalid ToneDeltaPair provided or missing background. Falling back to base tone.`);
+                console.error(`DynamicColor ${this.name}: Invalid ToneDeltaPair provided or missing background dependency. Falling back to base tone.`);
                 return this.tone(scheme); // Fallback to base tone
             }
             const { roleA, roleB, delta, polarity, stayTogether, background } = toneDeltaPair;
@@ -2802,6 +2912,16 @@ class DynamicColor {
             const farther = aIsNearer ? roleB : roleA;
             const amNearer = this.name === nearer.name;
             const expansionDir = scheme.isDark ? 1 : -1; // +1 for dark (expand away from 0), -1 for light (expand away from 100)
+
+            // Ensure contrast curves exist for roles in the pair
+            if (!nearer.contrastCurve || !farther.contrastCurve) {
+                console.error(`DynamicColor ${this.name}: Missing contrastCurve for role ${nearer.contrastCurve ? farther.name : nearer.name} in ToneDeltaPair. Falling back.`);
+                // Attempt fallback using a default medium contrast if possible, else base tone
+                const fallbackRatio = 4.5;
+                return Contrast.ratioOfTones(bgTone, this.tone(scheme)) >= fallbackRatio ?
+                    this.tone(scheme) : DynamicColor.foregroundTone(bgTone, fallbackRatio);
+            }
+
 
             // Target contrast ratios for nearer/farther roles against the background
             const nContrast = nearer.contrastCurve.get(scheme.contrastLevel);
@@ -2838,40 +2958,45 @@ class DynamicColor {
 
 
             // --- Avoid the awkward 50-59 L* range ---
-            // Adjust nearer tone if it falls into the range
-            if (50 <= nTone && nTone < 60) {
-                const newNTone = expansionDir > 0 ? 60.0 : 49.0; // Move up in dark, down in light
-                const newFTone = mathUtils.clampDouble(0, 100, newNTone + delta * expansionDir);
-                // Check if this adjustment is valid or if we need to adjust farther instead
-                if (Math.abs(newFTone - newNTone) >= delta) {
-                    nTone = newNTone;
-                    fTone = newFTone;
-                } else {
-                    // Adjusting nearer didn't work, try adjusting farther instead if it's in the range
-                    if (50 <= fTone && fTone < 60) {
-                        fTone = expansionDir > 0 ? 60.0 : 49.0;
-                        if (Math.abs(fTone - nTone) < delta) { // If delta still not met, adjust nearer too
-                            nTone = mathUtils.clampDouble(0, 100, fTone - delta * expansionDir);
-                        }
-                    }
+            // Define helper to adjust a tone out of the 50-59 range
+            const avoid50s = (toneToAdjust) => {
+                if (50 <= toneToAdjust && toneToAdjust < 60) {
+                    return expansionDir > 0 ? 60.0 : 49.0;
                 }
-
+                return toneToAdjust;
             }
-            // Adjust farther tone if it falls into the range (and nearer didn't already cause adjustment)
-            else if (50 <= fTone && fTone < 60) {
-                // If stayTogether, move both tones. Otherwise, only move farther.
+
+            const nToneAdjusted = avoid50s(nTone);
+            const fToneAdjusted = avoid50s(fTone);
+
+            // Scenario 1: Only Nearer was in 50s
+            if (nToneAdjusted !== nTone && fToneAdjusted === fTone) {
+                nTone = nToneAdjusted;
+                // Ensure delta is still met after adjusting nearer
+                if (Math.abs(fTone - nTone) < delta) {
+                    fTone = mathUtils.clampDouble(0, 100, nTone + delta * expansionDir);
+                }
+            }
+            // Scenario 2: Only Farther was in 50s
+            else if (fToneAdjusted !== fTone && nToneAdjusted === nTone) {
+                // If stayTogether, adjusting farther implies adjusting nearer too
                 if (stayTogether) {
-                    const newNTone = expansionDir > 0 ? 60.0 : 49.0;
-                    nTone = newNTone;
-                    fTone = mathUtils.clampDouble(0, 100, newNTone + delta * expansionDir);
+                    nTone = avoid50s(nTone); // Adjust nearer as well
+                    fTone = mathUtils.clampDouble(0, 100, nTone + delta * expansionDir);
                 } else {
-                    fTone = expansionDir > 0 ? 60.0 : 49.0;
-                    // Re-check delta if only farther moved
+                    fTone = fToneAdjusted;
+                    // Ensure delta is still met after adjusting farther
                     if (Math.abs(fTone - nTone) < delta) {
                         nTone = mathUtils.clampDouble(0, 100, fTone - delta * expansionDir);
                     }
                 }
             }
+            // Scenario 3: Both were in 50s (or adjusted into conflict)
+            else if (nToneAdjusted !== nTone && fToneAdjusted !== fTone) {
+                nTone = nToneAdjusted;
+                fTone = mathUtils.clampDouble(0, 100, nTone + delta * expansionDir); // Recalculate farther based on adjusted nearer
+            }
+
 
             return amNearer ? nTone : fTone;
         }
@@ -2879,8 +3004,8 @@ class DynamicColor {
         else {
             let answer = this.tone(scheme); // Start with the base tone
 
-            // If no background dependency, return base tone
-            if (!this.background) {
+            // If no background dependency or no contrast curve, return base tone
+            if (!this.background || !this.contrastCurve) {
                 return answer;
             }
 
@@ -2927,37 +3052,37 @@ class DynamicColor {
 
                 if (!meetsUpper || !meetsLower) {
                     // If contrast fails against either, find best alternative
-                    const lighterOption = Contrast.lighter(upperBgTone, requiredRatio);
-                    const darkerOption = Contrast.darker(lowerBgTone, requiredRatio);
+                    const lighterOption = Contrast.lighterUnsafe(upperBgTone, requiredRatio); // Use unsafe for wider search
+                    const darkerOption = Contrast.darkerUnsafe(lowerBgTone, requiredRatio);   // Use unsafe
 
                     // Determine preferred direction (light or dark foreground)
                     const prefersLight = DynamicColor.tonePrefersLightForeground(bgTone) ||
                         DynamicColor.tonePrefersLightForeground(bgTone2);
 
-                    // Choose best available option based on preference
-                    const lightAvailable = lighterOption !== -1.0;
-                    const darkAvailable = darkerOption !== -1.0;
+                    // Check actual contrast provided by options
+                    const lightRatio = Contrast.ratioOfTones(upperBgTone, lighterOption);
+                    const darkRatio = Contrast.ratioOfTones(lowerBgTone, darkerOption);
+                    const lightMet = lightRatio >= requiredRatio - 0.01; // Allow small tolerance
+                    const darkMet = darkRatio >= requiredRatio - 0.01;
 
+                    // Choose best available option based on preference and meeting contrast
                     if (prefersLight) {
-                        answer = lightAvailable ? lighterOption : (darkAvailable ? darkerOption : 100.0);
+                        answer = lightMet ? lighterOption : (darkMet ? darkerOption : lighterOption); // Prefer light if possible, else dark, else light fallback
                     } else { // Prefers dark
-                        answer = darkAvailable ? darkerOption : (lightAvailable ? lighterOption : 0.0);
+                        answer = darkMet ? darkerOption : (lightMet ? lightOption : darkerOption); // Prefer dark if possible, else light, else dark fallback
                     }
-                    // Note: The original logic had a complex availability check; this simplifies
-                    // based on preference first, then availability. If neither works, use extremes.
-                    // Re-evaluate if contrast is decreasing
+
+                    // Re-evaluate if contrast is decreasing - recalculate preferred option
                     if (decreasingContrast) {
-                        // Recalculate based on the chosen direction but ensure it's foregroundTone
-                        if (answer === lighterOption && lightAvailable) {
-                            answer = DynamicColor.foregroundTone(upperBgTone, requiredRatio);
-                        } else if (answer === darkerOption && darkAvailable) {
-                            answer = DynamicColor.foregroundTone(lowerBgTone, requiredRatio);
-                        } else { // Fallback if preference wasn't available
-                            const altBgTone = prefersLight ? lowerBgTone : upperBgTone;
-                            answer = DynamicColor.foregroundTone(altBgTone, requiredRatio);
+                        const primaryBg = prefersLight ? upperBgTone : lowerBgTone;
+                        const secondaryBg = prefersLight ? lowerBgTone : upperBgTone;
+                        answer = DynamicColor.foregroundTone(primaryBg, requiredRatio);
+                        // Check if this also works for the secondary background
+                        if (Contrast.ratioOfTones(secondaryBg, answer) < requiredRatio) {
+                            // If not, try foreground tone for secondary background
+                            answer = DynamicColor.foregroundTone(secondaryBg, requiredRatio);
                         }
                     }
-
                 }
             }
 
@@ -2986,18 +3111,18 @@ class DynamicColor {
         // Determine if the background tone generally prefers a light foreground
         const prefersLight = DynamicColor.tonePrefersLightForeground(bgTone);
 
-        // Check if one option clearly meets the ratio and the other doesn't
-        const lightMet = lighterRatio >= ratio;
-        const darkMet = darkerRatio >= ratio;
+        // Check if one option clearly meets the ratio (within tolerance) and the other doesn't
+        const lightMet = lighterRatio >= ratio - 0.01;
+        const darkMet = darkerRatio >= ratio - 0.01;
 
         if (lightMet && darkMet) {
-            // Both meet ratio: choose based on preference, prioritizing closer contrast if possible
+            // Both meet ratio: choose based on preference, prioritizing closer contrast delta
             const lightDelta = Math.abs(lighterRatio - ratio);
             const darkDelta = Math.abs(darkerRatio - ratio);
             if (prefersLight) {
-                return lightDelta <= darkDelta ? lighterTone : darkerTone; // Choose closer if preferred
+                return lightDelta <= darkDelta + 0.1 ? lighterTone : darkerTone; // Favor preferred if close
             } else {
-                return darkDelta <= lightDelta ? darkerTone : lighterTone; // Choose closer if preferred
+                return darkDelta <= lightDelta + 0.1 ? darkerTone : lighterTone; // Favor preferred if close
             }
 
         } else if (lightMet) {
@@ -3005,7 +3130,7 @@ class DynamicColor {
         } else if (darkMet) {
             return darkerTone; // Only dark option works
         } else {
-            // Neither meets ratio (likely due to unsafe fallbacks): choose the one with higher contrast
+            // Neither meets ratio (likely due to unsafe fallbacks): choose the one with higher actual contrast
             return lighterRatio >= darkerRatio ? lighterTone : darkerTone;
         }
     }
@@ -3284,13 +3409,6 @@ const MaterialDynamicColors = {
             const containerTone = MaterialDynamicColors.primaryContainer.getTone(scheme);
             return DynamicColor.foregroundTone(containerTone, 4.5); // Target 4.5:1 contrast
         },
-        // Original logic was more complex, simplifying to foregroundTone contrast check
-        // tone: scheme => isFidelity(scheme) ?
-        //     DynamicColor.foregroundTone(MaterialDynamicColors.primaryContainer.tone(scheme), 4.5) :
-        //     isMonochrome(scheme) ?
-        //         (scheme.isDark ? 0 : 100) : // Simplified fallback for monochrome
-        //         (scheme.isDark ? 90 : 10), // Standard fallback
-
         background: scheme => MaterialDynamicColors.primaryContainer,
         contrastCurve: new ContrastCurve(4.5, 7, 11, 21), // High contrast against container
     }),
@@ -3333,8 +3451,6 @@ const MaterialDynamicColors = {
             // Simplified logic - standard is often best unless fidelity/monochrome requires specific tweaks
             const standardTone = scheme.isDark ? 30 : 90;
             return isMonochrome(scheme) ? (scheme.isDark ? 30 : 85) : standardTone;
-            // Original complex fidelity logic removed for simplification:
-            // isFidelity(scheme) ? findDesiredChromaByTone(...) : standardTone);
         },
         isBackground: true,
         background: scheme => MaterialDynamicColors.highestSurface(scheme),
@@ -3355,12 +3471,6 @@ const MaterialDynamicColors = {
             if (isMonochrome(scheme)) { return scheme.isDark ? 90 : 10; }
             return DynamicColor.foregroundTone(containerTone, 4.5); // Target 4.5:1
         },
-        // Original complex logic:
-        // tone: scheme => isMonochrome(scheme) ?
-        //     (scheme.isDark ? 90 : 10) :
-        //     (isFidelity(scheme) ?
-        //         DynamicColor.foregroundTone(MaterialDynamicColors.secondaryContainer.tone(scheme), 4.5) :
-        //         (scheme.isDark ? 90 : 10)),
         background: scheme => MaterialDynamicColors.secondaryContainer,
         contrastCurve: new ContrastCurve(4.5, 7, 11, 21), // Use higher curve for 'on' colors
     }),
@@ -3399,12 +3509,6 @@ const MaterialDynamicColors = {
             const standardTone = scheme.isDark ? 30 : 90;
             // DislikeAnalyzer removed, Fidelity logic simplified
             return isMonochrome(scheme) ? (scheme.isDark ? 60 : 49) : standardTone;
-            // Original complex fidelity/dislike logic:
-            // isMonochrome(scheme) ?
-            // (scheme.isDark ? 60 : 49) :
-            // (isFidelity(scheme) ?
-            //     DislikeAnalyzer.fixIfDisliked(...).tone :
-            //     standardTone),
         },
         isBackground: true,
         background: scheme => MaterialDynamicColors.highestSurface(scheme),
@@ -3425,12 +3529,6 @@ const MaterialDynamicColors = {
             if (isMonochrome(scheme)) { return scheme.isDark ? 0 : 100; }
             return DynamicColor.foregroundTone(containerTone, 4.5); // Target 4.5:1
         },
-        // Original complex logic:
-        // tone: scheme => isMonochrome(scheme) ?
-        //     (scheme.isDark ? 0 : 100) :
-        //     (isFidelity(scheme) ?
-        //         DynamicColor.foregroundTone(MaterialDynamicColors.tertiaryContainer.tone(scheme), 4.5) :
-        //         (scheme.isDark ? 90 : 10)),
         background: scheme => MaterialDynamicColors.tertiaryContainer,
         contrastCurve: new ContrastCurve(4.5, 7, 11, 21), // Use higher curve
     }),
@@ -3480,10 +3578,6 @@ const MaterialDynamicColors = {
             // Monochrome check not typically applied to error roles
             return DynamicColor.foregroundTone(containerTone, 4.5); // Target 4.5:1
         },
-        // Original logic:
-        // tone: scheme => isMonochrome(scheme) ? // Monochrome usually doesn't affect error
-        //     (scheme.isDark ? 90 : 10) :
-        //     (scheme.isDark ? 90 : 10),
         background: scheme => MaterialDynamicColors.errorContainer,
         contrastCurve: new ContrastCurve(4.5, 7, 11, 21), // Use higher curve
     }),
@@ -3623,7 +3717,7 @@ const MaterialDynamicColors = {
         secondBackground: scheme => MaterialDynamicColors.tertiaryFixed,
         contrastCurve: new ContrastCurve(3.0, 4.5, 7.0, 11.0),
     }),
-};
+}; // End of MaterialDynamicColors namespace
 
 
 /**
@@ -3744,16 +3838,17 @@ const Score = {
 
 
 /**
- * Generates a Theme object containing palettes and schemes from a source color.
+ * Generates a Theme object containing palettes and schemes from a **single** source color.
  *
  * @param {number} sourceColorArgb Source color ARGB value.
  * @param {CustomColor[]} [customColors=[]] Array of custom color definitions to include.
+ * @param {boolean} [isContent=false] Whether to use content-based palette generation rules.
  * @return {Theme} The generated theme object.
  */
-const themeFromSourceColor = (sourceColorArgb, customColors = []) => {
-    // Generate core palettes from the source color
-    const corePalette = CorePalette.of(sourceColorArgb);
-    const palettes = new CorePalettes(corePalette); // Use CorePalettes constructor
+const themeFromSourceColor = (sourceColorArgb, customColors = [], isContent = false) => {
+    // Generate core palettes from the single source color
+    const corePalette = isContent ? CorePalette.contentOf(sourceColorArgb) : CorePalette.of(sourceColorArgb);
+    const palettes = new CorePalettes(corePalette);
 
     const sourceColorHct = Hct.fromInt(sourceColorArgb);
 
@@ -3761,7 +3856,7 @@ const themeFromSourceColor = (sourceColorArgb, customColors = []) => {
     const lightScheme = new DynamicScheme({
         sourceColorArgb: sourceColorArgb,
         sourceColorHct: sourceColorHct,
-        variant: 'default', // Simplified variant
+        variant: 'default', // Simplified variant identifier
         isDark: false,
         contrastLevel: 0.0, // Default contrast
         primaryPalette: palettes.primary,
@@ -3775,9 +3870,9 @@ const themeFromSourceColor = (sourceColorArgb, customColors = []) => {
     const darkScheme = new DynamicScheme({
         sourceColorArgb: sourceColorArgb,
         sourceColorHct: sourceColorHct,
-        variant: 'default', // Simplified variant
+        variant: 'default',
         isDark: true,
-        contrastLevel: 0.0, // Default contrast
+        contrastLevel: 0.0,
         primaryPalette: palettes.primary,
         secondaryPalette: palettes.secondary,
         tertiaryPalette: palettes.tertiary,
@@ -3794,6 +3889,7 @@ const themeFromSourceColor = (sourceColorArgb, customColors = []) => {
         },
         palettes: palettes,
         customColors: [], // Initialize empty, will be populated below
+        seedColors: { primary: sourceColorArgb } // Store the single seed
     };
 
     // Process and add custom colors
@@ -3805,22 +3901,92 @@ const themeFromSourceColor = (sourceColorArgb, customColors = []) => {
 };
 
 /**
- * Generates dynamic light and dark schemes based on contrast level.
+ * Generates a Theme object containing palettes and schemes from **multiple** seed colors.
+ *
+ * @param {object} seeds Seed colors.
+ * @param {number} seeds.primary The ARGB value for the primary seed color.
+ * @param {number} [seeds.secondary] Optional ARGB value for the secondary seed color.
+ * @param {number} [seeds.tertiary] Optional ARGB value for the tertiary seed color.
+ * @param {CustomColor[]} [customColors=[]] Array of custom color definitions to include.
+ * @param {boolean} [isContent=false] Whether to use content-based palette generation rules for fallback palettes.
+ * @return {Theme} The generated theme object.
+ */
+const themeFromColors = (seeds, customColors = [], isContent = false) => {
+    // Generate core palettes from the provided seed colors
+    const corePalette = CorePalette.fromColors(seeds, isContent);
+    const palettes = new CorePalettes(corePalette);
+
+    // Use the primary seed color as the main source color reference for the schemes
+    const sourceColorArgb = seeds.primary;
+    const sourceColorHct = Hct.fromInt(sourceColorArgb);
+
+    // Create default light and dark scheme configurations using the derived palettes
+    const lightScheme = new DynamicScheme({
+        sourceColorArgb: sourceColorArgb,
+        sourceColorHct: sourceColorHct,
+        variant: 'multi_seed', // Indicate multi-seed origin
+        isDark: false,
+        contrastLevel: 0.0,
+        primaryPalette: palettes.primary,
+        secondaryPalette: palettes.secondary,
+        tertiaryPalette: palettes.tertiary,
+        neutralPalette: palettes.neutral,
+        neutralVariantPalette: palettes.neutralVariant,
+        errorPalette: palettes.error,
+    });
+
+    const darkScheme = new DynamicScheme({
+        sourceColorArgb: sourceColorArgb,
+        sourceColorHct: sourceColorHct,
+        variant: 'multi_seed',
+        isDark: true,
+        contrastLevel: 0.0,
+        primaryPalette: palettes.primary,
+        secondaryPalette: palettes.secondary,
+        tertiaryPalette: palettes.tertiary,
+        neutralPalette: palettes.neutral,
+        neutralVariantPalette: palettes.neutralVariant,
+        errorPalette: palettes.error,
+    });
+
+    const theme = {
+        source: sourceColorArgb, // Primary seed is the main source reference
+        schemes: {
+            light: lightScheme,
+            dark: darkScheme,
+        },
+        palettes: palettes,
+        customColors: [],
+        seedColors: { ...seeds } // Store all provided seeds
+    };
+
+    // Process and add custom colors
+    if (customColors && customColors.length > 0) {
+        theme.customColors = processCustomColors(theme, customColors);
+    }
+
+    return theme;
+};
+
+
+/**
+ * Generates dynamic light and dark schemes based on contrast level for a given source color.
  * Useful for creating themes that adapt to user contrast preferences.
  *
  * @param {number} sourceColorArgb Source color ARGB value.
  * @param {number} contrastLevel Contrast level (-1.0 to 1.0).
+ * @param {boolean} [isContent=false] Whether to use content-based palette rules.
  * @return {{light: DynamicScheme, dark: DynamicScheme}} Object containing light and dark schemes.
  */
-const dynamicSchemesFromSourceColor = (sourceColorArgb, contrastLevel) => {
-    const corePalette = CorePalette.of(sourceColorArgb);
+const dynamicSchemesFromSourceColor = (sourceColorArgb, contrastLevel, isContent = false) => {
+    const corePalette = isContent ? CorePalette.contentOf(sourceColorArgb) : CorePalette.of(sourceColorArgb);
     const palettes = new CorePalettes(corePalette);
     const sourceColorHct = Hct.fromInt(sourceColorArgb);
 
     const lightScheme = new DynamicScheme({
         sourceColorArgb: sourceColorArgb,
         sourceColorHct: sourceColorHct,
-        variant: 'default',
+        variant: 'default_contrast',
         isDark: false,
         contrastLevel: contrastLevel,
         primaryPalette: palettes.primary,
@@ -3834,7 +4000,7 @@ const dynamicSchemesFromSourceColor = (sourceColorArgb, contrastLevel) => {
     const darkScheme = new DynamicScheme({
         sourceColorArgb: sourceColorArgb,
         sourceColorHct: sourceColorHct,
-        variant: 'default',
+        variant: 'default_contrast',
         isDark: true,
         contrastLevel: contrastLevel,
         primaryPalette: palettes.primary,
@@ -3922,12 +4088,14 @@ const extractColorsFromImage = async (imageData, options = {}) => {
  * @param {ImageData} imageData The image data object.
  * @param {CustomColor[]} [customColors=[]] Array of custom color definitions.
  * @param {object} [options={}] Options passed to extractColorsFromImage.
+ * @param {boolean} [options.isContent=false] Use content-based rules for palette generation.
  * @return {Promise<Theme>} Promise resolving to the generated Theme object.
  */
 const themeFromImage = async (imageData, customColors = [], options = {}) => {
+    const isContent = options.isContent || false;
     const colors = await extractColorsFromImage(imageData, options);
     const sourceColor = colors[0]; // Use the highest scoring color as the source
-    return themeFromSourceColor(sourceColor, customColors);
+    return themeFromSourceColor(sourceColor, customColors, isContent);
 };
 
 /**
@@ -3942,7 +4110,7 @@ const themeFromImage = async (imageData, customColors = [], options = {}) => {
 function processCustomColors(theme, customColorDefs) {
     return customColorDefs.map(customColor => {
         let finalColorValue = customColor.value;
-        // Apply blending if requested
+        // Apply blending if requested, using the theme's primary source color
         if (customColor.blend) {
             finalColorValue = Blend.harmonize(customColor.value, theme.source);
         }
@@ -3955,18 +4123,21 @@ function processCustomColors(theme, customColorDefs) {
         const darkTone = 80;
         const lightContainerTone = 90;
         const darkContainerTone = 30;
-        const lightOnContainerTone = 10;
-        const darkOnContainerTone = 90;
+        // For 'on' colors, calculate based on contrast against their background
+        const lightOnTone = DynamicColor.foregroundTone(lightTone, 4.5);
+        const darkOnTone = DynamicColor.foregroundTone(darkTone, 4.5);
+        const lightOnContainerTone = DynamicColor.foregroundTone(lightContainerTone, 4.5);
+        const darkOnContainerTone = DynamicColor.foregroundTone(darkContainerTone, 4.5);
+
 
         // Generate light mode group
         const lightColor = palette.tone(lightTone);
         const lightContainer = palette.tone(lightContainerTone);
         const lightGroup = {
             color: lightColor,
-            onColor: DynamicColor.foregroundTone(lightTone, 4.5), // Contrast against lightColor
+            onColor: palette.tone(lightOnTone),
             colorContainer: lightContainer,
-            onColorContainer: palette.tone(lightOnContainerTone) // Use fixed tone for simplicity
-            // More robust: DynamicColor.foregroundTone(lightContainerTone, 4.5),
+            onColorContainer: palette.tone(lightOnContainerTone)
         };
 
         // Generate dark mode group
@@ -3974,10 +4145,9 @@ function processCustomColors(theme, customColorDefs) {
         const darkContainer = palette.tone(darkContainerTone);
         const darkGroup = {
             color: darkColor,
-            onColor: DynamicColor.foregroundTone(darkTone, 4.5), // Contrast against darkColor
+            onColor: palette.tone(darkOnTone),
             colorContainer: darkContainer,
-            onColorContainer: palette.tone(darkOnContainerTone) // Use fixed tone
-            // More robust: DynamicColor.foregroundTone(darkContainerTone, 4.5),
+            onColorContainer: palette.tone(darkOnContainerTone)
         };
 
         return {
@@ -4001,12 +4171,12 @@ function processCustomColors(theme, customColorDefs) {
  */
 function applyTheme(theme, options = {}) {
     const isDark = options.dark || false;
-    const target = options.target || document.body;
+    const target = options.target || (typeof document !== 'undefined' ? document.body : null); // Safe access to document
     const brightnessSuffix = options.brightnessSuffix || false;
     const exportPaletteTones = options.paletteTones || false;
 
     if (!target || !target.style) {
-        console.error("applyTheme: Invalid target element provided.");
+        console.error("applyTheme: Invalid target element provided or document unavailable.");
         return;
     }
 
@@ -4018,22 +4188,32 @@ function applyTheme(theme, options = {}) {
         // Check if the property is a DynamicColor instance
         if (MaterialDynamicColors[key] instanceof DynamicColor) {
             const dynamicColor = MaterialDynamicColors[key];
-            const value = hexUtils.hexFromArgb(dynamicColor.getArgb(scheme));
-            // Convert camelCase or underscore_case key to kebab-case CSS variable
-            const varName = `--md-sys-color-${key.replace(/_/g, '-').replace(/([A-Z])/g, '-$1').toLowerCase()}${suffix}`;
-            target.style.setProperty(varName, value);
+            try {
+                const value = hexUtils.hexFromArgb(dynamicColor.getArgb(scheme));
+                // Convert camelCase or underscore_case key to kebab-case CSS variable
+                const varName = `--md-sys-color-${key.replace(/_/g, '-').replace(/([A-Z])/g, '-$1').toLowerCase()}${suffix}`;
+                target.style.setProperty(varName, value);
+            } catch (error) {
+                console.error(`Error applying color role ${key}:`, error);
+                // Optionally skip this variable or set a fallback
+            }
         }
     }
 
     // Apply custom colors
     theme.customColors.forEach(group => {
-        const colorGroup = isDark ? group.dark : group.light;
-        const name = group.color.name.replace(/_/g, '-').replace(/([A-Z])/g, '-$1').toLowerCase(); // Kebab-case name
+        try {
+            const colorGroup = isDark ? group.dark : group.light;
+            // Ensure name is safe for CSS variable
+            const name = group.color.name.replace(/[^a-zA-Z0-9_-]/g, '-').toLowerCase(); // Kebab-case name
 
-        target.style.setProperty(`--md-custom-color-${name}${suffix}`, hexUtils.hexFromArgb(colorGroup.color));
-        target.style.setProperty(`--md-custom-color-on-${name}${suffix}`, hexUtils.hexFromArgb(colorGroup.onColor));
-        target.style.setProperty(`--md-custom-color-${name}-container${suffix}`, hexUtils.hexFromArgb(colorGroup.colorContainer));
-        target.style.setProperty(`--md-custom-color-on-${name}-container${suffix}`, hexUtils.hexFromArgb(colorGroup.onColorContainer));
+            target.style.setProperty(`--md-custom-color-${name}${suffix}`, hexUtils.hexFromArgb(colorGroup.color));
+            target.style.setProperty(`--md-custom-color-on-${name}${suffix}`, hexUtils.hexFromArgb(colorGroup.onColor));
+            target.style.setProperty(`--md-custom-color-${name}-container${suffix}`, hexUtils.hexFromArgb(colorGroup.colorContainer));
+            target.style.setProperty(`--md-custom-color-on-${name}-container${suffix}`, hexUtils.hexFromArgb(colorGroup.onColorContainer));
+        } catch (error) {
+            console.error(`Error applying custom color ${group.color.name}:`, error);
+        }
     });
 
     // Optionally export palette tones
@@ -4043,12 +4223,68 @@ function applyTheme(theme, options = {}) {
         for (const paletteKey in palettes) {
             const palette = palettes[paletteKey];
             if (palette instanceof TonalPalette) {
-                tones.forEach(tone => {
-                    const value = hexUtils.hexFromArgb(palette.tone(tone));
-                    const varName = `--md-ref-palette-${paletteKey}-tone${tone}${suffix}`;
-                    target.style.setProperty(varName, value);
-                });
+                try {
+                    tones.forEach(tone => {
+                        const value = hexUtils.hexFromArgb(palette.tone(tone));
+                        const varName = `--md-ref-palette-${paletteKey}-tone${tone}${suffix}`;
+                        target.style.setProperty(varName, value);
+                    });
+                } catch (error) {
+                    console.error(`Error applying palette tones for ${paletteKey}:`, error);
+                }
             }
         }
     }
 }
+
+export {
+    // Core Utilities
+    mathUtils,
+    hexUtils,
+    colorUtils,
+
+    // Color Representation
+    ViewingConditions,
+    Cam16,
+    Hct,
+    HctSolver, // Note: HctSolver is often internal, but needed for tests if they use it directly
+
+    // Contrast Calculation
+    ContrastCurve,
+    Contrast,
+
+    // Palettes
+    TonalPalette,
+    KeyColor, // Note: KeyColor is often internal, but needed for tests if they use it directly
+    CorePalette,
+    CorePalettes,
+
+    // Dynamic Scheme
+    DynamicScheme,
+    isMonochrome,
+    isFidelity,
+
+    // Color Quantization
+    QuantizerCelebi,
+    QuantizerWsmeans,
+    // DistanceAndIndexWsmeans, // Usually internal helper
+    LabPointProvider,      // Often internal, but test might use it
+    QuantizerMap,
+    QuantizerWu,
+    // BoxWu,                 // Usually internal helper
+    // WuDirections,          // Usually internal helper
+
+    // Theme Generation
+    // ToneDeltaPair,         // Usually internal helper
+    DynamicColor,
+    MaterialDynamicColors,
+    Blend,
+    Score,
+    themeFromSourceColor,
+    themeFromColors,        // Added export
+    dynamicSchemesFromSourceColor,
+    extractColorsFromImage,
+    themeFromImage,
+    applyTheme,
+    processCustomColors     // Often internal, but needed for tests if they use it directly
+};
