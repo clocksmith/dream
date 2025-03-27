@@ -88,9 +88,10 @@ const hctColor = dream.Hct.fromInt(sourceColorArgb);
 hctColor.tone = 80; // Make it lighter
 const lighterArgb = hctColor.toInt();
 console.log('Lighter Blue:', dream.hexUtils.hexFromArgb(lighterArgb));
-```
+
 
 Explore the `main.js` file and the included demo functions for more detailed examples of using palettes, contrast calculation, color extraction, and blending.
+```
 
 ## Acknowledgement
 
@@ -103,4 +104,107 @@ The original `material-color-utilities` project is licensed under the Apache Lic
 ## License
 
 **dream** is distributed under the **MIT License**. See the `LICENSE` file for details. This allows for more permissive use and integration compared to the original Apache 2.0 license.
+
+
+## TypeScript Build Workflows: Base, JSDoc, API Preserved, Minified
+
+This guide outlines the command-line steps to build your TypeScript project in four different ways: a base transpile, transpiled to JavaScript with JSDoc, minified JavaScript with preserved API names, and fully minified JavaScript.
+
+### Prerequisites
+
+1.  **Node.js & npm/yarn:** Ensure you have Node.js installed.
+2.  **Install Dependencies:** Run this command in your project's root directory:
+    ```bash
+    npm install --save-dev typescript terser tslib
+    # or
+    yarn add --dev typescript terser tslib
+    ```
+3.  **`tsconfig` Files:** Make sure you have the following files configured in your project root (adjust `exclude` arrays as needed per your project structure):
+    *   `tsconfig.json` (Base configuration)
+    *   `tsconfig.jsdoc.json` (Extends base, for JSDoc conversion - **Note:** Assumes tests are *included* as requested)
+    *   `tsconfig.api.json` (Extends base, for API preservation prep)
+    *   `tsconfig.minify.json` (Extends base, for full minification prep)
+
+---
+
+### Build 1: Base Transpiled Output
+
+This process uses the base `tsconfig.json` to transpile TypeScript to JavaScript, typically including declaration files and source maps, without any minification by `tsc` itself.
+
+```bash
+# 1. Transpile TS to JS using the base configuration
+npx tsc -p tsconfig.json
 ```
+
+*   **Final Output (Build 1):** Standard JavaScript files, `.d.ts` declaration files, and source maps located in `./dist/base/` (or as configured in `tsconfig.json`'s `outDir`).
+
+---
+
+### Build 2: JSDoc Converted Output (Including Tests)
+
+This process uses `tsc` with `tsconfig.jsdoc.json` to transpile your TypeScript code (including test files, as requested) into standard JavaScript, adding JSDoc comments based on your original TypeScript type annotations.
+
+```bash
+# 1. Transpile TS directly to JS with JSDoc annotations (using tsconfig.jsdoc.json)
+npx tsc -p tsconfig.jsdoc.json
+```
+
+*   **Final Output (Build 2):** JavaScript files (including transpiled tests) with JSDoc type annotations located in `./dist/jsdoc/`. Note that `.d.ts` files might also be generated; you can typically ignore or delete these if your goal is solely the JSDoc-annotated JavaScript.
+
+---
+
+### Build 3: API Preserved Minified Output
+
+This process transpiles TypeScript to JavaScript and generates declaration (`.d.ts`) files. Terser is then used to minify the JavaScript while attempting to preserve the names of your public API (classes, functions, constants, etc.). Declaration files are copied separately.
+
+```bash
+# 1. Transpile TS to JS + .d.ts (intermediate step using tsconfig.api.json)
+npx tsc -p tsconfig.api.json
+
+# 2. Minify JS, preserving key API names (IMPORTANT: customize 'reserved' list)
+npx terser ./dist/api-temp/**/*.js \
+  --compress \
+  --mangle reserved=['MyClass','myFunction','MY_CONST'] \
+  --source-map "content=inline,url=output.api.min.js.map" \
+  -o ./dist/api/output.api.min.js
+  # Consider adding Terser options like --keep-classnames and --keep-fnames if needed for your API
+
+# 3. Copy declaration files (.d.ts, .d.ts.map) to the final API directory
+# Example for Linux/macOS (preserves directory structure):
+find ./dist/api-temp -name '*.d.ts' -exec cp --parents {} ./dist/api/ \;
+find ./dist/api-temp -name '*.d.ts.map' -exec cp --parents {} ./dist/api/ \;
+
+# Example for Windows (PowerShell - preserves directory structure):
+# Get-ChildItem -Path ./dist/api-temp -Recurse -Filter *.d.ts | Copy-Item -Destination ./dist/api -Container
+# Get-ChildItem -Path ./dist/api-temp -Recurse -Filter *.d.ts.map | Copy-Item -Destination ./dist/api -Container
+
+# 4. (Optional) Clean up intermediate files
+# rm -rf ./dist/api-temp
+```
+
+*   **Final Output (Build 3):** Minified JavaScript with preserved API names in `./dist/api/output.api.min.js`, along with corresponding `.d.ts` declaration files and source maps in the `./dist/api/` directory structure.
+
+---
+
+### Build 4: Fully Minified Output
+
+This process transpiles TypeScript to an intermediate JavaScript format and then uses Terser to fully minify it (including renaming variables, removing whitespace, dead code elimination, etc.).
+
+```bash
+# 1. Transpile TS to JS (intermediate step using tsconfig.minify.json)
+npx tsc -p tsconfig.minify.json
+
+# 2. Minify the JS output using Terser (full compression and mangling)
+npx terser ./dist/minified-temp/**/*.js \
+  --compress \
+  --mangle \
+  --source-map "content=inline,url=output.min.js.map" \
+  -o ./dist/minified/output.min.js
+
+# 3. (Optional) Clean up intermediate files
+# rm -rf ./dist/minified-temp
+```
+
+*   **Final Output (Build 4):** Fully minified JavaScript in `./dist/minified/output.min.js` and its source map (`output.min.js.map`).
+
+---

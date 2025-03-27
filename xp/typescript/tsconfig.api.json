@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist/api-temp",
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "removeComments": false
+    },
+    "exclude": [
+        "**/*_test.ts",
+        "node_modules",
+        "dist"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist/minified-temp",
+        "declaration": false,
+        "sourceMap": true,
+        "removeComments": false
+    },
+    "exclude": [
+        "**/*_test.ts",
+        "node_modules",
+        "dist"
+    ]
+}

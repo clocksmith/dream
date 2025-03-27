@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Color Theme Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-bottom: 0.8em;
+            color: #1a73e8;
+        }
+
+        h2 {
+            margin-top: 1em;
+        }
+
+        h3 {
+            margin-top: 0.5em;
+            font-size: 1.1em;
+            color: #5f6368;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        code {
+            background-color: #e8eaed;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .input-section fieldset {
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-section legend {
+            font-weight: bold;
+            padding: 0 5px;
+            color: #5f6368;
+        }
+
+        .mode-selection div {
+            margin-bottom: 5px;
+        }
+
+        .mode-selection label {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #5f6368;
+        }
+
+        .input-group input[type="color"],
+        .input-group input[type="text"],
+        .input-group input[type="number"],
+        .input-group select {
+            padding: 8px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .input-group input[type="color"] {
+            width: 50px;
+            height: 38px;
+            padding: 2px;
+            vertical-align: middle;
+        }
+
+        .input-group .color-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .input-group .color-input-row label {
+            width: 80px;
+            margin-bottom: 0;
+            text-align: right;
+            font-size: 0.9em;
+        }
+
+        #drop-area {
+            border: 2px dashed #dadce0;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #drop-area.drag-over {
+            background-color: #e8f0fe;
+            border-color: #1a73e8;
+        }
+
+        #drop-area p {
+            margin: 0;
+            color: #5f6368;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+
+        .image-options {
+            margin-top: 10px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .image-options label {
+            font-size: 0.9em;
+        }
+
+        .image-options input {
+            max-width: 80px;
+        }
+
+        #custom-color-list .custom-color-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        #custom-color-list label {
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        #custom-color-list input[type="text"] {
+            flex-grow: 1;
+            min-width: 80px;
+        }
+
+        #custom-color-list input[type="checkbox"] {
+            margin-left: 5px;
+        }
+
+        #custom-color-list button {
+            padding: 2px 6px;
+            font-size: 0.8em;
+            background-color: #fce8e6;
+            border: 1px solid #f4c7c3;
+            color: #d93025;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #add-custom-color-button {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1765cc;
+        }
+
+        #generate-button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .output-section {
+            min-height: 300px;
+        }
+
+        .output-section .placeholder {
+            color: #999;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .color-group {
+            margin-bottom: 25px;
+        }
+
+        .color-group h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .swatch-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .swatch {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 5px;
+            font-size: 0.8em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .swatch span {
+            display: block;
+            line-height: 1.2;
+        }
+
+        .swatch .swatch-name {
+            font-weight: bold;
+        }
+
+        .swatch .swatch-hex {
+            font-family: monospace;
+        }
+
+        #seed-colors-display .swatch {
+            width: 60px;
+            height: 60px;
+            font-size: 0.7em;
+        }
+
+        .palette-section {
+            margin-bottom: 15px;
+        }
+
+        .palette-section h4 {
+            font-size: 1em;
+            margin-bottom: 8px;
+            color: #3c4043;
+        }
+
+        .scheme-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .custom-color-group-display {
+            border-left: 3px solid #eee;
+            padding-left: 15px;
+            margin-left: 5px;
+        }
+
+        .custom-color-group-display .scheme-pair {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error {
+            color: #d93025;
+            background-color: #fce8e6;
+            border: 1px solid #f4c7c3;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        #loading-indicator {
+            text-align: center;
+            padding: 10px;
+            color: #5f6368;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .swatch {
+                width: 80px;
+                height: 80px;
+            }
+
+            #seed-colors-display .swatch {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Material Color Theme Generator</h1>
+        <p>Test palette generation using the functions in <code>cats.js</code>.</p>
+
+        <div class="main-layout">
+            <div class="input-section card">
+                <h2>Configuration</h2>
+
+                <fieldset class="mode-selection">
+                    <legend>Select Input Mode:</legend>
+                    <div>
+                        <input type="radio" id="mode3" name="generationMode" value="mode3" checked>
+                        <label for="mode3">Single Source Color (No Custom)</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="mode4" name="generationMode" value="mode4">
+                        <label for="mode4">Single Source Color (With Custom)</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="mode1" name="generationMode" value="mode1">
+                        <label for="mode1">Multiple Source Colors (No Custom)</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="mode2" name="generationMode" value="mode2">
+                        <label for="mode2">Multiple Source Colors (With Custom)</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle">
+                        <label for="modeImageSingle">Image (Single Dominant Color)</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti">
+                        <label for="modeImageMulti">Image (Multiple Source Colors)</label>
+                    </div>
+                </fieldset>
+
+                <div id="image-input-area" class="input-group hidden">
+                    <label>Upload or Drop Image:</label>
+                    <div id="drop-area">
+                        <p>Drag & Drop image here or click to select</p>
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                        <img id="image-preview" src="#" alt="Image Preview" class="hidden" />
+                    </div>
+                    <div class="image-options hidden" id="image-multi-options">
+                        <label for="numSources">Max Colors to Extract:</label>
+                        <input type="number" id="numSources" value="5" min="1" max="20">
+                        <label for="extractQuality">Extraction Quality (1=High, 10=Low):</label>
+                        <input type="number" id="extractQuality" value="10" min="1" max="50">
+                    </div>
+                </div>
+
+                <div id="source-color-area" class="input-group">
+                    <label id="source-color-label">Source Color:</label>
+                    <div id="source-color-inputs">
+                    </div>
+                </div>
+
+                <div id="custom-color-area" class="input-group hidden">
+                    <label>Custom Colors:</label>
+                    <div id="custom-color-list">
+                    </div>
+                    <button type="button" id="add-custom-color-button">Add Custom Color</button>
+                </div>
+
+                <div id="multi-source-options" class="input-group hidden">
+                    <label for="harmonyStrategy">Harmony Strategy:</label>
+                    <select id="harmonyStrategy">
+                        <option value="direct" selected>Direct (Use sources as is)</option>
+                        <option value="harmonized">Harmonized (Blend with Primary)</option>
+                    </select>
+                </div>
+
+
+                <button type="button" id="generate-button">Generate Theme</button>
+                <div id="loading-indicator" class="hidden">Generating...</div>
+                <div id="error-message" class="error hidden"></div>
+            </div>
+
+            <div class="output-section card">
+                <h2>Generated Theme</h2>
+
+                <div id="seed-colors-display" class="color-group">
+                    <h3>Seed Color(s)</h3>
+                    <div class="swatch-container">
+                    </div>
+                </div>
+
+                <div id="palette-display">
+                    <p class="placeholder">Generate a theme to see palettes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dream.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modeRadios = document.querySelectorAll('input[name="generationMode"]');
+            const imageInputArea = document.getElementById('image-input-area');
+            const dropArea = document.getElementById('drop-area');
+            const imageInput = document.getElementById('image-input');
+            const imagePreview = document.getElementById('image-preview');
+            const imageMultiOptions = document.getElementById('image-multi-options');
+            const sourceColorArea = document.getElementById('source-color-area');
+            const sourceColorLabel = document.getElementById('source-color-label');
+            const sourceColorInputsContainer = document.getElementById('source-color-inputs');
+            const customColorArea = document.getElementById('custom-color-area');
+            const customColorList = document.getElementById('custom-color-list');
+            const addCustomColorButton = document.getElementById('add-custom-color-button');
+            const multiSourceOptionsArea = document.getElementById('multi-source-options');
+            const harmonyStrategySelect = document.getElementById('harmonyStrategy');
+            const generateButton = document.getElementById('generate-button');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const errorMessageDiv = document.getElementById('error-message');
+            const seedColorsDisplay = document.getElementById('seed-colors-display').querySelector('.swatch-container');
+            const paletteDisplay = document.getElementById('palette-display');
+            const numSourcesInput = document.getElementById('numSources');
+            const extractQualityInput = document.getElementById('extractQuality');
+
+            let currentImageFile = null;
+            let currentMode = 'mode3';
+
+            function hexToArgbInt(hex) {
+                if (!hex) return 0;
+                hex = hex.replace('#', '');
+                if (hex.length === 3) {
+                    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                }
+                if (hex.length !== 6) return 0;
+                const argbHex = `ff${hex}`;
+                return parseInt(argbHex, 16);
+            }
+
+            function argbIntToHex(argb) {
+                if (typeof argb !== 'number' || isNaN(argb)) return '#000000';
+                const r = (argb >> 16) & 0xff;
+                const g = (argb >> 8) & 0xff;
+                const b = argb & 0xff;
+                const validR = Math.max(0, Math.min(255, r));
+                const validG = Math.max(0, Math.min(255, g));
+                const validB = Math.max(0, Math.min(255, b));
+                return `#${[validR, validG, validB].map(c => c.toString(16).padStart(2, '0')).join('')}`;
+            }
+
+            function getContrastColor(hexColor) {
+                if (!hexColor) return '#000000';
+                hexColor = hexColor.replace('#', '');
+                if (hexColor.length === 3) {
+                    hexColor = hexColor[0] + hexColor[0] + hexColor[1] + hexColor[1] + hexColor[2] + hexColor[2];
+                }
+                if (hexColor.length !== 6) return '#000000';
+                const r = parseInt(hexColor.substring(0, 2), 16);
+                const g = parseInt(hexColor.substring(2, 4), 16);
+                const b = parseInt(hexColor.substring(4, 6), 16);
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                return luminance > 0.5 ? '#000000' : '#ffffff';
+            }
+
+            function createSwatchHtml(name, colorInt) {
+                const hex = argbIntToHex(colorInt);
+                const contrastColor = getContrastColor(hex);
+                const safeName = name.replace(/</g, "<").replace(/>/g, ">");
+                return `
+                    <div class="swatch" style="background-color: ${hex}; color: ${contrastColor};">
+                        <span class="swatch-name">${safeName}</span>
+                        <span class="swatch-hex">${hex}</span>
+                    </div>
+                `;
+            }
+
+            function displayTheme(theme) {
+                paletteDisplay.innerHTML = '';
+                if (!theme || !theme.palettes || !theme.schemes) {
+                    paletteDisplay.innerHTML = '<p class="placeholder error">Invalid theme object received.</p>';
+                    return;
+                }
+
+                for (const [paletteKey, tonalPalette] of Object.entries(theme.palettes)) {
+                    if (!tonalPalette) continue;
+
+                    const section = document.createElement('div');
+                    section.classList.add('palette-section', 'color-group');
+                    const sectionTitle = paletteKey.charAt(0).toUpperCase() + paletteKey.slice(1);
+                    section.innerHTML = `<h4>${sectionTitle} Palette</h4>`;
+
+                    const swatchesContainer = document.createElement('div');
+                    swatchesContainer.classList.add('scheme-swatches');
+
+                    const capPaletteKey = paletteKey.charAt(0).toUpperCase() + paletteKey.slice(1);
+                    const lightColor = theme.schemes.light?.[paletteKey];
+                    const onLightColor = theme.schemes.light?.[`on${capPaletteKey}`];
+                    const lightContainer = theme.schemes.light?.[`${paletteKey}Container`];
+                    const onLightContainer = theme.schemes.light?.[`on${capPaletteKey}Container`];
+
+                    const darkColor = theme.schemes.dark?.[paletteKey];
+                    const onDarkColor = theme.schemes.dark?.[`on${capPaletteKey}`];
+                    const darkContainer = theme.schemes.dark?.[`${paletteKey}Container`];
+                    const onDarkContainer = theme.schemes.dark?.[`on${capPaletteKey}Container`];
+
+                    if (typeof lightColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} (L)`, lightColor);
+                    if (typeof onLightColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} (L)`, onLightColor);
+                    if (typeof lightContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} Cont. (L)`, lightContainer);
+                    if (typeof onLightContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} Cont. (L)`, onLightContainer);
+
+                    if (typeof darkColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} (D)`, darkColor);
+                    if (typeof onDarkColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} (D)`, onDarkColor);
+                    if (typeof darkContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} Cont. (D)`, darkContainer);
+                    if (typeof onDarkContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} Cont. (D)`, onDarkContainer);
+
+                    section.appendChild(swatchesContainer);
+                    paletteDisplay.appendChild(section);
+                }
+
+                if (theme.customColors && theme.customColors.length > 0) {
+                    const customSection = document.createElement('div');
+                    customSection.classList.add('palette-section', 'color-group');
+                    customSection.innerHTML = `<h4>Custom Colors</h4>`;
+
+                    theme.customColors.forEach(group => {
+                        if (!group || !group.color || !group.light || !group.dark) return;
+
+                        const groupDiv = document.createElement('div');
+                        groupDiv.classList.add('custom-color-group-display');
+                        const safeGroupName = (group.color.name || 'Unnamed').replace(/</g, "<").replace(/>/g, ">");
+                        groupDiv.innerHTML = `<h5>${safeGroupName} (Seed: ${argbIntToHex(group.color.value)}, Harmonized: ${argbIntToHex(group.value)})</h5>`;
+
+                        const pairDiv = document.createElement('div');
+                        pairDiv.classList.add('scheme-pair');
+
+                        if (typeof group.light.color === 'number') pairDiv.innerHTML += createSwatchHtml(`Color (L)`, group.light.color);
+                        if (typeof group.light.onColor === 'number') pairDiv.innerHTML += createSwatchHtml(`On Color (L)`, group.light.onColor);
+                        if (typeof group.light.colorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`Container (L)`, group.light.colorContainer);
+                        if (typeof group.light.onColorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`On Container (L)`, group.light.onColorContainer);
+
+                        if (typeof group.dark.color === 'number') pairDiv.innerHTML += createSwatchHtml(`Color (D)`, group.dark.color);
+                        if (typeof group.dark.onColor === 'number') pairDiv.innerHTML += createSwatchHtml(`On Color (D)`, group.dark.onColor);
+                        if (typeof group.dark.colorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`Container (D)`, group.dark.colorContainer);
+                        if (typeof group.dark.onColorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`On Container (D)`, group.dark.onColorContainer);
+
+                        groupDiv.appendChild(pairDiv);
+                        customSection.appendChild(groupDiv);
+                    });
+                    paletteDisplay.appendChild(customSection);
+                }
+            }
+
+            function updateInputUI(mode) {
+                currentMode = mode;
+                sourceColorInputsContainer.innerHTML = '';
+
+                imageInputArea.classList.add('hidden');
+                imageMultiOptions.classList.add('hidden');
+                sourceColorArea.classList.add('hidden');
+                customColorArea.classList.add('hidden');
+                multiSourceOptionsArea.classList.add('hidden');
+                currentImageFile = null;
+                imagePreview.classList.add('hidden');
+                imagePreview.src = '#';
+
+                if (mode === 'mode3' || mode === 'mode4') {
+                    sourceColorArea.classList.remove('hidden');
+                    sourceColorLabel.textContent = 'Source Color:';
+                    addSourceColorInput(0);
+                    if (mode === 'mode4') {
+                        customColorArea.classList.remove('hidden');
+                    }
+                } else if (mode === 'mode1' || mode === 'mode2') {
+                    sourceColorArea.classList.remove('hidden');
+                    sourceColorLabel.textContent = 'Source Colors:';
+                    addSourceColorInput(0, 'Primary');
+                    addSourceColorInput(1, 'Secondary');
+                    addSourceColorInput(2, 'Tertiary');
+                    multiSourceOptionsArea.classList.remove('hidden');
+                    if (mode === 'mode2') {
+                        customColorArea.classList.remove('hidden');
+                    }
+                } else if (mode === 'modeImageSingle' || mode === 'modeImageMulti') {
+                    imageInputArea.classList.remove('hidden');
+                    if (mode === 'modeImageMulti') {
+                        imageMultiOptions.classList.remove('hidden');
+                        multiSourceOptionsArea.classList.remove('hidden');
+                    }
+                    customColorArea.classList.remove('hidden');
+                }
+
+                if (customColorArea.classList.contains('hidden')) {
+                    customColorList.innerHTML = '';
+                } else if (customColorList.children.length === 0) {
+                    addCustomColorRow();
+                }
+            }
+
+            function addSourceColorInput(index, label = '') {
+                const row = document.createElement('div');
+                row.classList.add('color-input-row');
+                const inputId = `source-color-${index}`;
+                const defaultColors = ['#1a73e8', '#1e8e3e', '#d93025'];
+                const safeLabel = label.replace(/</g, "<").replace(/>/g, ">");
+
+                row.innerHTML = `
+                    ${label ? `<label for="${inputId}">${safeLabel}:</label>` : ''}
+                    <input type="color" id="${inputId}" name="${inputId}" value="${defaultColors[index] || '#808080'}">
+                `;
+                sourceColorInputsContainer.appendChild(row);
+            }
+
+            function addCustomColorRow() {
+                const index = Date.now();
+                const row = document.createElement('div');
+                row.classList.add('custom-color-row');
+                row.dataset.id = index;
+                row.innerHTML = `
+                    <label for="custom-name-${index}">Name:</label>
+                    <input type="text" id="custom-name-${index}" placeholder="e.g., Brand" value="custom${customColorList.children.length + 1}">
+                    <label for="custom-value-${index}">Value:</label>
+                    <input type="color" id="custom-value-${index}" value="#ff8c00">
+                    <label for="custom-blend-${index}">Blend:</label>
+                    <input type="checkbox" id="custom-blend-${index}" checked>
+                    <button type="button" class="remove-custom-color" data-id="${index}" title="Remove Custom Color">X</button>
+                `;
+                customColorList.appendChild(row);
+
+                row.querySelector('.remove-custom-color').addEventListener('click', (e) => {
+                    const rowId = e.target.dataset.id;
+                    const rowToRemove = customColorList.querySelector(`.custom-color-row[data-id="${rowId}"]`);
+                    if (rowToRemove) {
+                        rowToRemove.remove();
+                    }
+                });
+            }
+
+            function handleImageFile(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    showError('Please select a valid image file.');
+                    return;
+                }
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                reader.onerror = () => {
+                    showError('Failed to read image file.');
+                    imagePreview.classList.add('hidden');
+                    currentImageFile = null;
+                }
+                reader.readAsDataURL(file);
+                hideError();
+            }
+
+            function showError(message) {
+                errorMessageDiv.textContent = message;
+                errorMessageDiv.classList.remove('hidden');
+            }
+
+            function hideError() {
+                errorMessageDiv.classList.add('hidden');
+                errorMessageDiv.textContent = '';
+            }
+
+            modeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    updateInputUI(e.target.value);
+                });
+            });
+
+            dropArea.addEventListener('click', () => imageInput.click());
+            dropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropArea.classList.add('drag-over');
+            });
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.classList.remove('drag-over');
+            });
+            dropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropArea.classList.remove('drag-over');
+                if (e.dataTransfer.files.length) {
+                    handleImageFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            imageInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleImageFile(e.target.files[0]);
+                }
+            });
+
+            addCustomColorButton.addEventListener('click', addCustomColorRow);
+
+            generateButton.addEventListener('click', async () => {
+
+                loadingIndicator.classList.remove('hidden');
+                paletteDisplay.innerHTML = '<p class="placeholder">Generating...</p>';
+                seedColorsDisplay.innerHTML = '';
+                hideError();
+
+                try {
+                    let theme;
+                    let seeds = [];
+                    const customColorData = Array.from(customColorList.children).map(row => {
+                        const id = row.dataset.id;
+                        return {
+                            name: row.querySelector(`#custom-name-${id}`).value || `custom${id}`,
+                            value: hexToArgbInt(row.querySelector(`#custom-value-${id}`).value),
+                            blend: row.querySelector(`#custom-blend-${id}`).checked,
+                        };
+                    });
+
+                    if (currentMode === 'mode3' || currentMode === 'mode4') {
+                        const sourceColor = hexToArgbInt(document.getElementById('source-color-0').value);
+                        seeds = [sourceColor];
+                        theme = themeFromSourceColor(sourceColor, currentMode === 'mode4' ? customColorData : []);
+                    }
+                    else if (currentMode === 'mode1' || currentMode === 'mode2') {
+                        const sourceColors = [
+                            hexToArgbInt(document.getElementById('source-color-0').value),
+                            hexToArgbInt(document.getElementById('source-color-1').value),
+                            hexToArgbInt(document.getElementById('source-color-2').value),
+                        ];
+                        seeds = sourceColors;
+                        const options = {
+                            harmonyStrategy: harmonyStrategySelect.value,
+                            customColors: currentMode === 'mode2' ? customColorData : [],
+                        };
+                        theme = themeFromSourceColors(sourceColors, options);
+                    }
+                    else if (currentMode === 'modeImageSingle' || currentMode === 'modeImageMulti') {
+                        if (!imagePreview.src || imagePreview.src.startsWith('#') || imagePreview.src === '') {
+                            throw new Error("Please select an image first.");
+                        }
+                        const imgElement = new Image();
+                        imgElement.src = imagePreview.src;
+                        await new Promise((resolve, reject) => {
+                            imgElement.onload = resolve;
+                            imgElement.onerror = (err) => reject(new Error(`Image failed to load for processing: ${err.type || 'Unknown error'}`));
+                            if (imgElement.complete && imgElement.naturalWidth) resolve();
+                        });
+
+                        if (currentMode === 'modeImageSingle') {
+                            const source = await sourceColorFromImage(imgElement);
+                            if (source === undefined || source === null) throw new Error("Could not extract dominant color from image.");
+                            seeds = [source];
+                            theme = themeFromSourceColor(source, customColorData);
+                        } else {
+                            const options = {
+                                numSources: parseInt(numSourcesInput.value, 10) || 5,
+                                extractQuality: parseInt(extractQualityInput.value, 10) || 10,
+                                harmonyStrategy: harmonyStrategySelect.value,
+                                customColors: customColorData,
+                            };
+                            theme = await themeFromImageUsingSources(imgElement, options);
+
+                            try {
+                                seeds = await sourceColorsFromImage(imgElement, options.numSources, options.extractQuality);
+                            } catch (seedError) {
+                                console.warn("Could not re-extract seed colors for display:", seedError);
+                                if (theme && theme.source) seeds = [theme.source];
+                            }
+                        }
+                    }
+                    else {
+                        throw new Error('Invalid mode selected.');
+                    }
+
+                    if (theme) {
+                        if (seeds && seeds.length > 0) {
+                            seeds.forEach((seedInt, index) => {
+                                seedColorsDisplay.innerHTML += createSwatchHtml(`Seed ${index + 1}`, seedInt);
+                            });
+                        } else if (theme.source) {
+                            seedColorsDisplay.innerHTML += createSwatchHtml(`Source`, theme.source);
+                        }
+                        displayTheme(theme);
+                    } else {
+                        showError('Theme generation failed for unknown reasons.');
+                        paletteDisplay.innerHTML = '<p class="placeholder error">Theme generation failed.</p>';
+                    }
+
+                } catch (error) {
+                    // Make sure error and error.message exist before trying to display
+                    const errorMessage = error && error.message ? error.message : 'An unknown error occurred.';
+                    console.error('Theme Generation Error:', error);
+                    showError(`Error: ${errorMessage}`);
+                    paletteDisplay.innerHTML = '<p class="placeholder error">An error occurred.</p>';
+                } finally {
+                    loadingIndicator.classList.add('hidden');
+                }
+            });
+
+            updateInputUI(currentMode);
+        });
+    </script>
+</body>
+
+</html>

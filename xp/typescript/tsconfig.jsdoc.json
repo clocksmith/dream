@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist/jsdoc",
+        "declaration": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "declarationMap": false,
+        "emitDeclarationOnly": false
+    },
+    "exclude": [
+        // do not exclude tests.
+        "node_modules",
+        "dist"
+    ]
+}
