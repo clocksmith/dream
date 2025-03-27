@@ -5,143 +5,454 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Color Theme Generator</title>
+
+    <!-- Add Material Icons font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style>
+        /* Reset and Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        :root {
+            /* Default Fallback Theme (Material Baseline Purple) */
+            --md-sys-color-primary-light: #6750A4;
+            --md-sys-color-on-primary-light: #FFFFFF;
+            --md-sys-color-primary-container-light: #EADDFF;
+            --md-sys-color-on-primary-container-light: #21005D;
+            --md-sys-color-secondary-light: #625B71;
+            --md-sys-color-on-secondary-light: #FFFFFF;
+            --md-sys-color-secondary-container-light: #E8DEF8;
+            --md-sys-color-on-secondary-container-light: #1D192B;
+            --md-sys-color-tertiary-light: #7D5260;
+            --md-sys-color-on-tertiary-light: #FFFFFF;
+            --md-sys-color-tertiary-container-light: #FFD8E4;
+            --md-sys-color-on-tertiary-container-light: #31111D;
+            --md-sys-color-error-light: #B3261E;
+            --md-sys-color-on-error-light: #FFFFFF;
+            --md-sys-color-error-container-light: #F9DEDC;
+            --md-sys-color-on-error-container-light: #410E0B;
+            --md-sys-color-background-light: #FFFBFE;
+            --md-sys-color-on-background-light: #1C1B1F;
+            --md-sys-color-surface-light: #FFFBFE;
+            --md-sys-color-on-surface-light: #1C1B1F;
+            --md-sys-color-surface-variant-light: #E7E0EC;
+            --md-sys-color-on-surface-variant-light: #49454F;
+            --md-sys-color-outline-light: #79747E;
+            --md-sys-color-outline-variant-light: #CAC4D0;
+            --md-sys-color-shadow-light: #000000;
+            --md-sys-color-scrim-light: #000000;
+            --md-sys-color-inverse-surface-light: #313033;
+            --md-sys-color-inverse-on-surface-light: #F4EFF4;
+            --md-sys-color-inverse-primary-light: #D0BCFF;
+            /* Dark Theme Fallbacks */
+            --md-sys-color-primary-dark: #D0BCFF;
+            --md-sys-color-on-primary-dark: #381E72;
+            --md-sys-color-primary-container-dark: #4F378B;
+            --md-sys-color-on-primary-container-dark: #EADDFF;
+            --md-sys-color-secondary-dark: #CCC2DC;
+            --md-sys-color-on-secondary-dark: #332D41;
+            --md-sys-color-secondary-container-dark: #4A4458;
+            --md-sys-color-on-secondary-container-dark: #E8DEF8;
+            --md-sys-color-tertiary-dark: #EFB8C8;
+            --md-sys-color-on-tertiary-dark: #492532;
+            --md-sys-color-tertiary-container-dark: #633B48;
+            --md-sys-color-on-tertiary-container-dark: #FFD8E4;
+            --md-sys-color-error-dark: #F2B8B5;
+            --md-sys-color-on-error-dark: #601410;
+            --md-sys-color-error-container-dark: #8C1D18;
+            --md-sys-color-on-error-container-dark: #F9DEDC;
+            --md-sys-color-background-dark: #1C1B1F;
+            --md-sys-color-on-background-dark: #E6E1E5;
+            --md-sys-color-surface-dark: #1C1B1F;
+            --md-sys-color-on-surface-dark: #E6E1E5;
+            --md-sys-color-surface-variant-dark: #49454F;
+            --md-sys-color-on-surface-variant-dark: #CAC4D0;
+            --md-sys-color-outline-dark: #938F99;
+            --md-sys-color-outline-variant-dark: #49454F;
+            --md-sys-color-shadow-dark: #000000;
+            --md-sys-color-scrim-dark: #000000;
+            --md-sys-color-inverse-surface-dark: #E6E1E5;
+            --md-sys-color-inverse-on-surface-dark: #313033;
+            --md-sys-color-inverse-primary-dark: #6750A4;
+
+            /* Component Shape/Font Defaults (can be overridden by MWC defaults) */
+            --comp-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            --comp-border-radius: 4px;
+        }
+
         body {
-            font-family: sans-serif;
+            font-family: var(--comp-font-family);
             line-height: 1.6;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--md-sys-color-background-light);
+            /* Use MWC var */
+            color: var(--md-sys-color-on-background-light);
+            /* Use MWC var */
             padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Smooth theme switch */
         }
 
+        /* Layout */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-        }
-
-        h1,
-        h2,
-        h3 {
-            margin-bottom: 0.8em;
-            color: #1a73e8;
-        }
-
-        h2 {
-            margin-top: 1em;
-        }
-
-        h3 {
-            margin-top: 0.5em;
-            font-size: 1.1em;
-            color: #5f6368;
-        }
-
-        p {
-            margin-bottom: 1em;
-        }
-
-        code {
-            background-color: #e8eaed;
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-family: monospace;
-        }
-
-        .card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
         }
 
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
+            grid-template-columns: minmax(300px, 1fr) 2fr;
+            gap: 30px;
         }
 
-        .input-section fieldset {
-            border: 1px solid #dadce0;
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: var(--md-sys-color-surface-light);
+            /* Use MWC var */
+            border-radius: 12px;
+            /* Consistent with MWC Card */
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            /* Use MWC var */
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            margin-bottom: 0.8em;
+            color: var(--md-sys-color-on-surface-light);
+            /* Use MWC var */
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            margin-top: 1.5em;
+            font-size: 1.4em;
+        }
+
+        h3 {
+            margin-top: 1em;
+            font-size: 1.15em;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant-light);
+            padding-bottom: 0.4em;
+        }
+
+        h4 {
+            font-size: 1em;
+            margin-bottom: 0.8em;
+            color: var(--md-sys-color-on-surface-variant-light);
+            font-weight: 500;
+        }
+
+        /* Adjusted color */
+        h5 {
+            font-size: 0.95em;
+            margin-bottom: 0.5em;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 1em;
+            color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        /* Adjusted color */
+        code {
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+            color: #111;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Forms & Inputs */
+        fieldset {
+            border: 1px solid var(--md-sys-color-outline-light);
+            /* Use MWC var */
             border-radius: 4px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
         }
 
-        .input-section legend {
-            font-weight: bold;
-            padding: 0 5px;
-            color: #5f6368;
-        }
-
-        .mode-selection div {
-            margin-bottom: 5px;
-        }
-
-        .mode-selection label {
-            margin-left: 5px;
-            cursor: pointer;
+        legend {
+            font-weight: 600;
+            padding: 0 8px;
+            font-size: 0.95em;
+            color: var(--md-sys-color-on-surface-light);
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .input-group label {
+        .input-group label,
+        .checkbox-label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #5f6368;
+            font-weight: 500;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+            color: var(--md-sys-color-on-surface-variant-light);
         }
 
-        .input-group input[type="color"],
         .input-group input[type="text"],
         .input-group input[type="number"],
-        .input-group select {
-            padding: 8px;
-            border: 1px solid #dadce0;
+        .input-group select,
+        .input-group textarea {
+            padding: 10px 12px;
+            border: 1px solid var(--md-sys-color-outline-light);
             border-radius: 4px;
             width: 100%;
             margin-bottom: 5px;
+            background-color: var(--md-sys-color-surface-light);
+            color: var(--md-sys-color-on-surface-light);
+            font-size: 0.95em;
+            transition: border-color 0.2s ease;
+        }
+
+        #text-prompt-input {
+            font-size: 1.05em;
+            padding: 12px;
+            min-height: 80px;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: var(--md-sys-color-primary-light);
+            outline: 1px solid var(--md-sys-color-primary-light);
         }
 
         .input-group input[type="color"] {
-            width: 50px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             padding: 2px;
             vertical-align: middle;
+            border: 1px solid var(--md-sys-color-outline-light);
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #fff;
+            /* Keep white for color picker */
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 3px;
+        }
+
+        input[type="color"]::-moz-color-swatch {
+            border: none;
+            border-radius: 3px;
         }
 
         .input-group .color-input-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .input-group .color-input-row label {
-            width: 80px;
+            width: 70px;
             margin-bottom: 0;
             text-align: right;
-            font-size: 0.9em;
+            font-size: 0.85em;
+            color: var(--md-sys-color-on-surface-variant-light);
         }
 
+        /* Custom Radio/Checkbox Styling */
+        .mode-selection input[type="radio"],
+        input[type="checkbox"].custom-styled {
+            opacity: 0;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+        }
+
+        .mode-selection label,
+        .checkbox-label {
+            margin-left: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            padding-left: 28px;
+            min-height: 20px;
+            user-select: none;
+            color: var(--md-sys-color-on-surface-light);
+        }
+
+        .mode-selection label::before,
+        .checkbox-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--md-sys-color-outline-light);
+            background-color: var(--md-sys-color-surface-light);
+            transition: all 0.2s ease;
+        }
+
+        .mode-selection label:hover::before,
+        .checkbox-label:hover::before {
+            border-color: var(--md-sys-color-primary-light);
+        }
+
+        .mode-selection input[type="radio"]:focus-visible+label::before,
+        input[type="checkbox"].custom-styled:focus-visible+.checkbox-label::before {
+            outline: 2px solid var(--md-sys-color-primary-light);
+            outline-offset: 2px;
+        }
+
+        .mode-selection label::before {
+            border-radius: 50%;
+        }
+
+        .mode-selection input[type="radio"]:checked+label::before {
+            border-color: var(--md-sys-color-primary-light);
+            background-color: var(--md-sys-color-primary-light);
+        }
+
+        .mode-selection input[type="radio"]:checked+label::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-on-primary-light);
+        }
+
+        .checkbox-label::before {
+            border-radius: 3px;
+        }
+
+        input[type="checkbox"].custom-styled:checked+.checkbox-label::before {
+            border-color: var(--md-sys-color-primary-light);
+            background-color: var(--md-sys-color-primary-light);
+        }
+
+        input[type="checkbox"].custom-styled:checked+.checkbox-label::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            width: 3px;
+            height: 8px;
+            border: solid var(--md-sys-color-on-primary-light);
+            border-width: 0 2px 2px 0;
+            transform: translateY(-60%) rotate(45deg);
+        }
+
+        /* Buttons (Non-MWC) */
+        button:not([id^="md-"]) {
+            /* Exclude MWC buttons */
+            padding: 10px 18px;
+            background-color: var(--md-sys-color-primary-light);
+            color: var(--md-sys-color-on-primary-light);
+            border: none;
+            border-radius: 20px;
+            /* MWC style */
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            vertical-align: middle;
+            /* Align with other inputs/elements */
+        }
+
+        button:not([id^="md-"]):hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-light) 90%, black);
+        }
+
+        /* Darken on hover */
+        button:not([id^="md-"]):disabled {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-light) 30%, transparent);
+            color: color-mix(in srgb, var(--md-sys-color-on-surface-light) 50%, transparent);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #generate-button {
+            width: 100%;
+            margin-top: 15px;
+            font-size: 1.1em;
+            justify-content: center;
+        }
+
+        #suggest-colors-button {
+            margin-top: 5px;
+        }
+
+        #generate-components-button {
+            margin-top: 20px;
+            background-color: var(--md-sys-color-secondary-light);
+            color: var(--md-sys-color-on-secondary-light);
+            font-size: 0.95em;
+        }
+
+        #generate-components-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-light) 90%, black);
+        }
+
+        #add-custom-color-button {
+            margin-top: 0px;
+            font-size: 0.9em;
+            padding: 6px 12px;
+            background-color: var(--md-sys-color-secondary-container-light);
+            color: var(--md-sys-color-on-secondary-container-light);
+            border: 1px solid var(--md-sys-color-outline-light);
+        }
+
+        #add-custom-color-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-container-light) 90%, black);
+        }
+
+        /* Image Drop Area */
         #drop-area {
-            border: 2px dashed #dadce0;
+            border: 2px dashed var(--md-sys-color-outline-light);
             border-radius: 4px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             cursor: pointer;
-            background-color: #f8f9fa;
+            background-color: var(--md-sys-color-surface-variant-light);
             transition: background-color 0.2s ease, border-color 0.2s ease;
             position: relative;
-            min-height: 100px;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -149,170 +460,163 @@
         }
 
         #drop-area.drag-over {
-            background-color: #e8f0fe;
-            border-color: #1a73e8;
+            background-color: var(--md-sys-color-secondary-container-light);
+            border-color: var(--md-sys-color-primary-light);
         }
 
         #drop-area p {
             margin: 0;
-            color: #5f6368;
+            color: var(--md-sys-color-on-surface-variant-light);
+            font-size: 0.95em;
         }
 
         #image-preview {
             max-width: 100%;
             max-height: 150px;
-            margin-top: 10px;
+            margin-top: 15px;
             border-radius: 4px;
             object-fit: contain;
+            border: 1px solid var(--md-sys-color-outline-variant-light);
         }
 
         .image-options {
-            margin-top: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
+            margin-top: 15px;
+            border-top: 1px solid var(--md-sys-color-outline-variant-light);
+            padding-top: 15px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .image-options label {
-            font-size: 0.9em;
+            font-size: 0.85em;
+            color: var(--md-sys-color-on-surface-variant-light);
         }
 
         .image-options input {
-            max-width: 80px;
+            max-width: 70px;
         }
 
+        /* Custom Color List */
         #custom-color-list .custom-color-row {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
-            border: 1px solid #eee;
-            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            padding: 8px 10px;
             border-radius: 4px;
+            background-color: var(--md-sys-color-surface-light);
         }
 
         #custom-color-list label {
             margin-bottom: 0;
             font-weight: normal;
-            font-size: 0.9em;
+            font-size: 0.85em;
             white-space: nowrap;
+            color: var(--md-sys-color-on-surface-variant-light);
         }
 
         #custom-color-list input[type="text"] {
             flex-grow: 1;
             min-width: 80px;
+            font-size: 0.9em;
+            padding: 6px 8px;
         }
 
         #custom-color-list input[type="checkbox"] {
-            margin-left: 5px;
+            margin-left: 2px;
+            transform: scale(0.9);
         }
 
         #custom-color-list button {
-            padding: 2px 6px;
+            /* Remove Button */
+            padding: 3px 7px;
             font-size: 0.8em;
-            background-color: #fce8e6;
-            border: 1px solid #f4c7c3;
-            color: #d93025;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #add-custom-color-button {
-            margin-top: 5px;
-            font-size: 0.9em;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #1a73e8;
-            color: white;
+            line-height: 1;
+            background-color: transparent;
             border: none;
-            border-radius: 4px;
+            color: var(--md-sys-color-error-light);
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.2s ease;
+            font-weight: bold;
         }
 
-        button:hover {
-            background-color: #1765cc;
+        #custom-color-list button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-error-light) 15%, transparent);
         }
 
-        #generate-button {
-            width: 100%;
-            margin-top: 10px;
-        }
-
+        /* Output Section */
         .output-section {
             min-height: 300px;
         }
 
         .output-section .placeholder {
-            color: #999;
+            color: var(--md-sys-color-outline-light);
             text-align: center;
-            margin-top: 50px;
+            margin-top: 60px;
+            font-style: italic;
+            font-size: 0.95em;
         }
 
         .color-group {
-            margin-bottom: 25px;
-        }
-
-        .color-group h3 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
 
         .swatch-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .swatch {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 4px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 5px;
+            padding: 8px;
             font-size: 0.8em;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .swatch span {
             display: block;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .swatch .swatch-name {
-            font-weight: bold;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .swatch .swatch-hex {
-            font-family: monospace;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+            opacity: 0.9;
         }
 
         #seed-colors-display .swatch {
-            width: 60px;
-            height: 60px;
-            font-size: 0.7em;
+            width: 70px;
+            height: 70px;
+            font-size: 0.75em;
+            padding: 5px;
+        }
+
+        #seed-colors-display h3 {
+            border-bottom: none;
+            margin-bottom: 0.5em;
         }
 
         .palette-section {
-            margin-bottom: 15px;
-        }
-
-        .palette-section h4 {
-            font-size: 1em;
-            margin-bottom: 8px;
-            color: #3c4043;
+            margin-bottom: 20px;
         }
 
         .scheme-swatches {
@@ -322,53 +626,416 @@
         }
 
         .custom-color-group-display {
-            border-left: 3px solid #eee;
+            border-left: 3px solid var(--md-sys-color-outline-variant-light);
             padding-left: 15px;
             margin-left: 5px;
+            margin-top: 15px;
         }
 
         .custom-color-group-display .scheme-pair {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
+        /* Utility & State */
         .hidden {
             display: none !important;
         }
 
         .error {
-            color: #d93025;
-            background-color: #fce8e6;
-            border: 1px solid #f4c7c3;
-            padding: 10px;
+            color: var(--md-sys-color-error-light);
+            background-color: var(--md-sys-color-error-container-light);
+            border: 1px solid color-mix(in srgb, var(--md-sys-color-error-light) 30%, transparent);
+            padding: 12px 15px;
             border-radius: 4px;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 0.9em;
         }
 
-        #loading-indicator {
+        #loading-indicator,
+        #suggestion-loading-indicator {
             text-align: center;
-            padding: 10px;
-            color: #5f6368;
+            padding: 15px 10px;
+            color: var(--md-sys-color-outline-light);
             font-style: italic;
+            font-size: 0.95em;
         }
 
-        @media (max-width: 768px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
+        /* Text Prompt Suggestions */
+        #text-prompt-options {
+            margin: 10px 0 5px 0;
+            font-size: 0.85em;
+        }
 
-            .swatch {
-                width: 80px;
-                height: 80px;
-            }
+        #text-prompt-suggestions {
+            margin-top: 20px;
+            border-top: 1px solid var(--md-sys-color-outline-variant-light);
+            padding-top: 20px;
+        }
 
-            #seed-colors-display .swatch {
-                width: 50px;
-                height: 50px;
-            }
+        #text-prompt-suggestions>label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+            font-size: 0.9em;
+            color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .suggestion-option {
+            padding: 10px 12px;
+            border: 1px solid var(--md-sys-color-outline-light);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            background-color: var(--md-sys-color-surface-light);
+        }
+
+        .suggestion-option:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-light) 8%, transparent);
+            border-color: var(--md-sys-color-primary-light);
+        }
+
+        .suggestion-option.selected {
+            border-color: var(--md-sys-color-primary-light);
+            background-color: var(--md-sys-color-primary-container-light);
+            outline: 1px solid var(--md-sys-color-primary-light);
+        }
+
+        .suggestion-option.selected span:not(.suggestion-swatch) {
+            font-weight: 600;
+            color: var(--md-sys-color-on-primary-container-light);
+        }
+
+        .suggestion-option input[type="radio"] {
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            position: absolute;
+        }
+
+        .suggestion-option label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin: 0;
+            font-weight: normal;
+            color: var(--md-sys-color-on-surface-light);
+        }
+
+        .suggestion-swatch {
+            width: 22px;
+            height: 22px;
+            border-radius: 3px;
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Component Examples Section */
+        #component-examples {
+            margin-top: 30px;
+            border-top: 1px solid var(--md-sys-color-outline-variant-light);
+            padding-top: 25px;
+        }
+
+        #component-examples h3 {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .component-preview-area {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* Simplify layout */
+            gap: 20px;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            background-color: var(--md-sys-color-background-light);
+            /* Use MWC var */
+            color: var(--md-sys-color-on-background-light);
+            /* Use MWC var */
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .component-preview-area.dark-theme {
+            background-color: var(--md-sys-color-background-dark);
+            /* Use MWC var */
+            color: var(--md-sys-color-on-background-dark);
+            /* Use MWC var */
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        /* Ensure headings inside previews inherit theme color */
+        .component-preview-area h4,
+        .component-preview-area h5 {
+            color: var(--md-sys-color-on-surface-light);
+            /* Base light */
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .component-preview-area h4 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .component-preview-area h5 {
+            font-size: 1em;
+        }
+
+        .dark-theme .component-preview-area h4,
+        .dark-theme .component-preview-area h5 {
+            color: var(--md-sys-color-on-surface-dark);
+            /* Base dark */
+        }
+
+        /* Explicitly style MWC card content text in preview */
+        .component-preview-area md-card p {
+            color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .dark-theme .component-preview-area md-card p {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+
+        /* Dynamic Theme Styles will be injected here */
+        #dynamic-theme-styles {}
+
+        /* Dark Theme Overrides for base elements */
+        .dark-theme {
+            background-color: var(--md-sys-color-background-dark);
+            color: var(--md-sys-color-on-background-dark);
+        }
+
+        .dark-theme .card {
+            background-color: var(--md-sys-color-surface-dark);
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme h1,
+        .dark-theme h2,
+        .dark-theme h3,
+        .dark-theme h4,
+        .dark-theme h5,
+        .dark-theme legend,
+        .dark-theme .suggestion-option label,
+        .dark-theme .mode-selection label {
+            color: var(--md-sys-color-on-surface-dark);
+        }
+
+        .dark-theme p,
+        .dark-theme .input-group label,
+        .dark-theme .input-group .color-input-row label,
+        .dark-theme #custom-color-list label,
+        .dark-theme #text-prompt-suggestions>label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme h3 {
+            border-bottom-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme code {
+            background-color: #333;
+            color: #eee;
+            border-color: #555;
+        }
+
+        .dark-theme fieldset {
+            border-color: var(--md-sys-color-outline-dark);
+        }
+
+        .dark-theme .input-group input[type="text"],
+        .dark-theme .input-group input[type="number"],
+        .dark-theme .input-group select,
+        .dark-theme .input-group textarea {
+            background-color: var(--md-sys-color-surface-dark);
+            color: var(--md-sys-color-on-surface-dark);
+            border-color: var(--md-sys-color-outline-dark);
+        }
+
+        .dark-theme .input-group input:focus,
+        .dark-theme .input-group select:focus,
+        .dark-theme .input-group textarea:focus {
+            border-color: var(--md-sys-color-primary-dark);
+            outline-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme .input-group input[type="color"] {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: #333;
+        }
+
+        /* Darker picker bg */
+        .dark-theme .mode-selection label::before,
+        .dark-theme .checkbox-label::before {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
+        .dark-theme .mode-selection label:hover::before,
+        .dark-theme .checkbox-label:hover::before {
+            border-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme .mode-selection input[type="radio"]:checked+label::before,
+        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::before {
+            border-color: var(--md-sys-color-primary-dark);
+            background-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme .mode-selection input[type="radio"]:checked+label::after {
+            background-color: var(--md-sys-color-on-primary-dark);
+        }
+
+        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::after {
+            border-color: var(--md-sys-color-on-primary-dark);
+        }
+
+        .dark-theme button:not([id^="md-"]) {
+            background-color: var(--md-sys-color-primary-dark);
+            color: var(--md-sys-color-on-primary-dark);
+        }
+
+        .dark-theme button:not([id^="md-"]):hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 90%, white);
+        }
+
+        .dark-theme button:not([id^="md-"]):disabled {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 30%, transparent);
+            color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 50%, transparent);
+        }
+
+        .dark-theme #generate-components-button {
+            background-color: var(--md-sys-color-secondary-dark);
+            color: var(--md-sys-color-on-secondary-dark);
+        }
+
+        .dark-theme #generate-components-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-dark) 90%, white);
+        }
+
+        .dark-theme #add-custom-color-button {
+            background-color: var(--md-sys-color-secondary-container-dark);
+            color: var(--md-sys-color-on-secondary-container-dark);
+            border-color: var(--md-sys-color-outline-dark);
+        }
+
+        .dark-theme #add-custom-color-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-container-dark) 90%, white);
+        }
+
+        .dark-theme #drop-area {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-variant-dark);
+        }
+
+        .dark-theme #drop-area.drag-over {
+            background-color: var(--md-sys-color-secondary-container-dark);
+            border-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme #drop-area p {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme #image-preview {
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme .image-options {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme .image-options label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme #custom-color-list .custom-color-row {
+            border-color: var(--md-sys-color-outline-variant-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
+        .dark-theme #custom-color-list label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme #custom-color-list button {
+            color: var(--md-sys-color-error-dark);
+        }
+
+        .dark-theme #custom-color-list button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-error-dark) 15%, transparent);
+        }
+
+        .dark-theme .output-section .placeholder {
+            color: var(--md-sys-color-outline-dark);
+        }
+
+        .dark-theme .custom-color-group-display {
+            border-left-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme .error {
+            color: var(--md-sys-color-error-dark);
+            background-color: var(--md-sys-color-error-container-dark);
+            border-color: color-mix(in srgb, var(--md-sys-color-error-dark) 30%, transparent);
+        }
+
+        .dark-theme #loading-indicator,
+        .dark-theme #suggestion-loading-indicator {
+            color: var(--md-sys-color-outline-dark);
+        }
+
+        .dark-theme #text-prompt-suggestions {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme #text-prompt-suggestions>label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme .suggestion-option {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
+        .dark-theme .suggestion-option:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 8%, transparent);
+            border-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme .suggestion-option.selected {
+            border-color: var(--md-sys-color-primary-dark);
+            background-color: var(--md-sys-color-primary-container-dark);
+            outline-color: var(--md-sys-color-primary-dark);
+        }
+
+        .dark-theme .suggestion-option label {
+            color: var(--md-sys-color-on-surface-dark);
+        }
+
+        .dark-theme .suggestion-option.selected span:not(.suggestion-swatch) {
+            color: var(--md-sys-color-on-primary-container-dark);
+        }
+
+        .dark-theme .suggestion-swatch {
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
+        .dark-theme #component-examples {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
         }
     </style>
 </head>
@@ -376,102 +1043,167 @@
 <body>
     <div class="container">
         <h1>Material Color Theme Generator</h1>
-        <p>Test palette generation using the functions in <code>cats.js</code>.</p>
+        <p>Generate Material Design 3 color palettes from colors, images, or text prompts. Uses <a
+                href="https://github.com/material-foundation/material-color-utilities/tree/main/typescript"
+                target="_blank" rel="noopener">material-color-utilities</a> via <code>dream.js</code> wrapper.</p>
 
         <div class="main-layout">
+            <!-- Input Configuration Section -->
             <div class="input-section card">
                 <h2>Configuration</h2>
-
                 <fieldset class="mode-selection">
-                    <legend>Select Input Mode:</legend>
-                    <div>
-                        <input type="radio" id="mode3" name="generationMode" value="mode3" checked>
-                        <label for="mode3">Single Source Color (No Custom)</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="mode4" name="generationMode" value="mode4">
-                        <label for="mode4">Single Source Color (With Custom)</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="mode1" name="generationMode" value="mode1">
-                        <label for="mode1">Multiple Source Colors (No Custom)</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="mode2" name="generationMode" value="mode2">
-                        <label for="mode2">Multiple Source Colors (With Custom)</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle">
-                        <label for="modeImageSingle">Image (Single Dominant Color)</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti">
-                        <label for="modeImageMulti">Image (Multiple Source Colors)</label>
-                    </div>
+                    <legend>Input Mode</legend>
+                    <div><input type="radio" id="modeText" name="generationMode" value="modeText"><label
+                            for="modeText">Text Prompt</label></div>
+                    <div><input type="radio" id="mode3" name="generationMode" value="mode3" checked><label
+                            for="mode3">Single Source Color</label></div>
+                    <div><input type="radio" id="mode4" name="generationMode" value="mode4"><label for="mode4">Single
+                            Source + Custom</label></div>
+                    <div><input type="radio" id="mode1" name="generationMode" value="mode1"><label for="mode1">Multiple
+                            Source Colors</label></div>
+                    <div><input type="radio" id="mode2" name="generationMode" value="mode2"><label for="mode2">Multiple
+                            Source + Custom</label></div>
+                    <div><input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle"><label
+                            for="modeImageSingle">Image (Single Dominant)</label></div>
+                    <div><input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti"><label
+                            for="modeImageMulti">Image (Multiple Seeds)</label></div>
                 </fieldset>
 
+                <!-- Text Prompt Input -->
+                <div id="text-prompt-area" class="input-group hidden">
+                    <label for="text-prompt-input">Describe your theme:</label>
+                    <textarea id="text-prompt-input" rows="3"
+                        placeholder="e.g., calm ocean sunset, vibrant forest floor, cyberpunk city night..."></textarea>
+                    <div id="text-prompt-options">
+                        <input type="checkbox" id="use-gemini-simulation" class="custom-styled">
+                        <label for="use-gemini-simulation" class="checkbox-label">Use Simulation (Offline)</label>
+                    </div>
+                    <button type="button" id="suggest-colors-button">Suggest Colors</button>
+                    <div id="suggestion-loading-indicator" class="hidden">Getting suggestions...</div>
+                    <div id="text-prompt-suggestions" class="hidden"><label>Select a suggested color set:</label></div>
+                    <p style="font-size: 0.8em; color: var(--md-sys-color-outline-light); margin-top: 5px;">Select a
+                        suggestion below to populate the Source Colors inputs.</p>
+                </div>
+
+                <!-- Image Input -->
                 <div id="image-input-area" class="input-group hidden">
                     <label>Upload or Drop Image:</label>
                     <div id="drop-area">
-                        <p>Drag & Drop image here or click to select</p>
+                        <p>Drag & Drop image here or click to browse</p>
                         <input type="file" id="image-input" accept="image/*" hidden>
                         <img id="image-preview" src="#" alt="Image Preview" class="hidden" />
                     </div>
                     <div class="image-options hidden" id="image-multi-options">
                         <label for="numSources">Max Colors to Extract:</label>
                         <input type="number" id="numSources" value="5" min="1" max="20">
-                        <label for="extractQuality">Extraction Quality (1=High, 10=Low):</label>
+                        <label for="extractQuality">Extraction Quality (1=Best, Higher=Faster):</label>
                         <input type="number" id="extractQuality" value="10" min="1" max="50">
                     </div>
                 </div>
 
+                <!-- Source Color Input(s) -->
                 <div id="source-color-area" class="input-group">
                     <label id="source-color-label">Source Color:</label>
-                    <div id="source-color-inputs">
-                    </div>
+                    <div id="source-color-inputs"></div>
                 </div>
 
+                <!-- Custom Color Input(s) -->
                 <div id="custom-color-area" class="input-group hidden">
-                    <label>Custom Colors:</label>
-                    <div id="custom-color-list">
-                    </div>
+                    <label>Custom Accent Colors (Optional):</label>
+                    <div id="custom-color-list"></div>
                     <button type="button" id="add-custom-color-button">Add Custom Color</button>
                 </div>
 
+                <!-- Multi-Source Options -->
                 <div id="multi-source-options" class="input-group hidden">
-                    <label for="harmonyStrategy">Harmony Strategy:</label>
+                    <label for="harmonyStrategy">Multi-Color Strategy:</label>
                     <select id="harmonyStrategy">
-                        <option value="direct" selected>Direct (Use sources as is)</option>
-                        <option value="harmonized">Harmonized (Blend with Primary)</option>
+                        <option value="direct" selected>Direct (Use as is)</option>
+                        <option value="harmonized">Harmonized (Shift towards Primary)</option>
                     </select>
                 </div>
 
-
+                <!-- Actions -->
                 <button type="button" id="generate-button">Generate Theme</button>
-                <div id="loading-indicator" class="hidden">Generating...</div>
+                <div id="loading-indicator" class="hidden">Generating theme...</div>
                 <div id="error-message" class="error hidden"></div>
             </div>
 
+            <!-- Output Section -->
             <div class="output-section card">
                 <h2>Generated Theme</h2>
-
                 <div id="seed-colors-display" class="color-group">
-                    <h3>Seed Color(s)</h3>
+                    <h3>Seed Color(s) Used</h3>
                     <div class="swatch-container">
+                        <p class="placeholder">Seeds will appear here after generation.</p>
+                    </div>
+                </div>
+                <hr
+                    style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;">
+                <div id="palette-display">
+                    <p class="placeholder">Configure inputs and click 'Generate Theme'. Palettes will appear here.</p>
+                </div>
+
+                <!-- Component Examples -->
+                <button type="button" id="generate-components-button" class="hidden">Generate Component
+                    Examples</button>
+                <div id="component-examples" class="hidden">
+                    <h3>Component Examples (using Material Web Components)</h3>
+                    <p style="font-size: 0.9em; margin-bottom: 15px; color: var(--md-sys-color-outline-light);">Ensure
+                        you have loaded the MWC library and Material Icons.</p>
+                    <div class="component-preview-area" id="light-component-preview">
+                        <h4>Light Theme</h4>
+                        <!-- Light theme examples will be injected here -->
+                    </div>
+                    <div class="component-preview-area dark-theme" id="dark-component-preview">
+                        <h4>Dark Theme</h4>
+                        <!-- Dark theme examples will be injected here -->
                     </div>
                 </div>
 
-                <div id="palette-display">
-                    <p class="placeholder">Generate a theme to see palettes.</p>
-                </div>
+                <!-- Dynamic styles will be injected here -->
+                <style id="dynamic-theme-styles"></style>
             </div>
         </div>
     </div>
 
+    <!-- Load the dream.js wrapper (adjust path if needed) -->
     <script src="js/dream.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@material/material-color-utilities@latest/dist/material-color-utilities.umd.js"></script> -->
+
+
+    <!--
+        IMPORTANT: Add the Material Web Components script(s) here!
+        Choose ONE of the following methods:
+
+        1. Load ALL components (Easy for testing, larger file size):
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/all.js?module"></script>
+
+        2. Load ONLY the components used in the examples (Recommended for production):
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/filled-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/outlined-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/text-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/elevated-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/filled-tonal-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/card/card.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/fab/fab.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/fab/extended-fab.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/chip-set.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/assist-chip.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/filter-chip.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/input-chip.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/suggestion-chip.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/icon/icon.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/iconbutton/icon-button.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/switch/switch.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/checkbox/checkbox.js?module"></script>
+           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/radio/radio.js?module"></script>
+    -->
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element Selection ---
             const modeRadios = document.querySelectorAll('input[name="generationMode"]');
             const imageInputArea = document.getElementById('image-input-area');
             const dropArea = document.getElementById('drop-area');
@@ -489,23 +1221,53 @@
             const generateButton = document.getElementById('generate-button');
             const loadingIndicator = document.getElementById('loading-indicator');
             const errorMessageDiv = document.getElementById('error-message');
-            const seedColorsDisplay = document.getElementById('seed-colors-display').querySelector('.swatch-container');
+            const seedColorsDisplayContainer = document.getElementById('seed-colors-display').querySelector('.swatch-container');
             const paletteDisplay = document.getElementById('palette-display');
             const numSourcesInput = document.getElementById('numSources');
             const extractQualityInput = document.getElementById('extractQuality');
+            const textPromptArea = document.getElementById('text-prompt-area');
+            const textPromptInput = document.getElementById('text-prompt-input');
+            const useSimulationCheckbox = document.getElementById('use-gemini-simulation');
+            const suggestColorsButton = document.getElementById('suggest-colors-button');
+            const suggestionLoadingIndicator = document.getElementById('suggestion-loading-indicator');
+            const textPromptSuggestionsContainer = document.getElementById('text-prompt-suggestions');
+            const generateComponentsButton = document.getElementById('generate-components-button');
+            const componentExamplesDiv = document.getElementById('component-examples');
+            const lightComponentPreview = document.getElementById('light-component-preview');
+            const darkComponentPreview = document.getElementById('dark-component-preview');
+            const dynamicThemeStyles = document.getElementById('dynamic-theme-styles');
+            const bodyElement = document.body;
 
+            // --- State Variables ---
             let currentImageFile = null;
-            let currentMode = 'mode3';
+            let currentMode = 'mode3'; // Default mode
+            let lastGeneratedTheme = null;
+            let isDarkMode = false; // Track current theme state for body class
 
+            // --- API Configuration (Replace with your actual credentials) ---
+            const API_KEY = "YOUR_API_KEY"; // <--- REPLACE WITH YOUR KEY
+            const PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"; // <--- REPLACE WITH YOUR PROJECT ID
+            const LOCATION = "us-central1"; // Or your preferred GCP location
+            const GEMINI_MODEL = "gemini-1.5-flash-preview-0514"; // Or another suitable model
+            const GEMINI_API_ENDPOINT = `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`; // Note: No ?key= here, use Authentication header
+
+            const GEMINI_SYSTEM_PROMPT = `You are an expert color palette assistant for web design, specializing in Material Design 3.
+Analyze the user's description. Generate EXACTLY THREE distinct sets of seed colors based on the prompt.
+Each set must contain exactly THREE hex color codes suitable for Primary, Secondary, and Tertiary roles in a Material Design theme.
+The three sets should offer diverse interpretations (e.g., one literal, one abstract, one moody).
+Ensure colors within each set are harmonious and generally suitable for UI elements (consider contrast potential).
+Respond ONLY with a valid JSON object containing a single key "suggestions". The value should be an array of three arrays, each inner array holding three hex color strings.
+Example: {"suggestions": [["#hex1", "#hex2", "#hex3"], ["#hex4", "#hex5", "#hex6"], ["#hex7", "#hex8", "#hex9"]]}
+Do not include any other text, comments, explanations, or markdown formatting outside the JSON structure.`;
+
+            // --- Helper Functions ---
             function hexToArgbInt(hex) {
                 if (!hex) return 0;
                 hex = hex.replace('#', '');
-                if (hex.length === 3) {
-                    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-                }
+                if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
                 if (hex.length !== 6) return 0;
-                const argbHex = `ff${hex}`;
-                return parseInt(argbHex, 16);
+                // Always use full alpha (FF)
+                return parseInt(`ff${hex}`, 16) | 0; // Use bitwise OR 0 for signed 32-bit int
             }
 
             function argbIntToHex(argb) {
@@ -513,222 +1275,42 @@
                 const r = (argb >> 16) & 0xff;
                 const g = (argb >> 8) & 0xff;
                 const b = argb & 0xff;
-                const validR = Math.max(0, Math.min(255, r));
-                const validG = Math.max(0, Math.min(255, g));
-                const validB = Math.max(0, Math.min(255, b));
-                return `#${[validR, validG, validB].map(c => c.toString(16).padStart(2, '0')).join('')}`;
+                return `#${[r, g, b].map(c => c.toString(16).padStart(2, '0')).join('')}`;
             }
 
-            function getContrastColor(hexColor) {
-                if (!hexColor) return '#000000';
-                hexColor = hexColor.replace('#', '');
-                if (hexColor.length === 3) {
-                    hexColor = hexColor[0] + hexColor[0] + hexColor[1] + hexColor[1] + hexColor[2] + hexColor[2];
-                }
-                if (hexColor.length !== 6) return '#000000';
-                const r = parseInt(hexColor.substring(0, 2), 16);
-                const g = parseInt(hexColor.substring(2, 4), 16);
-                const b = parseInt(hexColor.substring(4, 6), 16);
-                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                return luminance > 0.5 ? '#000000' : '#ffffff';
+            function getContrastColor(hex) {
+                // Simplified contrast check based on luminance
+                if (!hex || hex.length < 4) return '#000000'; // Default to black
+                hex = hex.replace('#', '');
+                if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                if (hex.length !== 6) return '#000000';
+
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+
+                // Calculate relative luminance (formula from WCAG)
+                const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+                // Use black text on light backgrounds (lum > 0.5), white text on dark backgrounds
+                return lum > 0.5 ? '#000000' : '#FFFFFF';
             }
 
-            function createSwatchHtml(name, colorInt) {
+            function createSwatchHtml(name, colorInt, extraClass = '') {
                 const hex = argbIntToHex(colorInt);
-                const contrastColor = getContrastColor(hex);
-                const safeName = name.replace(/</g, "<").replace(/>/g, ">");
-                return `
-                    <div class="swatch" style="background-color: ${hex}; color: ${contrastColor};">
-                        <span class="swatch-name">${safeName}</span>
-                        <span class="swatch-hex">${hex}</span>
-                    </div>
-                `;
+                const contrast = getContrastColor(hex);
+                // Sanitize name to prevent XSS - basic example
+                const safeName = name ? String(name).replace(/</g, "<").replace(/>/g, ">") : '';
+                return `<div class="swatch ${extraClass}" style="background-color: ${hex}; color: ${contrast};" title="${safeName} - ${hex}">
+                            <span class="swatch-name">${safeName}</span>
+                            <span class="swatch-hex">${hex}</span>
+                        </div>`;
             }
 
-            function displayTheme(theme) {
-                paletteDisplay.innerHTML = '';
-                if (!theme || !theme.palettes || !theme.schemes) {
-                    paletteDisplay.innerHTML = '<p class="placeholder error">Invalid theme object received.</p>';
-                    return;
-                }
-
-                for (const [paletteKey, tonalPalette] of Object.entries(theme.palettes)) {
-                    if (!tonalPalette) continue;
-
-                    const section = document.createElement('div');
-                    section.classList.add('palette-section', 'color-group');
-                    const sectionTitle = paletteKey.charAt(0).toUpperCase() + paletteKey.slice(1);
-                    section.innerHTML = `<h4>${sectionTitle} Palette</h4>`;
-
-                    const swatchesContainer = document.createElement('div');
-                    swatchesContainer.classList.add('scheme-swatches');
-
-                    const capPaletteKey = paletteKey.charAt(0).toUpperCase() + paletteKey.slice(1);
-                    const lightColor = theme.schemes.light?.[paletteKey];
-                    const onLightColor = theme.schemes.light?.[`on${capPaletteKey}`];
-                    const lightContainer = theme.schemes.light?.[`${paletteKey}Container`];
-                    const onLightContainer = theme.schemes.light?.[`on${capPaletteKey}Container`];
-
-                    const darkColor = theme.schemes.dark?.[paletteKey];
-                    const onDarkColor = theme.schemes.dark?.[`on${capPaletteKey}`];
-                    const darkContainer = theme.schemes.dark?.[`${paletteKey}Container`];
-                    const onDarkContainer = theme.schemes.dark?.[`on${capPaletteKey}Container`];
-
-                    if (typeof lightColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} (L)`, lightColor);
-                    if (typeof onLightColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} (L)`, onLightColor);
-                    if (typeof lightContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} Cont. (L)`, lightContainer);
-                    if (typeof onLightContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} Cont. (L)`, onLightContainer);
-
-                    if (typeof darkColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} (D)`, darkColor);
-                    if (typeof onDarkColor === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} (D)`, onDarkColor);
-                    if (typeof darkContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`${paletteKey} Cont. (D)`, darkContainer);
-                    if (typeof onDarkContainer === 'number') swatchesContainer.innerHTML += createSwatchHtml(`On ${paletteKey} Cont. (D)`, onDarkContainer);
-
-                    section.appendChild(swatchesContainer);
-                    paletteDisplay.appendChild(section);
-                }
-
-                if (theme.customColors && theme.customColors.length > 0) {
-                    const customSection = document.createElement('div');
-                    customSection.classList.add('palette-section', 'color-group');
-                    customSection.innerHTML = `<h4>Custom Colors</h4>`;
-
-                    theme.customColors.forEach(group => {
-                        if (!group || !group.color || !group.light || !group.dark) return;
-
-                        const groupDiv = document.createElement('div');
-                        groupDiv.classList.add('custom-color-group-display');
-                        const safeGroupName = (group.color.name || 'Unnamed').replace(/</g, "<").replace(/>/g, ">");
-                        groupDiv.innerHTML = `<h5>${safeGroupName} (Seed: ${argbIntToHex(group.color.value)}, Harmonized: ${argbIntToHex(group.value)})</h5>`;
-
-                        const pairDiv = document.createElement('div');
-                        pairDiv.classList.add('scheme-pair');
-
-                        if (typeof group.light.color === 'number') pairDiv.innerHTML += createSwatchHtml(`Color (L)`, group.light.color);
-                        if (typeof group.light.onColor === 'number') pairDiv.innerHTML += createSwatchHtml(`On Color (L)`, group.light.onColor);
-                        if (typeof group.light.colorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`Container (L)`, group.light.colorContainer);
-                        if (typeof group.light.onColorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`On Container (L)`, group.light.onColorContainer);
-
-                        if (typeof group.dark.color === 'number') pairDiv.innerHTML += createSwatchHtml(`Color (D)`, group.dark.color);
-                        if (typeof group.dark.onColor === 'number') pairDiv.innerHTML += createSwatchHtml(`On Color (D)`, group.dark.onColor);
-                        if (typeof group.dark.colorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`Container (D)`, group.dark.colorContainer);
-                        if (typeof group.dark.onColorContainer === 'number') pairDiv.innerHTML += createSwatchHtml(`On Container (D)`, group.dark.onColorContainer);
-
-                        groupDiv.appendChild(pairDiv);
-                        customSection.appendChild(groupDiv);
-                    });
-                    paletteDisplay.appendChild(customSection);
-                }
-            }
-
-            function updateInputUI(mode) {
-                currentMode = mode;
-                sourceColorInputsContainer.innerHTML = '';
-
-                imageInputArea.classList.add('hidden');
-                imageMultiOptions.classList.add('hidden');
-                sourceColorArea.classList.add('hidden');
-                customColorArea.classList.add('hidden');
-                multiSourceOptionsArea.classList.add('hidden');
-                currentImageFile = null;
-                imagePreview.classList.add('hidden');
-                imagePreview.src = '#';
-
-                if (mode === 'mode3' || mode === 'mode4') {
-                    sourceColorArea.classList.remove('hidden');
-                    sourceColorLabel.textContent = 'Source Color:';
-                    addSourceColorInput(0);
-                    if (mode === 'mode4') {
-                        customColorArea.classList.remove('hidden');
-                    }
-                } else if (mode === 'mode1' || mode === 'mode2') {
-                    sourceColorArea.classList.remove('hidden');
-                    sourceColorLabel.textContent = 'Source Colors:';
-                    addSourceColorInput(0, 'Primary');
-                    addSourceColorInput(1, 'Secondary');
-                    addSourceColorInput(2, 'Tertiary');
-                    multiSourceOptionsArea.classList.remove('hidden');
-                    if (mode === 'mode2') {
-                        customColorArea.classList.remove('hidden');
-                    }
-                } else if (mode === 'modeImageSingle' || mode === 'modeImageMulti') {
-                    imageInputArea.classList.remove('hidden');
-                    if (mode === 'modeImageMulti') {
-                        imageMultiOptions.classList.remove('hidden');
-                        multiSourceOptionsArea.classList.remove('hidden');
-                    }
-                    customColorArea.classList.remove('hidden');
-                }
-
-                if (customColorArea.classList.contains('hidden')) {
-                    customColorList.innerHTML = '';
-                } else if (customColorList.children.length === 0) {
-                    addCustomColorRow();
-                }
-            }
-
-            function addSourceColorInput(index, label = '') {
-                const row = document.createElement('div');
-                row.classList.add('color-input-row');
-                const inputId = `source-color-${index}`;
-                const defaultColors = ['#1a73e8', '#1e8e3e', '#d93025'];
-                const safeLabel = label.replace(/</g, "<").replace(/>/g, ">");
-
-                row.innerHTML = `
-                    ${label ? `<label for="${inputId}">${safeLabel}:</label>` : ''}
-                    <input type="color" id="${inputId}" name="${inputId}" value="${defaultColors[index] || '#808080'}">
-                `;
-                sourceColorInputsContainer.appendChild(row);
-            }
-
-            function addCustomColorRow() {
-                const index = Date.now();
-                const row = document.createElement('div');
-                row.classList.add('custom-color-row');
-                row.dataset.id = index;
-                row.innerHTML = `
-                    <label for="custom-name-${index}">Name:</label>
-                    <input type="text" id="custom-name-${index}" placeholder="e.g., Brand" value="custom${customColorList.children.length + 1}">
-                    <label for="custom-value-${index}">Value:</label>
-                    <input type="color" id="custom-value-${index}" value="#ff8c00">
-                    <label for="custom-blend-${index}">Blend:</label>
-                    <input type="checkbox" id="custom-blend-${index}" checked>
-                    <button type="button" class="remove-custom-color" data-id="${index}" title="Remove Custom Color">X</button>
-                `;
-                customColorList.appendChild(row);
-
-                row.querySelector('.remove-custom-color').addEventListener('click', (e) => {
-                    const rowId = e.target.dataset.id;
-                    const rowToRemove = customColorList.querySelector(`.custom-color-row[data-id="${rowId}"]`);
-                    if (rowToRemove) {
-                        rowToRemove.remove();
-                    }
-                });
-            }
-
-            function handleImageFile(file) {
-                if (!file || !file.type.startsWith('image/')) {
-                    showError('Please select a valid image file.');
-                    return;
-                }
-                currentImageFile = file;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    imagePreview.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                }
-                reader.onerror = () => {
-                    showError('Failed to read image file.');
-                    imagePreview.classList.add('hidden');
-                    currentImageFile = null;
-                }
-                reader.readAsDataURL(file);
-                hideError();
-            }
-
-            function showError(message) {
-                errorMessageDiv.textContent = message;
+            function showError(msg) {
+                errorMessageDiv.textContent = msg;
                 errorMessageDiv.classList.remove('hidden');
+                console.error("Error Displayed:", msg);
             }
 
             function hideError() {
@@ -736,20 +1318,662 @@
                 errorMessageDiv.textContent = '';
             }
 
-            modeRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    updateInputUI(e.target.value);
+            function setUILoading(isLoading) {
+                loadingIndicator.classList.toggle('hidden', !isLoading);
+                generateButton.disabled = isLoading;
+            }
+
+            function setSuggestionLoading(isLoading) {
+                suggestionLoadingIndicator.classList.toggle('hidden', !isLoading);
+                suggestColorsButton.disabled = isLoading;
+                textPromptInput.disabled = isLoading;
+            }
+
+            // --- Theme Display ---
+            function displayTheme(theme) {
+                paletteDisplay.innerHTML = ''; // Clear previous palettes
+                lastGeneratedTheme = theme; // Store for component generation
+
+                if (!theme?.palettes || !theme?.schemes) {
+                    paletteDisplay.innerHTML = '<p class="placeholder error">Invalid theme object received.</p>';
+                    generateComponentsButton.classList.add('hidden');
+                    return;
+                }
+
+                // Determine initial theme mode based on preference or system (optional)
+                // For simplicity, default to light for display, components handle both
+                updateBodyThemeClass(false); // Ensure body starts with light theme class
+
+                // Display Standard Palettes
+                ['primary', 'secondary', 'tertiary', 'neutral', 'neutralVariant', 'error'].forEach(key => {
+                    if (!theme.palettes[key]) return; // Skip if palette doesn't exist
+
+                    const section = document.createElement('div');
+                    section.classList.add('palette-section', 'color-group');
+
+                    const title = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // e.g., neutralVariant -> Neutral Variant
+                    section.innerHTML = `<h4>${title} Palette Roles</h4>`;
+
+                    const swatches = document.createElement('div');
+                    swatches.classList.add('scheme-swatches');
+
+                    const capKey = key.charAt(0).toUpperCase() + key.slice(1); // Primary, Secondary etc.
+                    const roles = [
+                        // Light Theme Roles
+                        { n: `${key} (L)`, k: key },
+                        { n: `On ${key} (L)`, k: `on${capKey}` },
+                        { n: `${key} Cont. (L)`, k: `${key}Container` },
+                        { n: `On ${key} Cont. (L)`, k: `on${capKey}Container` },
+                        // Dark Theme Roles
+                        { n: `${key} (D)`, k: key, s: 'dark' },
+                        { n: `On ${key} (D)`, k: `on${capKey}`, s: 'dark' },
+                        { n: `${key} Cont. (D)`, k: `${key}Container`, s: 'dark' },
+                        { n: `On ${key} Cont. (D)`, k: `on${capKey}Container`, s: 'dark' },
+                    ];
+
+                    roles.forEach(r => {
+                        const scheme = theme.schemes[r.s || 'light']; // Default to light scheme
+                        if (scheme && scheme[r.k] !== undefined) {
+                            swatches.innerHTML += createSwatchHtml(r.n, scheme[r.k]);
+                        }
+                    });
+
+                    if (swatches.hasChildNodes()) {
+                        section.appendChild(swatches);
+                        paletteDisplay.appendChild(section);
+                    }
                 });
+
+                // Display Custom Colors
+                if (theme.customColors?.length > 0) {
+                    const customSection = document.createElement('div');
+                    customSection.classList.add('palette-section', 'color-group');
+                    customSection.innerHTML = `<h4>Custom Colors</h4>`;
+
+                    theme.customColors.forEach(group => {
+                        // Check if necessary data exists
+                        if (group?.color?.value === undefined || !group.light || !group.dark) return;
+
+                        const groupDiv = document.createElement('div');
+                        groupDiv.classList.add('custom-color-group-display');
+
+                        const safeName = (group.color.name || 'Unnamed Custom').replace(/</g, "<").replace(/>/g, ">");
+                        const seedHex = argbIntToHex(group.color.value);
+                        const finalHex = argbIntToHex(group.value); // Harmonized value
+
+                        groupDiv.innerHTML = `<h5>${safeName} (Seed: ${seedHex}${seedHex !== finalHex ? `, Harmonized: ${finalHex}` : ''})</h5>`;
+
+                        const pairDiv = document.createElement('div');
+                        pairDiv.classList.add('scheme-pair');
+
+                        const customRoles = [
+                            { n: `Color (L)`, s: 'light', k: 'color' }, { n: `On Color (L)`, s: 'light', k: 'onColor' },
+                            { n: `Container (L)`, s: 'light', k: 'colorContainer' }, { n: `On Container (L)`, s: 'light', k: 'onColorContainer' },
+                            { n: `Color (D)`, s: 'dark', k: 'color' }, { n: `On Color (D)`, s: 'dark', k: 'onColor' },
+                            { n: `Container (D)`, s: 'dark', k: 'colorContainer' }, { n: `On Container (D)`, s: 'dark', k: 'onColorContainer' }
+                        ];
+
+                        customRoles.forEach(r => {
+                            if (group[r.s] && group[r.s][r.k] !== undefined) {
+                                pairDiv.innerHTML += createSwatchHtml(r.n, group[r.s][r.k]);
+                            }
+                        });
+
+                        if (pairDiv.hasChildNodes()) groupDiv.appendChild(pairDiv);
+                        if (groupDiv.hasChildNodes()) customSection.appendChild(groupDiv); // Only append if it has content
+                    });
+
+                    if (customSection.querySelector('.custom-color-group-display')) { // Check if any custom groups were actually added
+                        paletteDisplay.appendChild(customSection);
+                    }
+                }
+
+
+                if (!paletteDisplay.hasChildNodes()) {
+                    paletteDisplay.innerHTML = '<p class="placeholder">Theme generated, but no standard palettes found.</p>';
+                    generateComponentsButton.classList.add('hidden');
+                } else {
+                    // Show the button to generate MWC examples
+                    generateComponentsButton.classList.remove('hidden');
+                    componentExamplesDiv.classList.add('hidden'); // Hide old examples initially
+                }
+            }
+
+            // --- UI Update Logic ---
+            function updateInputUI(mode) {
+                currentMode = mode;
+                hideError();
+
+                // Reset common elements
+                sourceColorInputsContainer.innerHTML = '';
+                textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label>'; // Reset suggestions view
+                textPromptSuggestionsContainer.classList.add('hidden');
+                generateComponentsButton.classList.add('hidden'); // Hide component button until generation
+                componentExamplesDiv.classList.add('hidden'); // Hide component examples
+                paletteDisplay.innerHTML = '<p class="placeholder">Configure inputs and click \'Generate Theme\'.</p>'; // Reset palette display
+                seedColorsDisplayContainer.innerHTML = '<p class="placeholder">Seeds will appear here after generation.</p>'; // Reset seed display
+
+                // Toggle visibility of sections based on mode
+                imageInputArea.classList.toggle('hidden', !mode.startsWith('modeImage'));
+                imageMultiOptions.classList.toggle('hidden', mode !== 'modeImageMulti');
+                sourceColorArea.classList.toggle('hidden', mode.startsWith('modeImage') || mode === 'modeText'); // Hide for image and initial text prompt
+                customColorArea.classList.toggle('hidden', !['mode4', 'mode2', 'modeImageSingle', 'modeImageMulti', 'modeText'].includes(mode));
+                multiSourceOptionsArea.classList.toggle('hidden', !['mode1', 'mode2', 'modeImageMulti', 'modeText'].includes(mode));
+                textPromptArea.classList.toggle('hidden', mode !== 'modeText');
+
+
+                // Specific setup for each mode
+                if (mode === 'mode3' || mode === 'mode4') { // Single Source (+ Custom)
+                    sourceColorArea.classList.remove('hidden');
+                    sourceColorLabel.textContent = 'Source Color:';
+                    addSourceColorInput(0);
+                } else if (mode === 'mode1' || mode === 'mode2') { // Multiple Source (+ Custom)
+                    sourceColorArea.classList.remove('hidden');
+                    sourceColorLabel.textContent = 'Source Colors:';
+                    addSourceColorInput(0, 'Primary');
+                    addSourceColorInput(1, 'Secondary');
+                    addSourceColorInput(2, 'Tertiary');
+                } else if (mode === 'modeText') { // Text Prompt
+                    sourceColorArea.classList.remove('hidden'); // Show area, but inputs are disabled initially
+                    sourceColorLabel.textContent = 'Source Colors (from suggestion):';
+                    addSourceColorInput(0, 'Primary', true); // Add inputs, disabled by default
+                    addSourceColorInput(1, 'Secondary', true);
+                    addSourceColorInput(2, 'Tertiary', true);
+                    // Suggestions will enable these later
+                } else if (mode.startsWith('modeImage')) { // Image Modes
+                    if (!currentImageFile) { // Reset image preview if no file is selected
+                        imagePreview.classList.add('hidden');
+                        imagePreview.src = '#';
+                    }
+                }
+
+                // Ensure at least one custom color row exists if the section is visible
+                if (!customColorArea.classList.contains('hidden') && customColorList.children.length === 0) {
+                    addCustomColorRow();
+                } else if (customColorArea.classList.contains('hidden')) {
+                    customColorList.innerHTML = ''; // Clear custom colors if section is hidden
+                }
+            }
+
+            function addSourceColorInput(index, label = '', disabled = false) {
+                const row = document.createElement('div');
+                row.classList.add('color-input-row');
+                const id = `source-color-${index}`;
+                const defaults = ['#6750A4', '#625B71', '#7D5260']; // Default Material purple theme seeds
+                const safeLabel = label ? String(label).replace(/</g, "<").replace(/>/g, ">") : '';
+
+                const labelHtml = label ? `<label for="${id}">${safeLabel}:</label>` : '';
+                const inputHtml = `<input type="color" id="${id}" name="${id}" value="${defaults[index] || '#808080'}" ${disabled ? 'disabled' : ''}>`;
+
+                row.innerHTML = `${labelHtml}${inputHtml}`;
+                sourceColorInputsContainer.appendChild(row);
+            }
+
+            function addCustomColorRow() {
+                const index = Date.now(); // Unique ID for the row
+                const row = document.createElement('div');
+                row.classList.add('custom-color-row');
+                row.dataset.id = index;
+
+                row.innerHTML = `
+                     <label for="custom-name-${index}">Name:</label>
+                     <input type="text" id="custom-name-${index}" value="custom${customColorList.children.length + 1}" placeholder="e.g., BrandColor">
+                     <label for="custom-value-${index}">Value:</label>
+                     <input type="color" id="custom-value-${index}" value="#808080">
+                     <label for="custom-blend-${index}" title="Harmonize this color with the primary seed color">Blend:</label>
+                     <input type="checkbox" id="custom-blend-${index}" checked class="custom-styled">
+                     <label for="custom-blend-${index}" class="checkbox-label"></label>
+                     <button type="button" class="remove-custom-color" data-id="${index}" title="Remove Custom Color">
+                        <md-icon>delete_outline</md-icon> <!-- Using MWC icon -->
+                     </button>
+                 `;
+                customColorList.appendChild(row);
+
+                // Add event listener to the new remove button
+                row.querySelector('.remove-custom-color').addEventListener('click', (e) => {
+                    e.target.closest('.custom-color-row')?.remove();
+                });
+            }
+
+            function handleImageFile(file) {
+                if (!file?.type.startsWith('image/')) {
+                    showError('Invalid file type. Please select an image.');
+                    return;
+                }
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                    hideError(); // Clear error if image loads successfully
+                };
+                reader.onerror = () => {
+                    showError('Failed to read image file.');
+                    imagePreview.classList.add('hidden');
+                    imagePreview.src = '#';
+                    currentImageFile = null;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // --- Text Prompt & Gemini Logic ---
+            async function getGeminiSuggestions(promptText) {
+                if (!API_KEY || API_KEY === "YOUR_API_KEY" || !PROJECT_ID || PROJECT_ID === "YOUR_GOOGLE_CLOUD_PROJECT_ID") {
+                    throw new Error("Gemini API Key or Project ID is not configured in the script.");
+                }
+                console.log("Calling Gemini API...");
+
+                const requestBody = {
+                    contents: [{
+                        role: "user",
+                        parts: [{ text: GEMINI_SYSTEM_PROMPT + "\n\nUser Prompt: " + promptText }]
+                    }],
+                    generationConfig: {
+                        responseMimeType: "application/json", // Crucial for JSON output
+                        temperature: 0.7, // Balance creativity and predictability
+                        maxOutputTokens: 500,
+                        // topP, topK can also be set if needed
+                    }
+                    // safetySettings can be added here if needed
+                };
+
+                try {
+                    // Use fetch with Authentication Header (Bearer Token)
+                    // You'll need a mechanism to get a valid OAuth 2.0 or API Key Bearer token
+                    // This example assumes an API key is used directly in the URL, which is less secure
+                    // and might not work for Vertex AI endpoints depending on setup.
+                    // Prefer using gcloud auth print-access-token for local testing or service accounts for deployment.
+
+                    // *** Authentication Placeholder - Adjust as needed ***
+                    // Method 1: API Key in URL (Less Secure, might be blocked)
+                    const url = `${GEMINI_API_ENDPOINT}?key=${API_KEY}`;
+                    const headers = { 'Content-Type': 'application/json' };
+
+                    // Method 2: Bearer Token (More Secure - Preferred) - Get token via gcloud or service account
+                    // const accessToken = await getYourAccessToken(); // Implement this function
+                    // const url = GEMINI_API_ENDPOINT;
+                    // const headers = {
+                    //     'Content-Type': 'application/json',
+                    //     'Authorization': `Bearer ${accessToken}`
+                    // };
+
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (!response.ok) {
+                        let errorBodyText = await response.text();
+                        let errorDetails = errorBodyText;
+                        try {
+                            // Try parsing error response as JSON for more details
+                            errorDetails = JSON.parse(errorBodyText);
+                        } catch (parseError) { /* Ignore if not JSON */ }
+                        console.error("Gemini API Error:", response.status, errorDetails);
+                        throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${errorBodyText}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Process the response - structure depends on the model version
+                    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                        console.error("Unexpected Gemini API response structure:", data);
+                        if (data.candidates?.[0]?.finishReason && data.candidates[0].finishReason !== 'STOP') {
+                            throw new Error(`Generation stopped unexpectedly: ${data.candidates[0].finishReason}. ${data.candidates[0]?.safetyRatings ? JSON.stringify(data.candidates[0].safetyRatings) : ''}`);
+                        }
+                        throw new Error("Could not find generated text in the API response.");
+                    }
+
+                    const jsonText = data.candidates[0].content.parts[0].text;
+
+                    // Attempt to parse the JSON text strictly
+                    try {
+                        const parsed = JSON.parse(jsonText);
+                        if (!parsed || !Array.isArray(parsed.suggestions)) {
+                            throw new Error("API response is valid JSON but missing the 'suggestions' array.");
+                        }
+                        // Further validation: check if suggestions is array of arrays of 3 strings
+                        if (!parsed.suggestions.every(set => Array.isArray(set) && set.length === 3 && set.every(c => typeof c === 'string' && /^#[0-9A-F]{6}$/i.test(c)))) {
+                            throw new Error("API response 'suggestions' array has incorrect structure or invalid hex codes.");
+                        }
+                        return parsed; // Return the valid parsed object { suggestions: [...] }
+                    } catch (parseError) {
+                        console.error("Failed to parse JSON response from Gemini:", parseError, "\nReceived text:", jsonText);
+                        throw new Error(`Model returned invalid JSON or incorrect structure: ${parseError.message}`);
+                    }
+                } catch (error) {
+                    console.error("Error during Gemini API call:", error);
+                    // Re-throw the error so the caller can handle it (e.g., show message to user)
+                    throw error;
+                }
+            }
+
+            // Simple offline simulation for testing
+            async function simulateGeminiCall(promptText) {
+                console.log("Simulating LLM call for:", promptText);
+                await new Promise(resolve => setTimeout(resolve, 600)); // Simulate network delay
+
+                const p = promptText.toLowerCase();
+                let suggestions = [
+                    ["#6750A4", "#625B71", "#7D5260"], // Default Purple
+                    ["#00695C", "#4DB6AC", "#B2DFDB"], // Teal/Greenish
+                    ["#B71C1C", "#EF9A9A", "#FFEBEE"]  // Reddish
+                ]; // Default fallback suggestions
+
+                if (p.includes("ocean") || p.includes("sea") || p.includes("water")) {
+                    suggestions = [["#0077CC", "#6AB0DE", "#BCE7F0"], ["#26A69A", "#80CBC4", "#E0F2F1"], ["#0D47A1", "#90CAF9", "#E3F2FD"]];
+                } else if (p.includes("forest") || p.includes("nature") || p.includes("green")) {
+                    suggestions = [["#388E3C", "#81C784", "#C8E6C9"], ["#558B2F", "#AED581", "#DCEDC8"], ["#00695C", "#4DB6AC", "#B2DFDB"]];
+                } else if (p.includes("sunset") || p.includes("warm") || p.includes("orange")) {
+                    suggestions = [["#EF6C00", "#FFAB40", "#FFF3E0"], ["#D84315", "#FF8A65", "#FFCCBC"], ["#F57F17", "#FFCA28", "#FFF9C4"]];
+                } else if (p.includes("mono") || p.includes("gray") || p.includes("grey")) {
+                    suggestions = [["#607D8B", "#B0BEC5", "#ECEFF1"], ["#455A64", "#90A4AE", "#CFD8DC"], ["#78909C", "#B0BEC5", "#F5F5F5"]];
+                }
+
+                // Simulate potential failure
+                // if (Math.random() < 0.1) throw new Error("Simulated API failure.");
+
+                return { suggestions }; // Return in the expected format
+            }
+
+            function displaySuggestions(suggestionData) {
+                // Clear previous suggestions but keep the label
+                textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label>';
+
+                if (!suggestionData?.suggestions || !suggestionData.suggestions.length) {
+                    textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light); font-size: 0.9em;">No valid suggestions were generated.</p>';
+                    textPromptSuggestionsContainer.classList.remove('hidden');
+                    return;
+                }
+
+                suggestionData.suggestions.forEach((colorSet, index) => {
+                    // Basic validation before creating the element
+                    if (!Array.isArray(colorSet) || colorSet.length !== 3 || !colorSet.every(c => /^#[0-9A-F]{6}$/i.test(c))) {
+                        console.warn(`Skipping invalid suggestion set at index ${index}:`, colorSet);
+                        return; // Skip this invalid set
+                    }
+
+                    const div = document.createElement('div');
+                    div.classList.add('suggestion-option');
+                    div.dataset.colors = JSON.stringify(colorSet); // Store colors for easy retrieval
+                    div.setAttribute('role', 'button'); // Make it behave like a button
+                    div.tabIndex = 0; // Make it focusable
+
+                    const swatchesHtml = colorSet.map(hex =>
+                        `<span class="suggestion-swatch" style="background-color: ${hex};" title="${hex}"></span>`
+                    ).join('');
+
+                    const radioId = `suggestion_${index}`;
+                    div.innerHTML = `
+                        <input type="radio" name="color_suggestion" id="${radioId}" value='${JSON.stringify(colorSet)}' class="hidden">
+                        <label for="${radioId}">
+                            ${swatchesHtml}
+                            <span>Option ${index + 1}</span>
+                        </label>
+                    `;
+
+                    // Add event listeners for click and keyboard interaction
+                    div.addEventListener('click', handleSuggestionSelection);
+                    div.addEventListener('keydown', (e) => {
+                        if (e.key === ' ' || e.key === 'Enter') {
+                            handleSuggestionSelection.call(div, e); // Call handler with `this` context
+                            e.preventDefault(); // Prevent space from scrolling
+                        }
+                    });
+
+                    textPromptSuggestionsContainer.appendChild(div);
+                });
+
+                if (textPromptSuggestionsContainer.querySelectorAll('.suggestion-option').length > 0) {
+                    textPromptSuggestionsContainer.classList.remove('hidden'); // Show container if suggestions were added
+                } else {
+                    textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light); font-size: 0.9em;">No valid suggestions found after filtering.</p>';
+                    textPromptSuggestionsContainer.classList.remove('hidden');
+                }
+            }
+
+            function handleSuggestionSelection(event) {
+                // `this` refers to the clicked div.suggestion-option
+                const selectedDiv = this;
+                event.preventDefault(); // Prevent default radio button behavior if clicked directly on label
+
+                const colorsJson = selectedDiv.dataset.colors;
+                if (!colorsJson) return; // Should not happen if data-colors is set
+
+                try {
+                    const colors = JSON.parse(colorsJson);
+                    if (!Array.isArray(colors) || colors.length !== 3) {
+                        throw new Error("Invalid color data format in suggestion.");
+                    }
+
+                    const sourceInputs = sourceColorInputsContainer.querySelectorAll('input[type="color"]');
+                    if (sourceInputs.length < 3) {
+                        throw new Error("Source color input elements are missing.");
+                    }
+
+                    // Update the source color inputs and enable them
+                    colors.forEach((color, index) => {
+                        if (sourceInputs[index]) {
+                            sourceInputs[index].value = color;
+                            sourceInputs[index].disabled = false;
+                            // Optional: Trigger input event if needed by other listeners
+                            sourceInputs[index].dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                    });
+
+                    // Update visual selection state
+                    document.querySelectorAll('.suggestion-option.selected').forEach(el => el.classList.remove('selected'));
+                    selectedDiv.classList.add('selected');
+
+                    // Check the hidden radio button for form submission (if applicable) or state tracking
+                    const radio = selectedDiv.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = true;
+
+                    hideError(); // Clear any previous errors
+
+                } catch (error) {
+                    showError(`Failed to apply suggestion: ${error.message}`);
+                    console.error(error);
+                }
+            }
+
+            // --- MWC Component Example Generation ---
+            function generateComponentExamples() {
+                if (!lastGeneratedTheme?.schemes) {
+                    showError("Cannot generate examples: No valid theme has been generated yet.");
+                    return;
+                }
+
+                // --- Generate CSS Variables for MWC ---
+                const lightCSS = [];
+                const darkCSS = [];
+
+                for (const [schemeKey, scheme] of Object.entries(lastGeneratedTheme.schemes)) {
+                    const isDark = schemeKey === 'dark';
+                    const selector = isDark ? '.dark-theme' : ':root'; // Target root for light, .dark-theme for dark
+                    const targetArray = isDark ? darkCSS : lightCSS;
+
+                    targetArray.push(`${selector} {`);
+
+                    // Add standard MWC system color variables
+                    for (const [token, value] of Object.entries(scheme)) {
+                        const kebabCaseToken = token.replace(/([A-Z])/g, '-$1').toLowerCase();
+                        const cssVarName = `--md-sys-color-${kebabCaseToken}`;
+                        targetArray.push(`  ${cssVarName}: ${argbIntToHex(value)};`);
+                    }
+
+                    // Add custom color MWC variables (if custom colors exist in the theme)
+                    if (lastGeneratedTheme.customColors?.length > 0) {
+                        lastGeneratedTheme.customColors.forEach(customGroup => {
+                            // Ensure the scheme (light/dark) exists for this custom color group
+                            if (customGroup[schemeKey]) {
+                                // Create a CSS-safe name from the custom color name
+                                const baseName = (customGroup.color.name || 'custom')
+                                    .replace(/[^a-zA-Z0-9_-]/g, '-') // Replace invalid chars with hyphen
+                                    .replace(/-+/g, '-') // Collapse multiple hyphens
+                                    .toLowerCase();
+
+                                for (const [token, value] of Object.entries(customGroup[schemeKey])) {
+                                    const kebabCaseToken = token.replace(/([A-Z])/g, '-$1').toLowerCase(); // e.g., onColorContainer -> on-color-container
+                                    // Custom var name format: --md-sys-color-custom-[name]-[token]
+                                    const cssVarName = `--md-sys-color-custom-${baseName}-${kebabCaseToken}`;
+                                    targetArray.push(`  ${cssVarName}: ${argbIntToHex(value)};`);
+                                }
+                            }
+                        });
+                    }
+
+
+                    targetArray.push('}');
+                }
+
+                // Inject the generated CSS into the dedicated style tag
+                dynamicThemeStyles.textContent = lightCSS.join('\n') + '\n' + darkCSS.join('\n');
+
+                // --- HTML for MWC Examples ---
+                // Assumes the MWC library and Material Icons are loaded
+                const mwcExampleHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <h5>Buttons</h5>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                                <md-filled-button>Filled</md-filled-button>
+                                <md-outlined-button>Outlined</md-outlined-button>
+                                <md-text-button>Text</md-text-button>
+                                <md-elevated-button>Elevated</md-elevated-button>
+                                <md-filled-tonal-button>Tonal</md-filled-tonal-button>
+                                <md-filled-button disabled>Disabled</md-filled-button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5>Card</h5>
+                            <md-card style="padding: 16px; max-width: 350px;">
+                                <h4 style="margin-top: 0; margin-bottom: 8px;">Card Title</h4>
+                                <p style="margin-bottom: 16px; font-size: 0.9em;">
+                                    This is an example Material Web Card component using dynamically generated theme colors.
+                                </p>
+                                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                   <md-text-button>More Info</md-text-button>
+                                   <md-filled-button>Confirm</md-filled-button>
+                                </div>
+                            </md-card>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                            <div>
+                                <h5>FAB</h5>
+                                <md-fab aria-label="Add item">
+                                    <md-icon slot="icon">add</md-icon>
+                                </md-fab>
+                            </div>
+                            <div>
+                                <h5>Extended FAB</h5>
+                                <md-extended-fab label="Create New">
+                                     <md-icon slot="icon">edit</md-icon>
+                                </md-extended-fab>
+                            </div>
+                             <div>
+                                <h5>Small FAB</h5>
+                                <md-fab size="small" aria-label="Search">
+                                    <md-icon slot="icon">search</md-icon>
+                                </md-fab>
+                            </div>
+                             <div>
+                                <h5>Large FAB</h5>
+                                <md-fab size="large" aria-label="Compose">
+                                    <md-icon slot="icon">edit_square</md-icon>
+                                </md-fab>
+                            </div>
+                         </div>
+
+                        <div>
+                            <h5>Chips</h5>
+                             <md-chip-set style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                 <md-assist-chip label="Assist Chip"></md-assist-chip>
+                                 <md-filter-chip label="Filter Chip" elevated></md-filter-chip>
+                                 <md-input-chip label="Input Chip">
+                                      <md-icon slot="icon">event</md-icon>
+                                 </md-input-chip>
+                                 <md-suggestion-chip label="Suggestion Chip"></md-suggestion-chip>
+                                 <md-assist-chip label="Disabled" disabled></md-assist-chip>
+                             </md-chip-set>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                            <div>
+                                <h5>Icon Button</h5>
+                                <md-icon-button aria-label="Favorite">
+                                    <md-icon>favorite</md-icon>
+                                </md-icon-button>
+                                 <md-icon-button toggle aria-label="Toggle Visibility">
+                                    <md-icon>visibility</md-icon>
+                                    <md-icon slot="selected">visibility_off</md-icon>
+                                </md-icon-button>
+                                 <md-icon-button disabled aria-label="Disabled">
+                                    <md-icon>cloud_off</md-icon>
+                                </md-icon-button>
+                            </div>
+                            <div>
+                                <h5>Switch</h5>
+                                 <md-switch selected></md-switch>
+                                 <md-switch></md-switch>
+                                 <md-switch disabled></md-switch>
+                                 <md-switch selected disabled></md-switch>
+                            </div>
+                            <div>
+                                <h5>Checkbox</h5>
+                                <md-checkbox checked touch-target="wrapper"></md-checkbox>
+                                <md-checkbox touch-target="wrapper"></md-checkbox>
+                                <md-checkbox disabled touch-target="wrapper"></md-checkbox>
+                                <md-checkbox checked disabled touch-target="wrapper"></md-checkbox>
+                            </div>
+                        </div>
+
+                         <div>
+                           <h5>Radio Buttons</h5>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                                    <md-radio name="radio-group-ex" value="radio1" checked touch-target="wrapper"></md-radio> Option 1
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                                    <md-radio name="radio-group-ex" value="radio2" touch-target="wrapper"></md-radio> Option 2
+                                </label>
+                                 <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; opacity: 0.6;">
+                                    <md-radio name="radio-group-ex" value="radio3" disabled touch-target="wrapper"></md-radio> Disabled
+                                </label>
+                           </div>
+                        </div>
+                    </div>
+                `;
+
+                // --- Inject HTML into Preview Areas ---
+                lightComponentPreview.innerHTML = `<h4>Light Theme</h4> ${mwcExampleHTML}`;
+                darkComponentPreview.innerHTML = `<h4>Dark Theme</h4> ${mwcExampleHTML}`;
+
+                // Make the component examples section visible
+                componentExamplesDiv.classList.remove('hidden');
+
+                // Optional: Scroll smoothly to the examples
+                componentExamplesDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function updateBodyThemeClass(isDark) {
+                isDarkMode = isDark;
+                bodyElement.classList.toggle('dark-theme', isDarkMode);
+                // You might want to update a toggle switch UI element here if you add one
+            }
+
+            // --- Event Listeners ---
+            modeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => updateInputUI(e.target.value));
             });
 
+            // Image Drop/Upload
             dropArea.addEventListener('click', () => imageInput.click());
-            dropArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropArea.classList.add('drag-over');
-            });
-            dropArea.addEventListener('dragleave', () => {
-                dropArea.classList.remove('drag-over');
-            });
+            dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+            dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
             dropArea.addEventListener('drop', (e) => {
                 e.preventDefault();
                 dropArea.classList.remove('drag-over');
@@ -757,118 +1981,222 @@
                     handleImageFile(e.dataTransfer.files[0]);
                 }
             });
-
             imageInput.addEventListener('change', (e) => {
                 if (e.target.files.length) {
                     handleImageFile(e.target.files[0]);
                 }
             });
 
+            // Custom Colors
             addCustomColorButton.addEventListener('click', addCustomColorRow);
+            // Note: Remove button listener is added in addCustomColorRow
 
-            generateButton.addEventListener('click', async () => {
+            // Text Prompt Suggestions
+            suggestColorsButton.addEventListener('click', async () => {
+                const promptText = textPromptInput.value.trim();
+                if (!promptText) {
+                    showError("Please enter a theme description first.");
+                    return;
+                }
 
-                loadingIndicator.classList.remove('hidden');
-                paletteDisplay.innerHTML = '<p class="placeholder">Generating...</p>';
-                seedColorsDisplay.innerHTML = '';
                 hideError();
+                setSuggestionLoading(true);
+                textPromptSuggestionsContainer.classList.add('hidden'); // Hide old suggestions
+
+                try {
+                    const useSimulation = useSimulationCheckbox.checked;
+                    const suggestionFn = useSimulation ? simulateGeminiCall : getGeminiSuggestions;
+                    const suggestionData = await suggestionFn(promptText);
+                    displaySuggestions(suggestionData);
+                } catch (error) {
+                    showError(`Failed to get suggestions: ${error.message}`);
+                    textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label><p class="error">Failed to load suggestions.</p>';
+                    textPromptSuggestionsContainer.classList.remove('hidden');
+                    console.error(error);
+                } finally {
+                    setSuggestionLoading(false);
+                }
+            });
+
+            // Generate Theme Button
+            generateButton.addEventListener('click', async () => {
+                setUILoading(true);
+                paletteDisplay.innerHTML = '<p class="placeholder">Generating...</p>'; // Clear old results
+                seedColorsDisplayContainer.innerHTML = ''; // Clear old seeds
+                hideError();
+                generateComponentsButton.classList.add('hidden'); // Hide component button initially
+                componentExamplesDiv.classList.add('hidden'); // Hide component examples
+
+                // Check if dream.js functions are available
+                if (typeof themeFromSourceColor !== 'function' || typeof themeFromSourceColors !== 'function' || typeof sourceColorFromImage !== 'function' || typeof sourceColorsFromImage !== 'function') {
+                    showError("Core theme generation library (dream.js / material-color-utilities) not loaded correctly.");
+                    setUILoading(false);
+                    return;
+                }
 
                 try {
                     let theme;
                     let seeds = [];
-                    const customColorData = Array.from(customColorList.children).map(row => {
+                    const customData = Array.from(customColorList.children).map(row => {
                         const id = row.dataset.id;
+                        const nameInput = row.querySelector(`#custom-name-${id}`);
+                        const valueInput = row.querySelector(`#custom-value-${id}`);
+                        const blendInput = row.querySelector(`#custom-blend-${id}`);
                         return {
-                            name: row.querySelector(`#custom-name-${id}`).value || `custom${id}`,
-                            value: hexToArgbInt(row.querySelector(`#custom-value-${id}`).value),
-                            blend: row.querySelector(`#custom-blend-${id}`).checked,
+                            name: nameInput?.value || `custom_${id}`,
+                            value: hexToArgbInt(valueInput?.value),
+                            blend: blendInput?.checked || false
                         };
-                    });
+                    }).filter(c => c.value !== 0); // Filter out invalid colors (like #000000 if it wasn't intended)
 
-                    if (currentMode === 'mode3' || currentMode === 'mode4') {
-                        const sourceColor = hexToArgbInt(document.getElementById('source-color-0').value);
-                        seeds = [sourceColor];
-                        theme = themeFromSourceColor(sourceColor, currentMode === 'mode4' ? customColorData : []);
-                    }
-                    else if (currentMode === 'mode1' || currentMode === 'mode2') {
-                        const sourceColors = [
-                            hexToArgbInt(document.getElementById('source-color-0').value),
-                            hexToArgbInt(document.getElementById('source-color-1').value),
-                            hexToArgbInt(document.getElementById('source-color-2').value),
-                        ];
-                        seeds = sourceColors;
-                        const options = {
-                            harmonyStrategy: harmonyStrategySelect.value,
-                            customColors: currentMode === 'mode2' ? customColorData : [],
-                        };
-                        theme = themeFromSourceColors(sourceColors, options);
-                    }
-                    else if (currentMode === 'modeImageSingle' || currentMode === 'modeImageMulti') {
-                        if (!imagePreview.src || imagePreview.src.startsWith('#') || imagePreview.src === '') {
-                            throw new Error("Please select an image first.");
+                    // --- Theme Generation based on Mode ---
+                    if (currentMode === 'mode3' || currentMode === 'mode4') { // Single Source Color
+                        const input = document.getElementById('source-color-0');
+                        if (!input) throw new Error("Source color input not found.");
+                        const colorValue = hexToArgbInt(input.value);
+                        // Basic validation: Allow black (#000000) but throw error for other invalid hex values resulting in 0
+                        if (colorValue === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) {
+                            throw new Error(`Invalid source hex color: ${input.value}`);
                         }
-                        const imgElement = new Image();
-                        imgElement.src = imagePreview.src;
-                        await new Promise((resolve, reject) => {
-                            imgElement.onload = resolve;
-                            imgElement.onerror = (err) => reject(new Error(`Image failed to load for processing: ${err.type || 'Unknown error'}`));
-                            if (imgElement.complete && imgElement.naturalWidth) resolve();
+                        seeds = [colorValue];
+                        theme = themeFromSourceColor(colorValue, currentMode === 'mode4' ? customData : []);
+
+                    } else if (currentMode === 'mode1' || currentMode === 'mode2' || currentMode === 'modeText') { // Multiple Source Colors or Text Prompt
+                        const inputs = [0, 1, 2].map(i => document.getElementById(`source-color-${i}`));
+                        if (inputs.some(input => !input)) throw new Error("One or more source color inputs not found.");
+
+                        const colorValues = inputs.map((input, index) => {
+                            if (input.disabled) return null; // Skip disabled inputs (relevant for initial text prompt state)
+                            const value = hexToArgbInt(input.value);
+                            if (value === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) {
+                                throw new Error(`Invalid hex color for ${input.previousElementSibling?.textContent || `Input ${index + 1}`}: ${input.value}`);
+                            }
+                            return value;
+                        }).filter(value => value !== null); // Filter out nulls from disabled inputs
+
+                        if (colorValues.length === 0) {
+                            if (currentMode === 'modeText') throw new Error("Please select a suggested color set first.");
+                            else throw new Error("Please provide at least one valid source color.");
+                        }
+                        seeds = colorValues;
+                        const opts = {
+                            harmonyStrategy: multiSourceOptionsArea.classList.contains('hidden') ? 'direct' : harmonyStrategySelect.value,
+                            customColors: (currentMode === 'mode2' || currentMode === 'modeText') ? customData : []
+                        };
+                        // Use themeFromSourceColor if only one seed ended up being valid/provided
+                        theme = seeds.length === 1 ? themeFromSourceColor(seeds[0], opts.customColors) : themeFromSourceColors(seeds, opts);
+
+                    } else if (currentMode === 'modeImageSingle' || currentMode === 'modeImageMulti') { // Image Input
+                        if (!currentImageFile || !imagePreview.src || imagePreview.src.startsWith('#')) {
+                            throw new Error("Please select or drop an image first.");
+                        }
+
+                        // Load image data properly
+                        const img = await new Promise((resolve, reject) => {
+                            const imageElement = new Image();
+                            imageElement.onload = () => resolve(imageElement);
+                            imageElement.onerror = (err) => reject(new Error(`Failed to load image data: ${err.type || 'error'}`));
+                            imageElement.src = imagePreview.src;
+                            // Handle cases where image might already be cached/loaded
+                            if (imageElement.complete && imageElement.naturalWidth) {
+                                resolve(imageElement);
+                            }
                         });
 
                         if (currentMode === 'modeImageSingle') {
-                            const source = await sourceColorFromImage(imgElement);
-                            if (source === undefined || source === null) throw new Error("Could not extract dominant color from image.");
-                            seeds = [source];
-                            theme = themeFromSourceColor(source, customColorData);
-                        } else {
-                            const options = {
-                                numSources: parseInt(numSourcesInput.value, 10) || 5,
-                                extractQuality: parseInt(extractQualityInput.value, 10) || 10,
+                            const sourceColor = await sourceColorFromImage(img); // Assumes this returns ARGB int
+                            if (sourceColor === undefined || sourceColor === null) throw new Error("Failed to extract dominant color from image.");
+                            seeds = [sourceColor];
+                            theme = themeFromSourceColor(sourceColor, customData);
+                        } else { // modeImageMulti
+                            const numSources = parseInt(numSourcesInput.value, 10) || 5;
+                            const quality = parseInt(extractQualityInput.value, 10) || 10;
+                            const opts = {
+                                numSources: numSources,
+                                extractQuality: quality,
                                 harmonyStrategy: harmonyStrategySelect.value,
-                                customColors: customColorData,
+                                customColors: customData
                             };
-                            theme = await themeFromImageUsingSources(imgElement, options);
 
-                            try {
-                                seeds = await sourceColorsFromImage(imgElement, options.numSources, options.extractQuality);
-                            } catch (seedError) {
-                                console.warn("Could not re-extract seed colors for display:", seedError);
-                                if (theme && theme.source) seeds = [theme.source];
+                            // Prefer using the combined function if available in dream.js
+                            if (typeof themeFromImageUsingSources === 'function') {
+                                theme = await themeFromImageUsingSources(img, opts);
+                                // Try to get seeds separately for display if possible
+                                try {
+                                    seeds = await sourceColorsFromImage(img, numSources, quality);
+                                } catch (seedError) {
+                                    console.warn("Could not re-extract seeds for display:", seedError);
+                                    // Fallback: use the source color from the theme if available
+                                    seeds = theme?.source ? [theme.source] : [];
+                                }
+                            } else { // Fallback: extract seeds then generate theme
+                                seeds = await sourceColorsFromImage(img, numSources, quality);
+                                if (!seeds || seeds.length === 0) {
+                                    throw new Error("Failed to extract any significant colors from the image.");
+                                }
+                                theme = themeFromSourceColors(seeds, opts);
                             }
                         }
-                    }
-                    else {
-                        throw new Error('Invalid mode selected.');
+                    } else {
+                        throw new Error('Invalid generation mode selected.');
                     }
 
+                    // --- Display Results ---
                     if (theme) {
+                        // Display Seed Colors
                         if (seeds && seeds.length > 0) {
-                            seeds.forEach((seedInt, index) => {
-                                seedColorsDisplay.innerHTML += createSwatchHtml(`Seed ${index + 1}`, seedInt);
+                            seedColorsDisplayContainer.innerHTML = ''; // Clear placeholder
+                            seeds.forEach((seedArgb, i) => {
+                                if (typeof seedArgb === 'number') {
+                                    seedColorsDisplayContainer.innerHTML += createSwatchHtml(`Seed ${i + 1}`, seedArgb, 'seed-swatch');
+                                }
                             });
-                        } else if (theme.source) {
-                            seedColorsDisplay.innerHTML += createSwatchHtml(`Source`, theme.source);
+                        } else if (theme.source) { // Fallback for single source themes if seeds array wasn't populated
+                            seedColorsDisplayContainer.innerHTML = createSwatchHtml(`Source`, theme.source, 'seed-swatch');
+                        } else {
+                            seedColorsDisplayContainer.innerHTML = '<p style="font-size:0.9em; color:var(--md-sys-color-outline-light);">Seed colors not available.</p>';
                         }
+
+                        // Display Palettes
                         displayTheme(theme);
                     } else {
-                        showError('Theme generation failed for unknown reasons.');
-                        paletteDisplay.innerHTML = '<p class="placeholder error">Theme generation failed.</p>';
+                        showError('Theme generation failed. The process completed but returned no theme data.');
+                        paletteDisplay.innerHTML = '<p class="placeholder error">Generation failed.</p>';
                     }
 
                 } catch (error) {
-                    // Make sure error and error.message exist before trying to display
-                    const errorMessage = error && error.message ? error.message : 'An unknown error occurred.';
-                    console.error('Theme Generation Error:', error);
-                    showError(`Error: ${errorMessage}`);
-                    paletteDisplay.innerHTML = '<p class="placeholder error">An error occurred.</p>';
+                    showError(`Generation Error: ${error.message}`);
+                    paletteDisplay.innerHTML = '<p class="placeholder error">An error occurred during generation.</p>';
+                    console.error("Generation Process Error:", error);
                 } finally {
-                    loadingIndicator.classList.add('hidden');
+                    setUILoading(false);
                 }
             });
 
-            updateInputUI(currentMode);
-        });
+            // Generate Component Examples Button
+            generateComponentsButton.addEventListener('click', generateComponentExamples);
+
+
+            // --- Initial Setup ---
+            const initialMode = document.querySelector('input[name="generationMode"]:checked');
+            updateInputUI(initialMode ? initialMode.value : 'mode3'); // Initialize UI based on default checked mode
+
+            // Optional: Add a toggle for Light/Dark mode for the whole page preview
+            // const themeToggle = document.getElementById('theme-toggle-switch'); // Assuming you add a switch
+            // if (themeToggle) {
+            //     themeToggle.addEventListener('change', (e) => {
+            //         updateBodyThemeClass(e.target.checked);
+            //     });
+            //     // Set initial toggle state based on system preference maybe?
+            //     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            //     themeToggle.checked = prefersDark;
+            //     updateBodyThemeClass(prefersDark);
+            // }
+
+
+        }); // End DOMContentLoaded
     </script>
+
 </body>
 
 </html>
