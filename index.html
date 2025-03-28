@@ -4,13 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material Color Theme Generator</title>
-
-    <!-- Add Material Icons font -->
+    <title>MILCHICK: Material Integration Leveraging Creative Human-LLM Intelligence Colors Kit</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <style>
-        /* Reset and Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,7 +14,6 @@
         }
 
         :root {
-            /* Default Fallback Theme (Material Baseline Purple) */
             --md-sys-color-primary-light: #6750A4;
             --md-sys-color-on-primary-light: #FFFFFF;
             --md-sys-color-primary-container-light: #EADDFF;
@@ -48,7 +43,6 @@
             --md-sys-color-inverse-surface-light: #313033;
             --md-sys-color-inverse-on-surface-light: #F4EFF4;
             --md-sys-color-inverse-primary-light: #D0BCFF;
-            /* Dark Theme Fallbacks */
             --md-sys-color-primary-dark: #D0BCFF;
             --md-sys-color-on-primary-dark: #381E72;
             --md-sys-color-primary-container-dark: #4F378B;
@@ -78,30 +72,72 @@
             --md-sys-color-inverse-surface-dark: #E6E1E5;
             --md-sys-color-inverse-on-surface-dark: #313033;
             --md-sys-color-inverse-primary-dark: #6750A4;
-
-            /* Component Shape/Font Defaults (can be overridden by MWC defaults) */
             --comp-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             --comp-border-radius: 4px;
+
+            --radio-chip-bg: var(--md-sys-color-surface-variant-light);
+            --radio-chip-border: var(--md-sys-color-outline-variant-light);
+            --radio-chip-text: var(--md-sys-color-on-surface-variant-light);
+            --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-light) 10%, transparent);
+            --radio-chip-hover-border: var(--md-sys-color-primary-light);
+            --radio-chip-selected-bg: var(--md-sys-color-primary-light);
+            --radio-chip-selected-border: var(--md-sys-color-primary-light);
+            --radio-chip-selected-text: var(--md-sys-color-on-primary-light);
+        }
+
+        .dark-theme {
+            --radio-chip-bg: var(--md-sys-color-surface-variant-dark);
+            --radio-chip-border: var(--md-sys-color-outline-variant-dark);
+            --radio-chip-text: var(--md-sys-color-on-surface-variant-dark);
+            --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-dark) 10%, transparent);
+            --radio-chip-hover-border: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-bg: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-border: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-text: var(--md-sys-color-on-primary-dark);
+
+            background-color: var(--md-sys-color-background-dark);
+            color: var(--md-sys-color-on-background-dark);
         }
 
         body {
             font-family: var(--comp-font-family);
             line-height: 1.6;
             background-color: var(--md-sys-color-background-light);
-            /* Use MWC var */
             color: var(--md-sys-color-on-background-light);
-            /* Use MWC var */
             padding: 20px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             transition: background-color 0.3s ease, color 0.3s ease;
-            /* Smooth theme switch */
+            position: relative;
         }
 
-        /* Layout */
         .container {
             max-width: 1300px;
             margin: 0 auto;
+        }
+
+        #theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--md-sys-color-on-surface-variant-light);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        #theme-toggle:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant-light) 10%, transparent);
+        }
+
+        .dark-theme #theme-toggle {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .dark-theme #theme-toggle:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant-dark) 10%, transparent);
         }
 
         .main-layout {
@@ -114,22 +150,27 @@
             .main-layout {
                 grid-template-columns: 1fr;
             }
+
+            #theme-toggle {
+                top: 10px;
+                right: 15px;
+            }
         }
 
-        /* Card Styling */
         .card {
             background-color: var(--md-sys-color-surface-light);
-            /* Use MWC var */
             border-radius: 12px;
-            /* Consistent with MWC Card */
             border: 1px solid var(--md-sys-color-outline-variant-light);
-            /* Use MWC var */
             padding: 25px;
             margin-bottom: 25px;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Typography */
+        .dark-theme .card {
+            background-color: var(--md-sys-color-surface-dark);
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         h1,
         h2,
         h3,
@@ -137,8 +178,15 @@
         h5 {
             margin-bottom: 0.8em;
             color: var(--md-sys-color-on-surface-light);
-            /* Use MWC var */
             font-weight: 600;
+        }
+
+        .dark-theme h1,
+        .dark-theme h2,
+        .dark-theme h3,
+        .dark-theme h4,
+        .dark-theme h5 {
+            color: var(--md-sys-color-on-surface-dark);
         }
 
         h1 {
@@ -158,6 +206,10 @@
             padding-bottom: 0.4em;
         }
 
+        .dark-theme h3 {
+            border-bottom-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         h4 {
             font-size: 1em;
             margin-bottom: 0.8em;
@@ -165,7 +217,10 @@
             font-weight: 500;
         }
 
-        /* Adjusted color */
+        .dark-theme h4 {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
         h5 {
             font-size: 0.95em;
             margin-bottom: 0.5em;
@@ -177,7 +232,10 @@
             color: var(--md-sys-color-on-surface-variant-light);
         }
 
-        /* Adjusted color */
+        .dark-theme p {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
         code {
             background-color: #f0f0f0;
             padding: 0.2em 0.4em;
@@ -188,13 +246,21 @@
             border: 1px solid #e0e0e0;
         }
 
-        /* Forms & Inputs */
+        .dark-theme code {
+            background-color: #333;
+            color: #eee;
+            border-color: #555;
+        }
+
         fieldset {
             border: 1px solid var(--md-sys-color-outline-light);
-            /* Use MWC var */
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 20px;
+        }
+
+        .dark-theme fieldset {
+            border-color: var(--md-sys-color-outline-dark);
         }
 
         legend {
@@ -202,6 +268,10 @@
             padding: 0 8px;
             font-size: 0.95em;
             color: var(--md-sys-color-on-surface-light);
+        }
+
+        .dark-theme legend {
+            color: var(--md-sys-color-on-surface-dark);
         }
 
         .input-group {
@@ -215,6 +285,11 @@
             margin-bottom: 6px;
             font-size: 0.9em;
             color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .dark-theme .input-group label,
+        .dark-theme .checkbox-label {
+            color: var(--md-sys-color-on-surface-variant-dark);
         }
 
         .input-group input[type="text"],
@@ -232,6 +307,15 @@
             transition: border-color 0.2s ease;
         }
 
+        .dark-theme .input-group input[type="text"],
+        .dark-theme .input-group input[type="number"],
+        .dark-theme .input-group select,
+        .dark-theme .input-group textarea {
+            background-color: var(--md-sys-color-surface-dark);
+            color: var(--md-sys-color-on-surface-dark);
+            border-color: var(--md-sys-color-outline-dark);
+        }
+
         #text-prompt-input {
             font-size: 1.05em;
             padding: 12px;
@@ -245,6 +329,13 @@
             outline: 1px solid var(--md-sys-color-primary-light);
         }
 
+        .dark-theme .input-group input:focus,
+        .dark-theme .input-group select:focus,
+        .dark-theme .input-group textarea:focus {
+            border-color: var(--md-sys-color-primary-dark);
+            outline-color: var(--md-sys-color-primary-dark);
+        }
+
         .input-group input[type="color"] {
             width: 42px;
             height: 42px;
@@ -254,7 +345,11 @@
             border-radius: 4px;
             cursor: pointer;
             background-color: #fff;
-            /* Keep white for color picker */
+        }
+
+        .dark-theme .input-group input[type="color"] {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: #333;
         }
 
         input[type="color"]::-webkit-color-swatch-wrapper {
@@ -286,8 +381,67 @@
             color: var(--md-sys-color-on-surface-variant-light);
         }
 
-        /* Custom Radio/Checkbox Styling */
-        .mode-selection input[type="radio"],
+        .dark-theme .input-group .color-input-row label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
+
+        .mode-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .mode-selection input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+        }
+
+        .mode-selection label {
+            display: inline-block;
+            padding: 6px 14px;
+            border: 1px solid var(--radio-chip-border);
+            background-color: var(--radio-chip-bg);
+            color: var(--radio-chip-text);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            user-select: none;
+        }
+
+        .mode-selection label:hover {
+            background-color: var(--radio-chip-hover-bg);
+            border-color: var(--radio-chip-hover-border);
+        }
+
+        .mode-selection input[type="radio"]:checked+label {
+            background-color: var(--radio-chip-selected-bg);
+            border-color: var(--radio-chip-selected-border);
+            color: var(--radio-chip-selected-text);
+            font-weight: 500;
+        }
+
+        .mode-selection input[type="radio"]:focus-visible+label {
+            outline: 2px solid var(--md-sys-color-primary-light);
+            outline-offset: 2px;
+        }
+
+        .dark-theme .mode-selection input[type="radio"]:focus-visible+label {
+            outline-color: var(--md-sys-color-primary-dark);
+        }
+
+        .mode-selection label::before,
+        .mode-selection label::after {
+            display: none;
+        }
+
+        .mode-selection div {
+            line-height: 1;
+        }
+
         input[type="checkbox"].custom-styled {
             opacity: 0;
             position: absolute;
@@ -295,7 +449,6 @@
             height: 1px;
         }
 
-        .mode-selection label,
         .checkbox-label {
             margin-left: 0;
             cursor: pointer;
@@ -308,7 +461,10 @@
             color: var(--md-sys-color-on-surface-light);
         }
 
-        .mode-selection label::before,
+        .dark-theme .checkbox-label {
+            color: var(--md-sys-color-on-surface-dark);
+        }
+
         .checkbox-label::before {
             content: '';
             position: absolute;
@@ -320,47 +476,39 @@
             border: 1px solid var(--md-sys-color-outline-light);
             background-color: var(--md-sys-color-surface-light);
             transition: all 0.2s ease;
+            border-radius: 3px;
         }
 
-        .mode-selection label:hover::before,
+        .dark-theme .checkbox-label::before {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
         .checkbox-label:hover::before {
             border-color: var(--md-sys-color-primary-light);
         }
 
-        .mode-selection input[type="radio"]:focus-visible+label::before,
+        .dark-theme .checkbox-label:hover::before {
+            border-color: var(--md-sys-color-primary-dark);
+        }
+
         input[type="checkbox"].custom-styled:focus-visible+.checkbox-label::before {
             outline: 2px solid var(--md-sys-color-primary-light);
             outline-offset: 2px;
         }
 
-        .mode-selection label::before {
-            border-radius: 50%;
-        }
-
-        .mode-selection input[type="radio"]:checked+label::before {
-            border-color: var(--md-sys-color-primary-light);
-            background-color: var(--md-sys-color-primary-light);
-        }
-
-        .mode-selection input[type="radio"]:checked+label::after {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--md-sys-color-on-primary-light);
-        }
-
-        .checkbox-label::before {
-            border-radius: 3px;
+        .dark-theme input[type="checkbox"].custom-styled:focus-visible+.checkbox-label::before {
+            outline-color: var(--md-sys-color-primary-dark);
         }
 
         input[type="checkbox"].custom-styled:checked+.checkbox-label::before {
             border-color: var(--md-sys-color-primary-light);
             background-color: var(--md-sys-color-primary-light);
+        }
+
+        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::before {
+            border-color: var(--md-sys-color-primary-dark);
+            background-color: var(--md-sys-color-primary-dark);
         }
 
         input[type="checkbox"].custom-styled:checked+.checkbox-label::after {
@@ -375,15 +523,16 @@
             transform: translateY(-60%) rotate(45deg);
         }
 
-        /* Buttons (Non-MWC) */
+        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::after {
+            border-color: var(--md-sys-color-on-primary-dark);
+        }
+
         button:not([id^="md-"]) {
-            /* Exclude MWC buttons */
             padding: 10px 18px;
             background-color: var(--md-sys-color-primary-light);
             color: var(--md-sys-color-on-primary-light);
             border: none;
             border-radius: 20px;
-            /* MWC style */
             cursor: pointer;
             font-size: 1em;
             font-weight: 500;
@@ -392,19 +541,31 @@
             align-items: center;
             gap: 8px;
             vertical-align: middle;
-            /* Align with other inputs/elements */
+        }
+
+        .dark-theme button:not([id^="md-"]) {
+            background-color: var(--md-sys-color-primary-dark);
+            color: var(--md-sys-color-on-primary-dark);
         }
 
         button:not([id^="md-"]):hover {
             background-color: color-mix(in srgb, var(--md-sys-color-primary-light) 90%, black);
         }
 
-        /* Darken on hover */
+        .dark-theme button:not([id^="md-"]):hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 90%, white);
+        }
+
         button:not([id^="md-"]):disabled {
             background-color: color-mix(in srgb, var(--md-sys-color-on-surface-light) 30%, transparent);
             color: color-mix(in srgb, var(--md-sys-color-on-surface-light) 50%, transparent);
             cursor: not-allowed;
             opacity: 0.7;
+        }
+
+        .dark-theme button:not([id^="md-"]):disabled {
+            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 30%, transparent);
+            color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 50%, transparent);
         }
 
         #generate-button {
@@ -418,15 +579,29 @@
             margin-top: 5px;
         }
 
-        #generate-components-button {
-            margin-top: 20px;
+        #generate-mwc-components-button,
+        #generate-gemini-components-button {
+            margin-top: 5px;
+            /* Reduced margin */
             background-color: var(--md-sys-color-secondary-light);
             color: var(--md-sys-color-on-secondary-light);
             font-size: 0.95em;
         }
 
-        #generate-components-button:hover {
+        .dark-theme #generate-mwc-components-button,
+        .dark-theme #generate-gemini-components-button {
+            background-color: var(--md-sys-color-secondary-dark);
+            color: var(--md-sys-color-on-secondary-dark);
+        }
+
+        #generate-mwc-components-button:hover,
+        #generate-gemini-components-button:hover {
             background-color: color-mix(in srgb, var(--md-sys-color-secondary-light) 90%, black);
+        }
+
+        .dark-theme #generate-mwc-components-button:hover,
+        .dark-theme #generate-gemini-components-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-dark) 90%, white);
         }
 
         #add-custom-color-button {
@@ -438,11 +613,20 @@
             border: 1px solid var(--md-sys-color-outline-light);
         }
 
+        .dark-theme #add-custom-color-button {
+            background-color: var(--md-sys-color-secondary-container-dark);
+            color: var(--md-sys-color-on-secondary-container-dark);
+            border-color: var(--md-sys-color-outline-dark);
+        }
+
         #add-custom-color-button:hover {
             background-color: color-mix(in srgb, var(--md-sys-color-secondary-container-light) 90%, black);
         }
 
-        /* Image Drop Area */
+        .dark-theme #add-custom-color-button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-secondary-container-dark) 90%, white);
+        }
+
         #drop-area {
             border: 2px dashed var(--md-sys-color-outline-light);
             border-radius: 4px;
@@ -459,15 +643,29 @@
             justify-content: center;
         }
 
+        .dark-theme #drop-area {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-variant-dark);
+        }
+
         #drop-area.drag-over {
             background-color: var(--md-sys-color-secondary-container-light);
             border-color: var(--md-sys-color-primary-light);
+        }
+
+        .dark-theme #drop-area.drag-over {
+            background-color: var(--md-sys-color-secondary-container-dark);
+            border-color: var(--md-sys-color-primary-dark);
         }
 
         #drop-area p {
             margin: 0;
             color: var(--md-sys-color-on-surface-variant-light);
             font-size: 0.95em;
+        }
+
+        .dark-theme #drop-area p {
+            color: var(--md-sys-color-on-surface-variant-dark);
         }
 
         #image-preview {
@@ -479,6 +677,10 @@
             border: 1px solid var(--md-sys-color-outline-variant-light);
         }
 
+        .dark-theme #image-preview {
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         .image-options {
             margin-top: 15px;
             border-top: 1px solid var(--md-sys-color-outline-variant-light);
@@ -488,16 +690,23 @@
             gap: 8px;
         }
 
+        .dark-theme .image-options {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         .image-options label {
             font-size: 0.85em;
             color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .dark-theme .image-options label {
+            color: var(--md-sys-color-on-surface-variant-dark);
         }
 
         .image-options input {
             max-width: 70px;
         }
 
-        /* Custom Color List */
         #custom-color-list .custom-color-row {
             display: flex;
             align-items: center;
@@ -509,12 +718,21 @@
             background-color: var(--md-sys-color-surface-light);
         }
 
+        .dark-theme #custom-color-list .custom-color-row {
+            border-color: var(--md-sys-color-outline-variant-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
         #custom-color-list label {
             margin-bottom: 0;
             font-weight: normal;
             font-size: 0.85em;
             white-space: nowrap;
             color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .dark-theme #custom-color-list label {
+            color: var(--md-sys-color-on-surface-variant-dark);
         }
 
         #custom-color-list input[type="text"] {
@@ -530,7 +748,6 @@
         }
 
         #custom-color-list button {
-            /* Remove Button */
             padding: 3px 7px;
             font-size: 0.8em;
             line-height: 1;
@@ -542,11 +759,18 @@
             font-weight: bold;
         }
 
+        .dark-theme #custom-color-list button {
+            color: var(--md-sys-color-error-dark);
+        }
+
         #custom-color-list button:hover {
             background-color: color-mix(in srgb, var(--md-sys-color-error-light) 15%, transparent);
         }
 
-        /* Output Section */
+        .dark-theme #custom-color-list button:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-error-dark) 15%, transparent);
+        }
+
         .output-section {
             min-height: 300px;
         }
@@ -557,6 +781,10 @@
             margin-top: 60px;
             font-style: italic;
             font-size: 0.95em;
+        }
+
+        .dark-theme .output-section .placeholder {
+            color: var(--md-sys-color-outline-dark);
         }
 
         .color-group {
@@ -632,6 +860,10 @@
             margin-top: 15px;
         }
 
+        .dark-theme .custom-color-group-display {
+            border-left-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         .custom-color-group-display .scheme-pair {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -639,7 +871,6 @@
             margin-bottom: 15px;
         }
 
-        /* Utility & State */
         .hidden {
             display: none !important;
         }
@@ -654,8 +885,15 @@
             font-size: 0.9em;
         }
 
+        .dark-theme .error {
+            color: var(--md-sys-color-error-dark);
+            background-color: var(--md-sys-color-error-container-dark);
+            border-color: color-mix(in srgb, var(--md-sys-color-error-dark) 30%, transparent);
+        }
+
         #loading-indicator,
-        #suggestion-loading-indicator {
+        #suggestion-loading-indicator,
+        #gemini-component-loading {
             text-align: center;
             padding: 15px 10px;
             color: var(--md-sys-color-outline-light);
@@ -663,7 +901,12 @@
             font-size: 0.95em;
         }
 
-        /* Text Prompt Suggestions */
+        .dark-theme #loading-indicator,
+        .dark-theme #suggestion-loading-indicator,
+        .dark-theme #gemini-component-loading {
+            color: var(--md-sys-color-outline-dark);
+        }
+
         #text-prompt-options {
             margin: 10px 0 5px 0;
             font-size: 0.85em;
@@ -675,12 +918,20 @@
             padding-top: 20px;
         }
 
+        .dark-theme #text-prompt-suggestions {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         #text-prompt-suggestions>label {
             display: block;
             margin-bottom: 12px;
             font-weight: 500;
             font-size: 0.9em;
             color: var(--md-sys-color-on-surface-variant-light);
+        }
+
+        .dark-theme #text-prompt-suggestions>label {
+            color: var(--md-sys-color-on-surface-variant-dark);
         }
 
         .suggestion-option {
@@ -696,9 +947,19 @@
             background-color: var(--md-sys-color-surface-light);
         }
 
+        .dark-theme .suggestion-option {
+            border-color: var(--md-sys-color-outline-dark);
+            background-color: var(--md-sys-color-surface-dark);
+        }
+
         .suggestion-option:hover {
             background-color: color-mix(in srgb, var(--md-sys-color-primary-light) 8%, transparent);
             border-color: var(--md-sys-color-primary-light);
+        }
+
+        .dark-theme .suggestion-option:hover {
+            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 8%, transparent);
+            border-color: var(--md-sys-color-primary-dark);
         }
 
         .suggestion-option.selected {
@@ -707,9 +968,19 @@
             outline: 1px solid var(--md-sys-color-primary-light);
         }
 
+        .dark-theme .suggestion-option.selected {
+            border-color: var(--md-sys-color-primary-dark);
+            background-color: var(--md-sys-color-primary-container-dark);
+            outline-color: var(--md-sys-color-primary-dark);
+        }
+
         .suggestion-option.selected span:not(.suggestion-swatch) {
             font-weight: 600;
             color: var(--md-sys-color-on-primary-container-light);
+        }
+
+        .dark-theme .suggestion-option.selected span:not(.suggestion-swatch) {
+            color: var(--md-sys-color-on-primary-container-dark);
         }
 
         .suggestion-option input[type="radio"] {
@@ -730,6 +1001,10 @@
             color: var(--md-sys-color-on-surface-light);
         }
 
+        .dark-theme .suggestion-option label {
+            color: var(--md-sys-color-on-surface-dark);
+        }
+
         .suggestion-swatch {
             width: 22px;
             height: 22px;
@@ -739,11 +1014,18 @@
             flex-shrink: 0;
         }
 
-        /* Component Examples Section */
+        .dark-theme .suggestion-swatch {
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+
         #component-examples {
             margin-top: 30px;
             border-top: 1px solid var(--md-sys-color-outline-variant-light);
             padding-top: 25px;
+        }
+
+        .dark-theme #component-examples {
+            border-top-color: var(--md-sys-color-outline-variant-dark);
         }
 
         #component-examples h3 {
@@ -751,329 +1033,210 @@
             margin-bottom: 15px;
         }
 
-        .component-preview-area {
+        .component-generation-options {
+            display: flex;
+            flex-direction: column;
+            /* Stack vertically first */
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .component-generation-options .input-group {
+            margin-bottom: 0;
+            width: 100%;
+            /* Make prompt full width */
+        }
+
+        .component-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow wrapping on small screens */
+            gap: 15px;
+            align-items: center;
+            /* Vertically align buttons if they wrap */
+        }
+
+        .component-preview-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            /* Simplify layout */
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+
+        @media (max-width: 1100px) {
+            .component-preview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .component-preview-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             padding: 25px;
             border-radius: 8px;
             border: 1px solid var(--md-sys-color-outline-variant-light);
             background-color: var(--md-sys-color-background-light);
-            /* Use MWC var */
             color: var(--md-sys-color-on-background-light);
-            /* Use MWC var */
-            margin-bottom: 20px;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            min-height: 300px;
+
+            /* Apply base theme vars locally */
+            background-color: var(--local-sys-color-background, var(--md-sys-color-background-light));
+            color: var(--local-sys-color-on-background, var(--md-sys-color-on-background-light));
+            border-color: var(--local-sys-color-outline-variant, var(--md-sys-color-outline-variant-light));
         }
 
+        /* Apply specific variables for dark theme within preview */
         .component-preview-area.dark-theme {
-            background-color: var(--md-sys-color-background-dark);
-            /* Use MWC var */
-            color: var(--md-sys-color-on-background-dark);
-            /* Use MWC var */
-            border-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        /* Ensure headings inside previews inherit theme color */
-        .component-preview-area h4,
-        .component-preview-area h5 {
-            color: var(--md-sys-color-on-surface-light);
-            /* Base light */
-            margin-bottom: 10px;
-            margin-top: 10px;
+            background-color: var(--local-sys-color-background, var(--md-sys-color-background-dark));
+            color: var(--local-sys-color-on-background, var(--md-sys-color-on-background-dark));
+            border-color: var(--local-sys-color-outline-variant, var(--md-sys-color-outline-variant-dark));
         }
 
         .component-preview-area h4 {
+            color: var(--local-sys-color-on-surface, var(--md-sys-color-on-surface-light));
             margin-top: 0;
+            margin-bottom: 10px;
             font-size: 1.2em;
         }
 
+        .dark-theme .component-preview-area h4 {
+            color: var(--local-sys-color-on-surface, var(--md-sys-color-on-surface-dark));
+        }
+
         .component-preview-area h5 {
+            color: var(--local-sys-color-on-surface, var(--md-sys-color-on-surface-light));
+            margin-bottom: 10px;
             font-size: 1em;
         }
 
-        .dark-theme .component-preview-area h4,
         .dark-theme .component-preview-area h5 {
-            color: var(--md-sys-color-on-surface-dark);
-            /* Base dark */
+            color: var(--local-sys-color-on-surface, var(--md-sys-color-on-surface-dark));
         }
 
-        /* Explicitly style MWC card content text in preview */
-        .component-preview-area md-card p {
-            color: var(--md-sys-color-on-surface-variant-light);
+        /* Apply local theme vars to MWC components inside preview */
+        #mwc-component-preview md-filled-button,
+        #mwc-component-preview md-outlined-button,
+        #mwc-component-preview md-fab,
+        #mwc-component-preview md-chip-set md-assist-chip,
+        #mwc-component-preview md-chip-set md-filter-chip,
+        #mwc-component-preview md-slider,
+        #mwc-component-preview md-card {
+            --md-sys-color-primary: var(--local-sys-color-primary);
+            --md-sys-color-on-primary: var(--local-sys-color-on-primary);
+            --md-sys-color-primary-container: var(--local-sys-color-primary-container);
+            --md-sys-color-on-primary-container: var(--local-sys-color-on-primary-container);
+            --md-sys-color-secondary: var(--local-sys-color-secondary);
+            --md-sys-color-on-secondary: var(--local-sys-color-on-secondary);
+            --md-sys-color-secondary-container: var(--local-sys-color-secondary-container);
+            --md-sys-color-on-secondary-container: var(--local-sys-color-on-secondary-container);
+            --md-sys-color-tertiary: var(--local-sys-color-tertiary);
+            --md-sys-color-on-tertiary: var(--local-sys-color-on-tertiary);
+            --md-sys-color-tertiary-container: var(--local-sys-color-tertiary-container);
+            --md-sys-color-on-tertiary-container: var(--local-sys-color-on-tertiary-container);
+            --md-sys-color-error: var(--local-sys-color-error);
+            --md-sys-color-on-error: var(--local-sys-color-on-error);
+            --md-sys-color-error-container: var(--local-sys-color-error-container);
+            --md-sys-color-on-error-container: var(--local-sys-color-on-error-container);
+            --md-sys-color-surface: var(--local-sys-color-surface);
+            --md-sys-color-on-surface: var(--local-sys-color-on-surface);
+            --md-sys-color-surface-variant: var(--local-sys-color-surface-variant);
+            --md-sys-color-on-surface-variant: var(--local-sys-color-on-surface-variant);
+            --md-sys-color-outline: var(--local-sys-color-outline);
+            --md-sys-color-outline-variant: var(--local-sys-color-outline-variant);
+            --md-sys-color-inverse-surface: var(--local-sys-color-inverse-surface);
+            --md-sys-color-inverse-on-surface: var(--local-sys-color-inverse-on-surface);
+            --md-sys-color-inverse-primary: var(--local-sys-color-inverse-primary);
+            --md-sys-color-background: var(--local-sys-color-background);
+            /* Important for card */
+            --md-sys-color-on-background: var(--local-sys-color-on-background);
         }
 
-        .dark-theme .component-preview-area md-card p {
-            color: var(--md-sys-color-on-surface-variant-dark);
+        #mwc-component-preview md-card p {
+            color: var(--local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-light));
         }
 
+        .dark-theme #mwc-component-preview md-card p {
+            color: var(--local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark));
+        }
 
-        /* Dynamic Theme Styles will be injected here */
         #dynamic-theme-styles {}
 
-        /* Dark Theme Overrides for base elements */
-        .dark-theme {
-            background-color: var(--md-sys-color-background-dark);
-            color: var(--md-sys-color-on-background-dark);
+        /* Ensure Gemini generated content respects dark theme if it doesn't scope itself */
+        .dark-theme #gemini-component-preview {
+            /* Styles already applied by .component-preview-area.dark-theme */
         }
 
-        .dark-theme .card {
-            background-color: var(--md-sys-color-surface-dark);
-            border-color: var(--md-sys-color-outline-variant-dark);
+        /* Specific overrides might be needed if Gemini uses generic tags */
+        .dark-theme #gemini-component-preview h1,
+        .dark-theme #gemini-component-preview h2,
+        .dark-theme #gemini-component-preview h3,
+        .dark-theme #gemini-component-preview h4,
+        .dark-theme #gemini-component-preview h5 {
+            color: var(--local-sys-color-on-surface, var(--md-sys-color-on-surface-dark));
         }
 
-        .dark-theme h1,
-        .dark-theme h2,
-        .dark-theme h3,
-        .dark-theme h4,
-        .dark-theme h5,
-        .dark-theme legend,
-        .dark-theme .suggestion-option label,
-        .dark-theme .mode-selection label {
-            color: var(--md-sys-color-on-surface-dark);
+        .dark-theme #gemini-component-preview p,
+        .dark-theme #gemini-component-preview li {
+            color: var(--local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark));
         }
 
-        .dark-theme p,
-        .dark-theme .input-group label,
-        .dark-theme .input-group .color-input-row label,
-        .dark-theme #custom-color-list label,
-        .dark-theme #text-prompt-suggestions>label {
-            color: var(--md-sys-color-on-surface-variant-dark);
-        }
-
-        .dark-theme h3 {
-            border-bottom-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme code {
+        .dark-theme #gemini-component-preview code {
             background-color: #333;
             color: #eee;
             border-color: #555;
         }
 
-        .dark-theme fieldset {
-            border-color: var(--md-sys-color-outline-dark);
-        }
-
-        .dark-theme .input-group input[type="text"],
-        .dark-theme .input-group input[type="number"],
-        .dark-theme .input-group select,
-        .dark-theme .input-group textarea {
-            background-color: var(--md-sys-color-surface-dark);
-            color: var(--md-sys-color-on-surface-dark);
-            border-color: var(--md-sys-color-outline-dark);
-        }
-
-        .dark-theme .input-group input:focus,
-        .dark-theme .input-group select:focus,
-        .dark-theme .input-group textarea:focus {
-            border-color: var(--md-sys-color-primary-dark);
-            outline-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme .input-group input[type="color"] {
-            border-color: var(--md-sys-color-outline-dark);
-            background-color: #333;
-        }
-
-        /* Darker picker bg */
-        .dark-theme .mode-selection label::before,
-        .dark-theme .checkbox-label::before {
-            border-color: var(--md-sys-color-outline-dark);
-            background-color: var(--md-sys-color-surface-dark);
-        }
-
-        .dark-theme .mode-selection label:hover::before,
-        .dark-theme .checkbox-label:hover::before {
-            border-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme .mode-selection input[type="radio"]:checked+label::before,
-        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::before {
-            border-color: var(--md-sys-color-primary-dark);
-            background-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme .mode-selection input[type="radio"]:checked+label::after {
-            background-color: var(--md-sys-color-on-primary-dark);
-        }
-
-        .dark-theme input[type="checkbox"].custom-styled:checked+.checkbox-label::after {
-            border-color: var(--md-sys-color-on-primary-dark);
-        }
-
-        .dark-theme button:not([id^="md-"]) {
-            background-color: var(--md-sys-color-primary-dark);
-            color: var(--md-sys-color-on-primary-dark);
-        }
-
-        .dark-theme button:not([id^="md-"]):hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 90%, white);
-        }
-
-        .dark-theme button:not([id^="md-"]):disabled {
-            background-color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 30%, transparent);
-            color: color-mix(in srgb, var(--md-sys-color-on-surface-dark) 50%, transparent);
-        }
-
-        .dark-theme #generate-components-button {
-            background-color: var(--md-sys-color-secondary-dark);
-            color: var(--md-sys-color-on-secondary-dark);
-        }
-
-        .dark-theme #generate-components-button:hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-secondary-dark) 90%, white);
-        }
-
-        .dark-theme #add-custom-color-button {
-            background-color: var(--md-sys-color-secondary-container-dark);
-            color: var(--md-sys-color-on-secondary-container-dark);
-            border-color: var(--md-sys-color-outline-dark);
-        }
-
-        .dark-theme #add-custom-color-button:hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-secondary-container-dark) 90%, white);
-        }
-
-        .dark-theme #drop-area {
-            border-color: var(--md-sys-color-outline-dark);
-            background-color: var(--md-sys-color-surface-variant-dark);
-        }
-
-        .dark-theme #drop-area.drag-over {
-            background-color: var(--md-sys-color-secondary-container-dark);
-            border-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme #drop-area p {
-            color: var(--md-sys-color-on-surface-variant-dark);
-        }
-
-        .dark-theme #image-preview {
-            border-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme .image-options {
-            border-top-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme .image-options label {
-            color: var(--md-sys-color-on-surface-variant-dark);
-        }
-
-        .dark-theme #custom-color-list .custom-color-row {
-            border-color: var(--md-sys-color-outline-variant-dark);
-            background-color: var(--md-sys-color-surface-dark);
-        }
-
-        .dark-theme #custom-color-list label {
-            color: var(--md-sys-color-on-surface-variant-dark);
-        }
-
-        .dark-theme #custom-color-list button {
-            color: var(--md-sys-color-error-dark);
-        }
-
-        .dark-theme #custom-color-list button:hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-error-dark) 15%, transparent);
-        }
-
-        .dark-theme .output-section .placeholder {
-            color: var(--md-sys-color-outline-dark);
-        }
-
-        .dark-theme .custom-color-group-display {
-            border-left-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme .error {
-            color: var(--md-sys-color-error-dark);
-            background-color: var(--md-sys-color-error-container-dark);
-            border-color: color-mix(in srgb, var(--md-sys-color-error-dark) 30%, transparent);
-        }
-
-        .dark-theme #loading-indicator,
-        .dark-theme #suggestion-loading-indicator {
-            color: var(--md-sys-color-outline-dark);
-        }
-
-        .dark-theme #text-prompt-suggestions {
-            border-top-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme #text-prompt-suggestions>label {
-            color: var(--md-sys-color-on-surface-variant-dark);
-        }
-
-        .dark-theme .suggestion-option {
-            border-color: var(--md-sys-color-outline-dark);
-            background-color: var(--md-sys-color-surface-dark);
-        }
-
-        .dark-theme .suggestion-option:hover {
-            background-color: color-mix(in srgb, var(--md-sys-color-primary-dark) 8%, transparent);
-            border-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme .suggestion-option.selected {
-            border-color: var(--md-sys-color-primary-dark);
-            background-color: var(--md-sys-color-primary-container-dark);
-            outline-color: var(--md-sys-color-primary-dark);
-        }
-
-        .dark-theme .suggestion-option label {
-            color: var(--md-sys-color-on-surface-dark);
-        }
-
-        .dark-theme .suggestion-option.selected span:not(.suggestion-swatch) {
-            color: var(--md-sys-color-on-primary-container-dark);
-        }
-
-        .dark-theme .suggestion-swatch {
-            border-color: var(--md-sys-color-outline-variant-dark);
-        }
-
-        .dark-theme #component-examples {
-            border-top-color: var(--md-sys-color-outline-variant-dark);
+        .dark-theme #gemini-component-preview a {
+            color: var(--local-sys-color-primary, var(--md-sys-color-primary-dark));
         }
     </style>
 </head>
 
 <body>
+    <button id="theme-toggle" title="Toggle Light/Dark Mode">
+        <span class="material-icons"></span>
+    </button>
+
     <div class="container">
-        <h1>Material Color Theme Generator</h1>
-        <p>Generate Material Design 3 color palettes from colors, images, or text prompts. Uses <a
+        <h1>MILCHICK: Material Integration Leveraging Creative Human-LLM Intelligence Colors Kit</h1>
+        <p>Generate Material Design 3 color palettes from colors, images, or text prompts. Uses a pure js fork of <a
                 href="https://github.com/material-foundation/material-color-utilities/tree/main/typescript"
-                target="_blank" rel="noopener">material-color-utilities</a> via <code>dream.js</code> wrapper.</p>
+                target="_blank" rel="noopener">material-color-utilities</a> via <code>dream.js</code>.</p>
 
         <div class="main-layout">
-            <!-- Input Configuration Section -->
             <div class="input-section card">
                 <h2>Configuration</h2>
                 <fieldset class="mode-selection">
                     <legend>Input Mode</legend>
-                    <div><input type="radio" id="modeText" name="generationMode" value="modeText"><label
-                            for="modeText">Text Prompt</label></div>
-                    <div><input type="radio" id="mode3" name="generationMode" value="mode3" checked><label
-                            for="mode3">Single Source Color</label></div>
-                    <div><input type="radio" id="mode4" name="generationMode" value="mode4"><label for="mode4">Single
-                            Source + Custom</label></div>
-                    <div><input type="radio" id="mode1" name="generationMode" value="mode1"><label for="mode1">Multiple
-                            Source Colors</label></div>
-                    <div><input type="radio" id="mode2" name="generationMode" value="mode2"><label for="mode2">Multiple
-                            Source + Custom</label></div>
-                    <div><input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle"><label
-                            for="modeImageSingle">Image (Single Dominant)</label></div>
-                    <div><input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti"><label
-                            for="modeImageMulti">Image (Multiple Seeds)</label></div>
+                    <div><input type="radio" id="modeText" name="generationMode" value="modeText" checked><label
+                            for="modeText" title="Generate seed colors using a text prompt via Gemini.">Gemini
+                            Prompt</label></div>
+                    <div><input type="radio" id="mode3" name="generationMode" value="mode3"><label for="mode3"
+                            title="Generate theme from a single source color.">Single Source</label></div>
+                    <div id="mode4-container"><input type="radio" id="mode4" name="generationMode" value="mode4"><label
+                            for="mode4" title="Generate theme from one source plus custom accent colors.">Single +
+                            Custom</label></div>
+                    <div><input type="radio" id="mode1" name="generationMode" value="mode1"><label for="mode1"
+                            title="Generate theme from multiple source colors (Primary, Secondary, Tertiary).">Multiple
+                            Sources</label></div>
+                    <div id="mode2-container"><input type="radio" id="mode2" name="generationMode" value="mode2"><label
+                            for="mode2" title="Generate theme from multiple sources plus custom accent colors.">Multiple
+                            + Custom</label></div>
+                    <div id="modeImageSingle-container"><input type="radio" id="modeImageSingle" name="generationMode"
+                            value="modeImageSingle"><label for="modeImageSingle"
+                            title="Generate theme from the single most dominant color in an image.">Image
+                            (Single)</label></div>
+                    <div id="modeImageMulti-container"><input type="radio" id="modeImageMulti" name="generationMode"
+                            value="modeImageMulti"><label for="modeImageMulti"
+                            title="Generate theme from multiple seed colors extracted from an image.">Image
+                            (Multiple)</label></div>
                 </fieldset>
 
-                <!-- Text Prompt Input -->
-                <div id="text-prompt-area" class="input-group hidden">
+                <div id="text-prompt-area" class="input-group">
                     <label for="text-prompt-input">Describe your theme:</label>
                     <textarea id="text-prompt-input" rows="3"
-                        placeholder="e.g., calm ocean sunset, vibrant forest floor, cyberpunk city night..."></textarea>
+                        placeholder="e.g., calm ocean sunset, vibrant forest floor..."></textarea>
                     <div id="text-prompt-options">
                         <input type="checkbox" id="use-gemini-simulation" class="custom-styled">
                         <label for="use-gemini-simulation" class="checkbox-label">Use Simulation (Offline)</label>
@@ -1082,128 +1245,105 @@
                     <div id="suggestion-loading-indicator" class="hidden">Getting suggestions...</div>
                     <div id="text-prompt-suggestions" class="hidden"><label>Select a suggested color set:</label></div>
                     <p style="font-size: 0.8em; color: var(--md-sys-color-outline-light); margin-top: 5px;">Select a
-                        suggestion below to populate the Source Colors inputs.</p>
+                        suggestion to populate Source Colors.</p>
                 </div>
 
-                <!-- Image Input -->
                 <div id="image-input-area" class="input-group hidden">
                     <label>Upload or Drop Image:</label>
                     <div id="drop-area">
-                        <p>Drag & Drop image here or click to browse</p>
+                        <p>Drag & Drop or click</p>
                         <input type="file" id="image-input" accept="image/*" hidden>
-                        <img id="image-preview" src="#" alt="Image Preview" class="hidden" />
+                        <img id="image-preview" src="#" alt="Preview" class="hidden" />
                     </div>
                     <div class="image-options hidden" id="image-multi-options">
-                        <label for="numSources">Max Colors to Extract:</label>
-                        <input type="number" id="numSources" value="5" min="1" max="20">
-                        <label for="extractQuality">Extraction Quality (1=Best, Higher=Faster):</label>
-                        <input type="number" id="extractQuality" value="10" min="1" max="50">
+                        <label for="numSources">Max Colors:</label> <input type="number" id="numSources" value="5"
+                            min="1" max="20">
+                        <label for="extractQuality">Quality (1=Best):</label> <input type="number" id="extractQuality"
+                            value="10" min="1" max="50">
                     </div>
                 </div>
 
-                <!-- Source Color Input(s) -->
-                <div id="source-color-area" class="input-group">
+                <div id="source-color-area" class="input-group hidden">
                     <label id="source-color-label">Source Color:</label>
                     <div id="source-color-inputs"></div>
                 </div>
 
-                <!-- Custom Color Input(s) -->
                 <div id="custom-color-area" class="input-group hidden">
-                    <label>Custom Accent Colors (Optional):</label>
+                    <label>Custom Accent Colors:</label>
                     <div id="custom-color-list"></div>
-                    <button type="button" id="add-custom-color-button">Add Custom Color</button>
+                    <button type="button" id="add-custom-color-button">Add Custom</button>
                 </div>
 
-                <!-- Multi-Source Options -->
                 <div id="multi-source-options" class="input-group hidden">
                     <label for="harmonyStrategy">Multi-Color Strategy:</label>
                     <select id="harmonyStrategy">
-                        <option value="direct" selected>Direct (Use as is)</option>
-                        <option value="harmonized">Harmonized (Shift towards Primary)</option>
+                        <option value="direct" selected>Direct</option>
+                        <option value="harmonized">Harmonized</option>
                     </select>
                 </div>
 
-                <!-- Actions -->
                 <button type="button" id="generate-button">Generate Theme</button>
                 <div id="loading-indicator" class="hidden">Generating theme...</div>
                 <div id="error-message" class="error hidden"></div>
             </div>
 
-            <!-- Output Section -->
             <div class="output-section card">
                 <h2>Generated Theme</h2>
                 <div id="seed-colors-display" class="color-group">
                     <h3>Seed Color(s) Used</h3>
                     <div class="swatch-container">
-                        <p class="placeholder">Seeds will appear here after generation.</p>
+                        <p class="placeholder">Seeds appear here.</p>
                     </div>
                 </div>
                 <hr
                     style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;">
                 <div id="palette-display">
-                    <p class="placeholder">Configure inputs and click 'Generate Theme'. Palettes will appear here.</p>
+                    <p class="placeholder">Configure inputs and click Generate.</p>
                 </div>
 
-                <!-- Component Examples -->
-                <button type="button" id="generate-components-button" class="hidden">Generate Component
-                    Examples</button>
                 <div id="component-examples" class="hidden">
-                    <h3>Component Examples (using Material Web Components)</h3>
-                    <p style="font-size: 0.9em; margin-bottom: 15px; color: var(--md-sys-color-outline-light);">Ensure
-                        you have loaded the MWC library and Material Icons.</p>
-                    <div class="component-preview-area" id="light-component-preview">
-                        <h4>Light Theme</h4>
-                        <!-- Light theme examples will be injected here -->
+                    <hr
+                        style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;">
+                    <h3>Component Examples</h3>
+                    <div class="component-generation-options">
+                        <div class="input-group">
+                            <label for="component-style-prompt">Optional Gemini Style Prompt:</label>
+                            <input type="text" id="component-style-prompt"
+                                placeholder="e.g., modern and clean, playful, brutalist...">
+                        </div>
+                        <div class="component-buttons-container">
+                            <button type="button" id="generate-mwc-components-button"
+                                title="Apply theme to standard Material Web Components">Generate deterministic component
+                                set</button>
+                            <button type="button" id="generate-gemini-components-button"
+                                title="Use Gemini to generate styled HTML based on the theme and your style prompt">Generate
+                                gemini created component set</button>
+                        </div>
                     </div>
-                    <div class="component-preview-area dark-theme" id="dark-component-preview">
-                        <h4>Dark Theme</h4>
-                        <!-- Dark theme examples will be injected here -->
+                    <div id="gemini-component-loading" class="hidden">Generating Gemini components...</div>
+
+                    <div class="component-preview-grid">
+                        <div class="component-preview-area" id="mwc-component-preview">
+                            <h4>MWC Preview</h4>
+                        </div>
+                        <div class="component-preview-area" id="gemini-component-preview">
+                            <h4>Gemini Preview</h4>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Dynamic styles will be injected here -->
                 <style id="dynamic-theme-styles"></style>
             </div>
         </div>
     </div>
 
-    <!-- Load the dream.js wrapper (adjust path if needed) -->
-    <script src="js/dream.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@material/material-color-utilities@latest/dist/material-color-utilities.umd.js"></script> -->
+    <script src="config.js"></script>
+    <script src="dream.js"></script>
 
+    <script type="module" src="https://cdn.skypack.dev/@material/web/all.js"></script>
 
-    <!--
-        IMPORTANT: Add the Material Web Components script(s) here!
-        Choose ONE of the following methods:
-
-        1. Load ALL components (Easy for testing, larger file size):
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/all.js?module"></script>
-
-        2. Load ONLY the components used in the examples (Recommended for production):
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/filled-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/outlined-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/text-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/elevated-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/button/filled-tonal-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/card/card.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/fab/fab.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/fab/extended-fab.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/chip-set.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/assist-chip.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/filter-chip.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/input-chip.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/chips/suggestion-chip.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/icon/icon.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/iconbutton/icon-button.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/switch/switch.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/checkbox/checkbox.js?module"></script>
-           <script type="module" src="https://cdn.jsdelivr.net/npm/@material/web/radio/radio.js?module"></script>
-    -->
-
-
-    <script>
+    <script type="module">
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Element Selection ---
             const modeRadios = document.querySelectorAll('input[name="generationMode"]');
             const imageInputArea = document.getElementById('image-input-area');
             const dropArea = document.getElementById('drop-area');
@@ -1231,970 +1371,462 @@
             const suggestColorsButton = document.getElementById('suggest-colors-button');
             const suggestionLoadingIndicator = document.getElementById('suggestion-loading-indicator');
             const textPromptSuggestionsContainer = document.getElementById('text-prompt-suggestions');
-            const generateComponentsButton = document.getElementById('generate-components-button');
             const componentExamplesDiv = document.getElementById('component-examples');
-            const lightComponentPreview = document.getElementById('light-component-preview');
-            const darkComponentPreview = document.getElementById('dark-component-preview');
+            const generateMwcComponentsButton = document.getElementById('generate-mwc-components-button');
+            const generateGeminiComponentsButton = document.getElementById('generate-gemini-components-button');
+            const componentStylePromptInput = document.getElementById('component-style-prompt');
+            const geminiComponentLoadingIndicator = document.getElementById('gemini-component-loading');
+            const mwcComponentPreview = document.getElementById('mwc-component-preview');
+            const geminiComponentPreview = document.getElementById('gemini-component-preview');
             const dynamicThemeStyles = document.getElementById('dynamic-theme-styles');
             const bodyElement = document.body;
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const themeToggleIcon = themeToggleButton.querySelector('.material-icons');
 
-            // --- State Variables ---
+            const mode4Container = document.getElementById('mode4-container');
+            const mode2Container = document.getElementById('mode2-container');
+            const modeImageSingleContainer = document.getElementById('modeImageSingle-container');
+            const modeImageMultiContainer = document.getElementById('modeImageMulti-container');
+
             let currentImageFile = null;
-            let currentMode = 'mode3'; // Default mode
+            let currentMode = 'modeText';
             let lastGeneratedTheme = null;
-            let isDarkMode = false; // Track current theme state for body class
+            let isDarkMode = false;
 
-            // --- API Configuration (Replace with your actual credentials) ---
-            const API_KEY = "YOUR_API_KEY"; // <--- REPLACE WITH YOUR KEY
-            const PROJECT_ID = "YOUR_GOOGLE_CLOUD_PROJECT_ID"; // <--- REPLACE WITH YOUR PROJECT ID
-            const LOCATION = "us-central1"; // Or your preferred GCP location
-            const GEMINI_MODEL = "gemini-1.5-flash-preview-0514"; // Or another suitable model
-            const GEMINI_API_ENDPOINT = `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`; // Note: No ?key= here, use Authentication header
+            let API_KEY, GEMINI_MODEL, GEMINI_API_ENDPOINT_BASE;
+            let GEMINI_API_ENDPOINT_COLOR_PICKER, GEMINI_API_ENDPOINT_COMPONENT_GENERATOR;
+            let isApiConfigValid = false;
+            let enableCustomColors = true;
+            let enableImages = true;
 
-            const GEMINI_SYSTEM_PROMPT = `You are an expert color palette assistant for web design, specializing in Material Design 3.
-Analyze the user's description. Generate EXACTLY THREE distinct sets of seed colors based on the prompt.
-Each set must contain exactly THREE hex color codes suitable for Primary, Secondary, and Tertiary roles in a Material Design theme.
-The three sets should offer diverse interpretations (e.g., one literal, one abstract, one moody).
-Ensure colors within each set are harmonious and generally suitable for UI elements (consider contrast potential).
-Respond ONLY with a valid JSON object containing a single key "suggestions". The value should be an array of three arrays, each inner array holding three hex color strings.
-Example: {"suggestions": [["#hex1", "#hex2", "#hex3"], ["#hex4", "#hex5", "#hex6"], ["#hex7", "#hex8", "#hex9"]]}
-Do not include any other text, comments, explanations, or markdown formatting outside the JSON structure.`;
 
-            // --- Helper Functions ---
-            function hexToArgbInt(hex) {
-                if (!hex) return 0;
-                hex = hex.replace('#', '');
-                if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-                if (hex.length !== 6) return 0;
-                // Always use full alpha (FF)
-                return parseInt(`ff${hex}`, 16) | 0; // Use bitwise OR 0 for signed 32-bit int
+            function initializeApp() {
+                loadConfig();
+                setupThemeToggle();
+                applyFeatureVisibility();
+                setupEventListeners();
+                updateInputUI(currentMode);
             }
 
-            function argbIntToHex(argb) {
-                if (typeof argb !== 'number' || isNaN(argb)) return '#000000';
-                const r = (argb >> 16) & 0xff;
-                const g = (argb >> 8) & 0xff;
-                const b = argb & 0xff;
-                return `#${[r, g, b].map(c => c.toString(16).padStart(2, '0')).join('')}`;
+            function loadConfig() {
+                try {
+                    if (typeof APP_CONFIG === 'undefined') throw new Error("config.js not loaded or APP_CONFIG missing.");
+                    enableCustomColors = APP_CONFIG.ENABLE_CUSTOM_COLORS !== undefined ? APP_CONFIG.ENABLE_CUSTOM_COLORS : true;
+                    enableImages = APP_CONFIG.ENABLE_IMAGES !== undefined ? APP_CONFIG.ENABLE_IMAGES : true;
+                    API_KEY = APP_CONFIG.API_KEY;
+                    GEMINI_MODEL = APP_CONFIG.GEMINI_MODEL;
+                    const configColorPickerModel = typeof GEMINI_MODEL_COLOR_PICKER !== 'undefined' ? GEMINI_MODEL_COLOR_PICKER : null;
+                    const configComponentGenModel = typeof GEMINI_MODEL_COMPONENT_GENERATOR !== 'undefined' ? GEMINI_MODEL_COMPONENT_GENERATOR : null;
+
+
+                    if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE" || !GEMINI_MODEL) {
+                        isApiConfigValid = false;
+                        showError("Gemini API config missing. Using simulation.");
+                        useSimulationCheckbox.disabled = true;
+                        suggestColorsButton.title = "Gemini API not configured.";
+                        generateGeminiComponentsButton.disabled = true;
+                        generateGeminiComponentsButton.title = "Gemini API not configured.";
+                    } else {
+                        const modelIdBase = GEMINI_MODEL.startsWith('models/') ? GEMINI_MODEL : `models/${GEMINI_MODEL}`;
+                        const modelIdColor = (configColorPickerModel && configColorPickerModel.startsWith('models/')) ? configColorPickerModel : (configColorPickerModel ? `models/${configColorPickerModel}` : modelIdBase);
+                        const modelIdComponent = (configComponentGenModel && configComponentGenModel.startsWith('models/')) ? configComponentGenModel : (configComponentGenModel ? `models/${configComponentGenModel}` : modelIdBase);
+
+                        GEMINI_API_ENDPOINT_BASE = `https://generativelanguage.googleapis.com/v1beta/${modelIdBase}`;
+                        GEMINI_API_ENDPOINT_COLOR_PICKER = `https://generativelanguage.googleapis.com/v1beta/${modelIdColor}`;
+                        GEMINI_API_ENDPOINT_COMPONENT_GENERATOR = `https://generativelanguage.googleapis.com/v1beta/${modelIdComponent}`;
+
+                        isApiConfigValid = true;
+                        useSimulationCheckbox.disabled = false;
+                        suggestColorsButton.title = "";
+                        generateGeminiComponentsButton.disabled = false;
+                        generateGeminiComponentsButton.title = "";
+                    }
+                } catch (error) {
+                    console.error("Error loading config.js:", error); showError("Config error. Using simulation, limited features.");
+                    isApiConfigValid = false; enableCustomColors = false; enableImages = false;
+                    useSimulationCheckbox.checked = true; useSimulationCheckbox.disabled = true; suggestColorsButton.title = "Config error.";
+                    generateGeminiComponentsButton.disabled = true; generateGeminiComponentsButton.title = "Config error.";
+                }
             }
 
-            function getContrastColor(hex) {
-                // Simplified contrast check based on luminance
-                if (!hex || hex.length < 4) return '#000000'; // Default to black
-                hex = hex.replace('#', '');
-                if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-                if (hex.length !== 6) return '#000000';
+            function applyFeatureVisibility() {
+                if (!enableCustomColors) {
+                    [mode4Container, mode2Container, addCustomColorButton].forEach(el => el?.classList.add('hidden'));
+                }
+                if (!enableImages) {
+                    [modeImageSingleContainer, modeImageMultiContainer].forEach(el => el?.classList.add('hidden'));
+                }
 
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-
-                // Calculate relative luminance (formula from WCAG)
-                const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-
-                // Use black text on light backgrounds (lum > 0.5), white text on dark backgrounds
-                return lum > 0.5 ? '#000000' : '#FFFFFF';
+                const selectedRadio = document.querySelector('input[name="generationMode"]:checked');
+                if (selectedRadio?.closest('div')?.classList.contains('hidden')) {
+                    currentMode = 'modeText';
+                    document.getElementById('modeText').checked = true;
+                }
             }
 
-            function createSwatchHtml(name, colorInt, extraClass = '') {
-                const hex = argbIntToHex(colorInt);
-                const contrast = getContrastColor(hex);
-                // Sanitize name to prevent XSS - basic example
-                const safeName = name ? String(name).replace(/</g, "<").replace(/>/g, ">") : '';
-                return `<div class="swatch ${extraClass}" style="background-color: ${hex}; color: ${contrast};" title="${safeName} - ${hex}">
-                            <span class="swatch-name">${safeName}</span>
-                            <span class="swatch-hex">${hex}</span>
-                        </div>`;
+            function setupThemeToggle() {
+                const storedTheme = localStorage.getItem('themeMode');
+                isDarkMode = storedTheme === 'dark';
+                applyTheme();
+                themeToggleButton.addEventListener('click', () => {
+                    isDarkMode = !isDarkMode;
+                    localStorage.setItem('themeMode', isDarkMode ? 'dark' : 'light');
+                    applyTheme();
+                });
             }
 
-            function showError(msg) {
-                errorMessageDiv.textContent = msg;
-                errorMessageDiv.classList.remove('hidden');
-                console.error("Error Displayed:", msg);
+            function applyTheme() {
+                bodyElement.classList.toggle('dark-theme', isDarkMode);
+                themeToggleIcon.textContent = isDarkMode ? 'light_mode' : 'dark_mode';
+                // Apply theme class to preview areas for consistent background/text
+                mwcComponentPreview?.classList.toggle('dark-theme', isDarkMode);
+                geminiComponentPreview?.classList.toggle('dark-theme', isDarkMode);
+                // Re-apply dynamic styles if they exist, as dark mode class change might affect them
+                if (lastGeneratedTheme) {
+                    applyScopedThemeStyles(lastGeneratedTheme);
+                }
             }
 
-            function hideError() {
-                errorMessageDiv.classList.add('hidden');
-                errorMessageDiv.textContent = '';
-            }
 
-            function setUILoading(isLoading) {
-                loadingIndicator.classList.toggle('hidden', !isLoading);
-                generateButton.disabled = isLoading;
-            }
+            function hexToArgbInt(hex) { if (!hex) return 0; hex = hex.replace('#', ''); if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2]; if (hex.length !== 6) return 0; return parseInt(`ff${hex}`, 16) | 0; }
+            function argbIntToHex(argb) { if (typeof argb !== 'number' || isNaN(argb)) return '#000000'; const r = (argb >> 16) & 0xff; const g = (argb >> 8) & 0xff; const b = argb & 0xff; return `#${[r, g, b].map(c => c.toString(16).padStart(2, '0')).join('')}`; }
+            function getContrastColor(hex) { if (!hex || hex.length < 4) return '#000000'; hex = hex.replace('#', ''); if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2]; if (hex.length !== 6) return '#000000'; const r = parseInt(hex.substring(0, 2), 16); const g = parseInt(hex.substring(2, 4), 16); const b = parseInt(hex.substring(4, 6), 16); const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; return lum > 0.5 ? '#000000' : '#FFFFFF'; }
+            function createSwatchHtml(name, colorInt, extraClass = '') { const hex = argbIntToHex(colorInt); const contrast = getContrastColor(hex); const safeName = name ? String(name).replace(/</g, "<").replace(/>/g, ">") : ''; return `<div class="swatch ${extraClass}" style="background-color: ${hex}; color: ${contrast};" title="${safeName} - ${hex}"><span class="swatch-name">${safeName}</span><span class="swatch-hex">${hex}</span></div>`; }
+            function showError(msg) { errorMessageDiv.textContent = msg; errorMessageDiv.classList.remove('hidden'); console.error("Error Displayed:", msg); }
+            function hideError() { errorMessageDiv.classList.add('hidden'); errorMessageDiv.textContent = ''; }
+            function setUILoading(isLoading) { loadingIndicator.classList.toggle('hidden', !isLoading); generateButton.disabled = isLoading; }
+            function setSuggestionLoading(isLoading) { suggestionLoadingIndicator.classList.toggle('hidden', !isLoading); suggestColorsButton.disabled = isLoading; textPromptInput.disabled = isLoading; }
+            function setGeminiComponentLoading(isLoading) { geminiComponentLoadingIndicator.classList.toggle('hidden', !isLoading); generateGeminiComponentsButton.disabled = isLoading; }
 
-            function setSuggestionLoading(isLoading) {
-                suggestionLoadingIndicator.classList.toggle('hidden', !isLoading);
-                suggestColorsButton.disabled = isLoading;
-                textPromptInput.disabled = isLoading;
-            }
 
-            // --- Theme Display ---
             function displayTheme(theme) {
-                paletteDisplay.innerHTML = ''; // Clear previous palettes
-                lastGeneratedTheme = theme; // Store for component generation
-
-                if (!theme?.palettes || !theme?.schemes) {
-                    paletteDisplay.innerHTML = '<p class="placeholder error">Invalid theme object received.</p>';
-                    generateComponentsButton.classList.add('hidden');
-                    return;
-                }
-
-                // Determine initial theme mode based on preference or system (optional)
-                // For simplicity, default to light for display, components handle both
-                updateBodyThemeClass(false); // Ensure body starts with light theme class
-
-                // Display Standard Palettes
+                paletteDisplay.innerHTML = ''; lastGeneratedTheme = theme;
+                if (!theme?.palettes || !theme?.schemes) { paletteDisplay.innerHTML = '<p class="placeholder error">Invalid theme.</p>'; componentExamplesDiv.classList.add('hidden'); return; }
                 ['primary', 'secondary', 'tertiary', 'neutral', 'neutralVariant', 'error'].forEach(key => {
-                    if (!theme.palettes[key]) return; // Skip if palette doesn't exist
-
-                    const section = document.createElement('div');
-                    section.classList.add('palette-section', 'color-group');
-
-                    const title = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // e.g., neutralVariant -> Neutral Variant
-                    section.innerHTML = `<h4>${title} Palette Roles</h4>`;
-
-                    const swatches = document.createElement('div');
-                    swatches.classList.add('scheme-swatches');
-
-                    const capKey = key.charAt(0).toUpperCase() + key.slice(1); // Primary, Secondary etc.
-                    const roles = [
-                        // Light Theme Roles
-                        { n: `${key} (L)`, k: key },
-                        { n: `On ${key} (L)`, k: `on${capKey}` },
-                        { n: `${key} Cont. (L)`, k: `${key}Container` },
-                        { n: `On ${key} Cont. (L)`, k: `on${capKey}Container` },
-                        // Dark Theme Roles
-                        { n: `${key} (D)`, k: key, s: 'dark' },
-                        { n: `On ${key} (D)`, k: `on${capKey}`, s: 'dark' },
-                        { n: `${key} Cont. (D)`, k: `${key}Container`, s: 'dark' },
-                        { n: `On ${key} Cont. (D)`, k: `on${capKey}Container`, s: 'dark' },
-                    ];
-
-                    roles.forEach(r => {
-                        const scheme = theme.schemes[r.s || 'light']; // Default to light scheme
-                        if (scheme && scheme[r.k] !== undefined) {
-                            swatches.innerHTML += createSwatchHtml(r.n, scheme[r.k]);
-                        }
-                    });
-
-                    if (swatches.hasChildNodes()) {
-                        section.appendChild(swatches);
-                        paletteDisplay.appendChild(section);
-                    }
+                    if (!theme.palettes[key]) return; const section = document.createElement('div'); section.classList.add('palette-section', 'color-group'); const title = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); section.innerHTML = `<h4>${title} Roles</h4>`;
+                    const swatches = document.createElement('div'); swatches.classList.add('scheme-swatches'); const capKey = key.charAt(0).toUpperCase() + key.slice(1);
+                    const roles = [{ n: `${key}(L)`, k: key }, { n: `On ${key}(L)`, k: `on${capKey}` }, { n: `${key} Cont.(L)`, k: `${key}Container` }, { n: `On ${key} Cont.(L)`, k: `on${capKey}Container` }, { n: `${key}(D)`, k: key, s: 'dark' }, { n: `On ${key}(D)`, k: `on${capKey}`, s: 'dark' }, { n: `${key} Cont.(D)`, k: `${key}Container`, s: 'dark' }, { n: `On ${key} Cont.(D)`, k: `on${capKey}Container`, s: 'dark' }];
+                    roles.forEach(r => { const scheme = theme.schemes[r.s || 'light']; if (scheme && scheme[r.k] !== undefined) swatches.innerHTML += createSwatchHtml(r.n, scheme[r.k]); });
+                    if (swatches.hasChildNodes()) { section.appendChild(swatches); paletteDisplay.appendChild(section); }
                 });
-
-                // Display Custom Colors
-                if (theme.customColors?.length > 0) {
-                    const customSection = document.createElement('div');
-                    customSection.classList.add('palette-section', 'color-group');
-                    customSection.innerHTML = `<h4>Custom Colors</h4>`;
-
-                    theme.customColors.forEach(group => {
-                        // Check if necessary data exists
-                        if (group?.color?.value === undefined || !group.light || !group.dark) return;
-
-                        const groupDiv = document.createElement('div');
-                        groupDiv.classList.add('custom-color-group-display');
-
-                        const safeName = (group.color.name || 'Unnamed Custom').replace(/</g, "<").replace(/>/g, ">");
-                        const seedHex = argbIntToHex(group.color.value);
-                        const finalHex = argbIntToHex(group.value); // Harmonized value
-
-                        groupDiv.innerHTML = `<h5>${safeName} (Seed: ${seedHex}${seedHex !== finalHex ? `, Harmonized: ${finalHex}` : ''})</h5>`;
-
-                        const pairDiv = document.createElement('div');
-                        pairDiv.classList.add('scheme-pair');
-
-                        const customRoles = [
-                            { n: `Color (L)`, s: 'light', k: 'color' }, { n: `On Color (L)`, s: 'light', k: 'onColor' },
-                            { n: `Container (L)`, s: 'light', k: 'colorContainer' }, { n: `On Container (L)`, s: 'light', k: 'onColorContainer' },
-                            { n: `Color (D)`, s: 'dark', k: 'color' }, { n: `On Color (D)`, s: 'dark', k: 'onColor' },
-                            { n: `Container (D)`, s: 'dark', k: 'colorContainer' }, { n: `On Container (D)`, s: 'dark', k: 'onColorContainer' }
-                        ];
-
-                        customRoles.forEach(r => {
-                            if (group[r.s] && group[r.s][r.k] !== undefined) {
-                                pairDiv.innerHTML += createSwatchHtml(r.n, group[r.s][r.k]);
-                            }
-                        });
-
-                        if (pairDiv.hasChildNodes()) groupDiv.appendChild(pairDiv);
-                        if (groupDiv.hasChildNodes()) customSection.appendChild(groupDiv); // Only append if it has content
-                    });
-
-                    if (customSection.querySelector('.custom-color-group-display')) { // Check if any custom groups were actually added
-                        paletteDisplay.appendChild(customSection);
-                    }
+                if (enableCustomColors && theme.customColors?.length > 0) {
+                    const customSection = document.createElement('div'); customSection.classList.add('palette-section', 'color-group'); customSection.innerHTML = `<h4>Custom Colors</h4>`;
+                    theme.customColors.forEach(group => { if (!group?.color?.value || !group.light || !group.dark) return; const groupDiv = document.createElement('div'); groupDiv.classList.add('custom-color-group-display'); const safeName = (group.color.name || 'Unnamed').replace(/</g, "<").replace(/>/g, ">"); const seedHex = argbIntToHex(group.color.value); const finalHex = argbIntToHex(group.value); groupDiv.innerHTML = `<h5>${safeName}(Seed: ${seedHex}${seedHex !== finalHex ? `, Harmonized: ${finalHex}` : ''})</h5>`; const pairDiv = document.createElement('div'); pairDiv.classList.add('scheme-pair'); const customRoles = [{ n: `Color(L)`, s: 'light', k: 'color' }, { n: `On Color(L)`, s: 'light', k: 'onColor' }, { n: `Container(L)`, s: 'light', k: 'colorContainer' }, { n: `On Container(L)`, s: 'light', k: 'onColorContainer' }, { n: `Color(D)`, s: 'dark', k: 'color' }, { n: `On Color(D)`, s: 'dark', k: 'onColor' }, { n: `Container(D)`, s: 'dark', k: 'colorContainer' }, { n: `On Container(D)`, s: 'dark', k: 'onColorContainer' }]; customRoles.forEach(r => { if (group[r.s]?.[r.k] !== undefined) pairDiv.innerHTML += createSwatchHtml(r.n, group[r.s][r.k]); }); if (pairDiv.hasChildNodes()) groupDiv.appendChild(pairDiv); if (groupDiv.hasChildNodes()) customSection.appendChild(groupDiv); });
+                    if (customSection.querySelector('.custom-color-group-display')) paletteDisplay.appendChild(customSection);
                 }
-
-
-                if (!paletteDisplay.hasChildNodes()) {
-                    paletteDisplay.innerHTML = '<p class="placeholder">Theme generated, but no standard palettes found.</p>';
-                    generateComponentsButton.classList.add('hidden');
-                } else {
-                    // Show the button to generate MWC examples
-                    generateComponentsButton.classList.remove('hidden');
-                    componentExamplesDiv.classList.add('hidden'); // Hide old examples initially
-                }
+                if (!paletteDisplay.hasChildNodes()) { paletteDisplay.innerHTML = '<p class="placeholder">No palettes generated.</p>'; componentExamplesDiv.classList.add('hidden'); }
+                else { componentExamplesDiv.classList.remove('hidden'); applyScopedThemeStyles(theme); }
             }
 
-            // --- UI Update Logic ---
             function updateInputUI(mode) {
-                currentMode = mode;
-                hideError();
+                currentMode = mode; hideError(); sourceColorInputsContainer.innerHTML = '';
+                textPromptSuggestionsContainer.innerHTML = '<label>Select suggested colors:</label>'; textPromptSuggestionsContainer.classList.add('hidden');
+                paletteDisplay.innerHTML = '<p class="placeholder">Configure inputs and click Generate.</p>'; seedColorsDisplayContainer.innerHTML = '<p class="placeholder">Seeds appear here.</p>';
+                componentExamplesDiv.classList.add('hidden');
 
-                // Reset common elements
-                sourceColorInputsContainer.innerHTML = '';
-                textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label>'; // Reset suggestions view
-                textPromptSuggestionsContainer.classList.add('hidden');
-                generateComponentsButton.classList.add('hidden'); // Hide component button until generation
-                componentExamplesDiv.classList.add('hidden'); // Hide component examples
-                paletteDisplay.innerHTML = '<p class="placeholder">Configure inputs and click \'Generate Theme\'.</p>'; // Reset palette display
-                seedColorsDisplayContainer.innerHTML = '<p class="placeholder">Seeds will appear here after generation.</p>'; // Reset seed display
+                const showImageInput = enableImages && mode.startsWith('modeImage');
+                const showCustomColorArea = enableCustomColors && ['mode4', 'mode2', 'modeImageSingle', 'modeImageMulti', 'modeText'].includes(mode);
+                const showMultiSourceOptions = ['mode1', 'mode2', 'modeImageMulti', 'modeText'].includes(mode) && (!mode.startsWith('modeImage') || enableImages);
 
-                // Toggle visibility of sections based on mode
-                imageInputArea.classList.toggle('hidden', !mode.startsWith('modeImage'));
-                imageMultiOptions.classList.toggle('hidden', mode !== 'modeImageMulti');
-                sourceColorArea.classList.toggle('hidden', mode.startsWith('modeImage') || mode === 'modeText'); // Hide for image and initial text prompt
-                customColorArea.classList.toggle('hidden', !['mode4', 'mode2', 'modeImageSingle', 'modeImageMulti', 'modeText'].includes(mode));
-                multiSourceOptionsArea.classList.toggle('hidden', !['mode1', 'mode2', 'modeImageMulti', 'modeText'].includes(mode));
-                textPromptArea.classList.toggle('hidden', mode !== 'modeText');
+                imageInputArea.classList.toggle('hidden', !showImageInput); imageMultiOptions.classList.toggle('hidden', mode !== 'modeImageMulti' || !enableImages);
+                sourceColorArea.classList.toggle('hidden', showImageInput || mode === 'modeText'); customColorArea.classList.toggle('hidden', !showCustomColorArea);
+                multiSourceOptionsArea.classList.toggle('hidden', !showMultiSourceOptions); textPromptArea.classList.toggle('hidden', mode !== 'modeText');
+
+                const isTextMode = mode === 'modeText';
+                if (isTextMode && !isApiConfigValid) { useSimulationCheckbox.disabled = true; }
+                else if (isTextMode) { useSimulationCheckbox.disabled = false; }
 
 
-                // Specific setup for each mode
-                if (mode === 'mode3' || mode === 'mode4') { // Single Source (+ Custom)
-                    sourceColorArea.classList.remove('hidden');
-                    sourceColorLabel.textContent = 'Source Color:';
-                    addSourceColorInput(0);
-                } else if (mode === 'mode1' || mode === 'mode2') { // Multiple Source (+ Custom)
-                    sourceColorArea.classList.remove('hidden');
-                    sourceColorLabel.textContent = 'Source Colors:';
-                    addSourceColorInput(0, 'Primary');
-                    addSourceColorInput(1, 'Secondary');
-                    addSourceColorInput(2, 'Tertiary');
-                } else if (mode === 'modeText') { // Text Prompt
-                    sourceColorArea.classList.remove('hidden'); // Show area, but inputs are disabled initially
-                    sourceColorLabel.textContent = 'Source Colors (from suggestion):';
-                    addSourceColorInput(0, 'Primary', true); // Add inputs, disabled by default
-                    addSourceColorInput(1, 'Secondary', true);
-                    addSourceColorInput(2, 'Tertiary', true);
-                    // Suggestions will enable these later
-                } else if (mode.startsWith('modeImage')) { // Image Modes
-                    if (!currentImageFile) { // Reset image preview if no file is selected
-                        imagePreview.classList.add('hidden');
-                        imagePreview.src = '#';
-                    }
-                }
+                if (mode === 'mode3' || (mode === 'mode4' && enableCustomColors)) { sourceColorArea.classList.remove('hidden'); sourceColorLabel.textContent = 'Source Color:'; addSourceColorInput(0); }
+                else if (mode === 'mode1' || (mode === 'mode2' && enableCustomColors)) { sourceColorArea.classList.remove('hidden'); sourceColorLabel.textContent = 'Source Colors:'; addSourceColorInput(0, 'Primary'); addSourceColorInput(1, 'Secondary'); addSourceColorInput(2, 'Tertiary'); }
+                else if (mode === 'modeText') { sourceColorArea.classList.remove('hidden'); sourceColorLabel.textContent = 'Source Colors:'; addSourceColorInput(0, 'Primary', true); addSourceColorInput(1, 'Secondary', true); addSourceColorInput(2, 'Tertiary', true); }
+                else if (showImageInput) { if (!currentImageFile) { imagePreview.classList.add('hidden'); imagePreview.src = '#'; } }
 
-                // Ensure at least one custom color row exists if the section is visible
-                if (!customColorArea.classList.contains('hidden') && customColorList.children.length === 0) {
-                    addCustomColorRow();
-                } else if (customColorArea.classList.contains('hidden')) {
-                    customColorList.innerHTML = ''; // Clear custom colors if section is hidden
-                }
+                if (showCustomColorArea && customColorList.children.length === 0) { addCustomColorRow(); } else if (!showCustomColorArea) { customColorList.innerHTML = ''; }
             }
 
-            function addSourceColorInput(index, label = '', disabled = false) {
-                const row = document.createElement('div');
-                row.classList.add('color-input-row');
-                const id = `source-color-${index}`;
-                const defaults = ['#6750A4', '#625B71', '#7D5260']; // Default Material purple theme seeds
-                const safeLabel = label ? String(label).replace(/</g, "<").replace(/>/g, ">") : '';
+            function addSourceColorInput(index, label = '', disabled = false) { const row = document.createElement('div'); row.classList.add('color-input-row'); const id = `source-color-${index}`; const defaults = ['#6750A4', '#625B71', '#7D5260']; const safeLabel = label ? String(label).replace(/</g, "<").replace(/>/g, ">") : ''; const labelHtml = label ? `<label for="${id}">${safeLabel}:</label>` : ''; const inputHtml = `<input type="color" id="${id}" name="${id}" value="${defaults[index] || '#808080'}" ${disabled ? 'disabled' : ''}>`; row.innerHTML = `${labelHtml}${inputHtml}`; sourceColorInputsContainer.appendChild(row); }
+            function addCustomColorRow() { const index = Date.now(); const row = document.createElement('div'); row.classList.add('custom-color-row'); row.dataset.id = index; row.innerHTML = `<label for="custom-name-${index}">Name:</label><input type="text" id="custom-name-${index}" value="custom${customColorList.children.length + 1}" placeholder="e.g., Brand"><label for="custom-value-${index}">Value:</label><input type="color" id="custom-value-${index}" value="#808080"><label for="custom-blend-${index}" title="Harmonize">Blend:</label><input type="checkbox" id="custom-blend-${index}" checked class="custom-styled"><label for="custom-blend-${index}" class="checkbox-label"></label><button type="button" class="remove-custom-color" data-id="${index}" title="Remove"><md-icon>delete_outline</md-icon></button>`; customColorList.appendChild(row); row.querySelector('.remove-custom-color').addEventListener('click', (e) => e.target.closest('.custom-color-row')?.remove()); }
+            function handleImageFile(file) { if (!file?.type.startsWith('image/')) { showError('Invalid image.'); return; } currentImageFile = file; const reader = new FileReader(); reader.onload = (e) => { imagePreview.src = e.target.result; imagePreview.classList.remove('hidden'); hideError(); }; reader.onerror = () => { showError('Read image failed.'); imagePreview.classList.add('hidden'); imagePreview.src = '#'; currentImageFile = null; }; reader.readAsDataURL(file); }
 
-                const labelHtml = label ? `<label for="${id}">${safeLabel}:</label>` : '';
-                const inputHtml = `<input type="color" id="${id}" name="${id}" value="${defaults[index] || '#808080'}" ${disabled ? 'disabled' : ''}>`;
 
-                row.innerHTML = `${labelHtml}${inputHtml}`;
-                sourceColorInputsContainer.appendChild(row);
-            }
+            async function getGeminiContent(endpoint = GEMINI_API_ENDPOINT_BASE, systemPrompt = "", prompt, isJsonResponse = false) {
+                if (!isApiConfigValid) throw new Error("Gemini API not configured.");
+                const fullApiUrl = `${endpoint}:generateContent?key=${API_KEY}`;
 
-            function addCustomColorRow() {
-                const index = Date.now(); // Unique ID for the row
-                const row = document.createElement('div');
-                row.classList.add('custom-color-row');
-                row.dataset.id = index;
-
-                row.innerHTML = `
-                     <label for="custom-name-${index}">Name:</label>
-                     <input type="text" id="custom-name-${index}" value="custom${customColorList.children.length + 1}" placeholder="e.g., BrandColor">
-                     <label for="custom-value-${index}">Value:</label>
-                     <input type="color" id="custom-value-${index}" value="#808080">
-                     <label for="custom-blend-${index}" title="Harmonize this color with the primary seed color">Blend:</label>
-                     <input type="checkbox" id="custom-blend-${index}" checked class="custom-styled">
-                     <label for="custom-blend-${index}" class="checkbox-label"></label>
-                     <button type="button" class="remove-custom-color" data-id="${index}" title="Remove Custom Color">
-                        <md-icon>delete_outline</md-icon> <!-- Using MWC icon -->
-                     </button>
-                 `;
-                customColorList.appendChild(row);
-
-                // Add event listener to the new remove button
-                row.querySelector('.remove-custom-color').addEventListener('click', (e) => {
-                    e.target.closest('.custom-color-row')?.remove();
-                });
-            }
-
-            function handleImageFile(file) {
-                if (!file?.type.startsWith('image/')) {
-                    showError('Invalid file type. Please select an image.');
-                    return;
-                }
-                currentImageFile = file;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    imagePreview.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                    hideError(); // Clear error if image loads successfully
-                };
-                reader.onerror = () => {
-                    showError('Failed to read image file.');
-                    imagePreview.classList.add('hidden');
-                    imagePreview.src = '#';
-                    currentImageFile = null;
-                };
-                reader.readAsDataURL(file);
-            }
-
-            // --- Text Prompt & Gemini Logic ---
-            async function getGeminiSuggestions(promptText) {
-                if (!API_KEY || API_KEY === "YOUR_API_KEY" || !PROJECT_ID || PROJECT_ID === "YOUR_GOOGLE_CLOUD_PROJECT_ID") {
-                    throw new Error("Gemini API Key or Project ID is not configured in the script.");
-                }
-                console.log("Calling Gemini API...");
+                const parts = [];
+                if (systemPrompt) parts.push({ text: systemPrompt });
+                parts.push({ text: prompt });
 
                 const requestBody = {
-                    contents: [{
-                        role: "user",
-                        parts: [{ text: GEMINI_SYSTEM_PROMPT + "\n\nUser Prompt: " + promptText }]
-                    }],
+                    contents: [{ parts: parts }],
                     generationConfig: {
-                        responseMimeType: "application/json", // Crucial for JSON output
-                        temperature: 0.7, // Balance creativity and predictability
-                        maxOutputTokens: 500,
-                        // topP, topK can also be set if needed
+                        temperature: 0.7,
+                        max_output_tokens: isJsonResponse ? 800 : 2048
                     }
-                    // safetySettings can be added here if needed
                 };
+                if (isJsonResponse) requestBody.generationConfig.response_mime_type = "application/json";
 
                 try {
-                    // Use fetch with Authentication Header (Bearer Token)
-                    // You'll need a mechanism to get a valid OAuth 2.0 or API Key Bearer token
-                    // This example assumes an API key is used directly in the URL, which is less secure
-                    // and might not work for Vertex AI endpoints depending on setup.
-                    // Prefer using gcloud auth print-access-token for local testing or service accounts for deployment.
-
-                    // *** Authentication Placeholder - Adjust as needed ***
-                    // Method 1: API Key in URL (Less Secure, might be blocked)
-                    const url = `${GEMINI_API_ENDPOINT}?key=${API_KEY}`;
-                    const headers = { 'Content-Type': 'application/json' };
-
-                    // Method 2: Bearer Token (More Secure - Preferred) - Get token via gcloud or service account
-                    // const accessToken = await getYourAccessToken(); // Implement this function
-                    // const url = GEMINI_API_ENDPOINT;
-                    // const headers = {
-                    //     'Content-Type': 'application/json',
-                    //     'Authorization': `Bearer ${accessToken}`
-                    // };
-
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: headers,
-                        body: JSON.stringify(requestBody)
-                    });
-
-                    if (!response.ok) {
-                        let errorBodyText = await response.text();
-                        let errorDetails = errorBodyText;
-                        try {
-                            // Try parsing error response as JSON for more details
-                            errorDetails = JSON.parse(errorBodyText);
-                        } catch (parseError) { /* Ignore if not JSON */ }
-                        console.error("Gemini API Error:", response.status, errorDetails);
-                        throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${errorBodyText}`);
-                    }
-
-                    const data = await response.json();
-
-                    // Process the response - structure depends on the model version
-                    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        console.error("Unexpected Gemini API response structure:", data);
-                        if (data.candidates?.[0]?.finishReason && data.candidates[0].finishReason !== 'STOP') {
-                            throw new Error(`Generation stopped unexpectedly: ${data.candidates[0].finishReason}. ${data.candidates[0]?.safetyRatings ? JSON.stringify(data.candidates[0].safetyRatings) : ''}`);
-                        }
-                        throw new Error("Could not find generated text in the API response.");
-                    }
-
-                    const jsonText = data.candidates[0].content.parts[0].text;
-
-                    // Attempt to parse the JSON text strictly
-                    try {
-                        const parsed = JSON.parse(jsonText);
-                        if (!parsed || !Array.isArray(parsed.suggestions)) {
-                            throw new Error("API response is valid JSON but missing the 'suggestions' array.");
-                        }
-                        // Further validation: check if suggestions is array of arrays of 3 strings
-                        if (!parsed.suggestions.every(set => Array.isArray(set) && set.length === 3 && set.every(c => typeof c === 'string' && /^#[0-9A-F]{6}$/i.test(c)))) {
-                            throw new Error("API response 'suggestions' array has incorrect structure or invalid hex codes.");
-                        }
-                        return parsed; // Return the valid parsed object { suggestions: [...] }
-                    } catch (parseError) {
-                        console.error("Failed to parse JSON response from Gemini:", parseError, "\nReceived text:", jsonText);
-                        throw new Error(`Model returned invalid JSON or incorrect structure: ${parseError.message}`);
-                    }
-                } catch (error) {
-                    console.error("Error during Gemini API call:", error);
-                    // Re-throw the error so the caller can handle it (e.g., show message to user)
-                    throw error;
-                }
+                    const response = await fetch(fullApiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(requestBody) });
+                    if (!response.ok) { let errorBodyText = await response.text(); let errorDetails = errorBodyText; try { errorDetails = JSON.parse(errorBodyText); } catch (e) { } console.error("API Error:", response.status, errorDetails); throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${JSON.stringify(errorDetails)}`); }
+                    const data = await response.json(); const candidate = data.candidates?.[0];
+                    if (!candidate) throw new Error("API response missing candidates.");
+                    if (candidate.finishReason && candidate.finishReason !== 'STOP' && candidate.finishReason !== 'MAX_TOKENS') { const safetyInfo = candidate.safetyRatings ? `Safety: ${JSON.stringify(candidate.safetyRatings)}` : ''; throw new Error(`Generation stopped: ${candidate.finishReason}. ${safetyInfo}`); }
+                    const contentText = candidate.content?.parts?.[0]?.text; if (!contentText) throw new Error("API response missing text content.");
+                    return contentText;
+                } catch (error) { console.error("Error during Gemini API call:", error); throw error; }
             }
 
-            // Simple offline simulation for testing
+            async function getGeminiSuggestions(promptText) {
+                const GEMINI_COLOR_SYSTEM_PROMPT = `You are a color palette generator. Given a text description, suggest exactly 3 DIFFERENT sets of 3 complementary hex color codes suitable for a Material Design 3 theme (Primary, Secondary, Tertiary). Respond ONLY with a JSON object containing a single key "suggestions" which is an array containing ONE array of 3 hex color strings (e.g., {"suggestions": [["#RRGGBB", "#RRGGBB", "#RRGGBB"], ["#RRGGBB", "#RRGGBB", "#RRGGBB"], ["#RRGGBB", "#RRGGBB", "#RRGGBB"]]}). Do not include any other text, explanations, or markdown formatting. Although the sets are unique and variedd, they must all conform to the prompt description.`;
+                const jsonResponse = await getGeminiContent(GEMINI_API_ENDPOINT_COLOR_PICKER, GEMINI_COLOR_SYSTEM_PROMPT, promptText, true);
+                try {
+                    const parsed = JSON.parse(jsonResponse);
+                    if (!parsed || !Array.isArray(parsed.suggestions) || parsed.suggestions.length === 0) throw new Error("JSON missing 'suggestions' array or is empty.");
+                    // Allow multiple suggestions if API provides them
+                    const isValid = parsed.suggestions.every(s => Array.isArray(s) && s.length === 3 && s.every(c => typeof c === 'string' && /^#[0-9A-F]{6}$/i.test(c)));
+                    if (!isValid) throw new Error("'suggestions' has invalid structure/hex.");
+                    return parsed;
+                } catch (parseError) { console.error("Failed to parse API JSON:", parseError, "\nReceived:", jsonResponse); throw new Error(`Model returned invalid JSON: ${parseError.message}`); }
+            }
+
             async function simulateGeminiCall(promptText) {
-                console.log("Simulating LLM call for:", promptText);
-                await new Promise(resolve => setTimeout(resolve, 600)); // Simulate network delay
-
-                const p = promptText.toLowerCase();
-                let suggestions = [
-                    ["#6750A4", "#625B71", "#7D5260"], // Default Purple
-                    ["#00695C", "#4DB6AC", "#B2DFDB"], // Teal/Greenish
-                    ["#B71C1C", "#EF9A9A", "#FFEBEE"]  // Reddish
-                ]; // Default fallback suggestions
-
-                if (p.includes("ocean") || p.includes("sea") || p.includes("water")) {
-                    suggestions = [["#0077CC", "#6AB0DE", "#BCE7F0"], ["#26A69A", "#80CBC4", "#E0F2F1"], ["#0D47A1", "#90CAF9", "#E3F2FD"]];
-                } else if (p.includes("forest") || p.includes("nature") || p.includes("green")) {
-                    suggestions = [["#388E3C", "#81C784", "#C8E6C9"], ["#558B2F", "#AED581", "#DCEDC8"], ["#00695C", "#4DB6AC", "#B2DFDB"]];
-                } else if (p.includes("sunset") || p.includes("warm") || p.includes("orange")) {
-                    suggestions = [["#EF6C00", "#FFAB40", "#FFF3E0"], ["#D84315", "#FF8A65", "#FFCCBC"], ["#F57F17", "#FFCA28", "#FFF9C4"]];
-                } else if (p.includes("mono") || p.includes("gray") || p.includes("grey")) {
-                    suggestions = [["#607D8B", "#B0BEC5", "#ECEFF1"], ["#455A64", "#90A4AE", "#CFD8DC"], ["#78909C", "#B0BEC5", "#F5F5F5"]];
-                }
-
-                // Simulate potential failure
-                // if (Math.random() < 0.1) throw new Error("Simulated API failure.");
-
-                return { suggestions }; // Return in the expected format
+                await new Promise(resolve => setTimeout(resolve, 600));
+                const predefinedSets = [
+                    ["#6750A4", "#625B71", "#7D5260"], // Default Purple/Gray
+                    ["#00695C", "#4DB6AC", "#B2DFDB"], // Teal/Green
+                    ["#B71C1C", "#EF9A9A", "#FFEBEE"], // Red/Pink
+                    ["#0D47A1", "#90CAF9", "#E3F2FD"], // Blue
+                    ["#EF6C00", "#FFCA28", "#FFF9C4"]  // Orange/Yellow (Sunset-like)
+                ];
+                const randomIndex = Math.floor(Math.random() * predefinedSets.length);
+                return { suggestions: [predefinedSets[randomIndex]] };
             }
 
-            function displaySuggestions(suggestionData) {
-                // Clear previous suggestions but keep the label
-                textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label>';
+            function displaySuggestions(suggestionData) { textPromptSuggestionsContainer.innerHTML = '<label>Select suggested colors:</label>'; if (!suggestionData?.suggestions?.length) { textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light); font-size: 0.9em;">No suggestions generated.</p>'; textPromptSuggestionsContainer.classList.remove('hidden'); return; } suggestionData.suggestions.forEach((colorSet, index) => { if (!Array.isArray(colorSet) || colorSet.length !== 3 || !colorSet.every(c => /^#[0-9A-F]{6}$/i.test(c))) { console.warn(`Skipping invalid suggestion ${index}:`, colorSet); return; } const div = document.createElement('div'); div.classList.add('suggestion-option'); div.dataset.colors = JSON.stringify(colorSet); div.setAttribute('role', 'button'); div.tabIndex = 0; const swatchesHtml = colorSet.map(hex => `<span class="suggestion-swatch" style="background-color: ${hex};" title="${hex}"></span>`).join(''); const radioId = `suggestion_${index}`; div.innerHTML = `<input type="radio" name="sugg" id="${radioId}" value='${JSON.stringify(colorSet)}' class="hidden"><label for="${radioId}">${swatchesHtml}<span>Option ${index + 1}</span></label>`; div.addEventListener('click', handleSuggestionSelection); div.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { handleSuggestionSelection.call(div, e); e.preventDefault(); } }); textPromptSuggestionsContainer.appendChild(div); }); if (textPromptSuggestionsContainer.querySelectorAll('.suggestion-option').length > 0) textPromptSuggestionsContainer.classList.remove('hidden'); else { textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light);">No valid suggestions.</p>'; textPromptSuggestionsContainer.classList.remove('hidden'); } }
+            function handleSuggestionSelection(event) { const selectedDiv = this; event.preventDefault(); const colorsJson = selectedDiv.dataset.colors; if (!colorsJson) return; try { const colors = JSON.parse(colorsJson); if (!Array.isArray(colors) || colors.length !== 3) throw new Error("Invalid color data."); const sourceInputs = sourceColorInputsContainer.querySelectorAll('input[type="color"]'); if (sourceInputs.length < 3) throw new Error("Source inputs missing."); colors.forEach((color, index) => { if (sourceInputs[index]) { sourceInputs[index].value = color; sourceInputs[index].disabled = false; sourceInputs[index].dispatchEvent(new Event('input', { bubbles: true })); } }); document.querySelectorAll('.suggestion-option.selected').forEach(el => el.classList.remove('selected')); selectedDiv.classList.add('selected'); const radio = selectedDiv.querySelector('input[type="radio"]'); if (radio) radio.checked = true; hideError(); } catch (error) { showError(`Apply suggestion failed: ${error.message}`); console.error(error); } }
 
-                if (!suggestionData?.suggestions || !suggestionData.suggestions.length) {
-                    textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light); font-size: 0.9em;">No valid suggestions were generated.</p>';
-                    textPromptSuggestionsContainer.classList.remove('hidden');
-                    return;
-                }
 
-                suggestionData.suggestions.forEach((colorSet, index) => {
-                    // Basic validation before creating the element
-                    if (!Array.isArray(colorSet) || colorSet.length !== 3 || !colorSet.every(c => /^#[0-9A-F]{6}$/i.test(c))) {
-                        console.warn(`Skipping invalid suggestion set at index ${index}:`, colorSet);
-                        return; // Skip this invalid set
-                    }
+            function applyScopedThemeStyles(theme) {
+                if (!theme?.schemes) return;
+                const lightCSS = [], darkCSS = [];
+                const previewSelectorBase = `#mwc-component-preview, #gemini-component-preview`;
 
-                    const div = document.createElement('div');
-                    div.classList.add('suggestion-option');
-                    div.dataset.colors = JSON.stringify(colorSet); // Store colors for easy retrieval
-                    div.setAttribute('role', 'button'); // Make it behave like a button
-                    div.tabIndex = 0; // Make it focusable
-
-                    const swatchesHtml = colorSet.map(hex =>
-                        `<span class="suggestion-swatch" style="background-color: ${hex};" title="${hex}"></span>`
-                    ).join('');
-
-                    const radioId = `suggestion_${index}`;
-                    div.innerHTML = `
-                        <input type="radio" name="color_suggestion" id="${radioId}" value='${JSON.stringify(colorSet)}' class="hidden">
-                        <label for="${radioId}">
-                            ${swatchesHtml}
-                            <span>Option ${index + 1}</span>
-                        </label>
-                    `;
-
-                    // Add event listeners for click and keyboard interaction
-                    div.addEventListener('click', handleSuggestionSelection);
-                    div.addEventListener('keydown', (e) => {
-                        if (e.key === ' ' || e.key === 'Enter') {
-                            handleSuggestionSelection.call(div, e); // Call handler with `this` context
-                            e.preventDefault(); // Prevent space from scrolling
-                        }
-                    });
-
-                    textPromptSuggestionsContainer.appendChild(div);
-                });
-
-                if (textPromptSuggestionsContainer.querySelectorAll('.suggestion-option').length > 0) {
-                    textPromptSuggestionsContainer.classList.remove('hidden'); // Show container if suggestions were added
-                } else {
-                    textPromptSuggestionsContainer.innerHTML += '<p style="color: var(--md-sys-color-outline-light); font-size: 0.9em;">No valid suggestions found after filtering.</p>';
-                    textPromptSuggestionsContainer.classList.remove('hidden');
-                }
-            }
-
-            function handleSuggestionSelection(event) {
-                // `this` refers to the clicked div.suggestion-option
-                const selectedDiv = this;
-                event.preventDefault(); // Prevent default radio button behavior if clicked directly on label
-
-                const colorsJson = selectedDiv.dataset.colors;
-                if (!colorsJson) return; // Should not happen if data-colors is set
-
-                try {
-                    const colors = JSON.parse(colorsJson);
-                    if (!Array.isArray(colors) || colors.length !== 3) {
-                        throw new Error("Invalid color data format in suggestion.");
-                    }
-
-                    const sourceInputs = sourceColorInputsContainer.querySelectorAll('input[type="color"]');
-                    if (sourceInputs.length < 3) {
-                        throw new Error("Source color input elements are missing.");
-                    }
-
-                    // Update the source color inputs and enable them
-                    colors.forEach((color, index) => {
-                        if (sourceInputs[index]) {
-                            sourceInputs[index].value = color;
-                            sourceInputs[index].disabled = false;
-                            // Optional: Trigger input event if needed by other listeners
-                            sourceInputs[index].dispatchEvent(new Event('input', { bubbles: true }));
-                        }
-                    });
-
-                    // Update visual selection state
-                    document.querySelectorAll('.suggestion-option.selected').forEach(el => el.classList.remove('selected'));
-                    selectedDiv.classList.add('selected');
-
-                    // Check the hidden radio button for form submission (if applicable) or state tracking
-                    const radio = selectedDiv.querySelector('input[type="radio"]');
-                    if (radio) radio.checked = true;
-
-                    hideError(); // Clear any previous errors
-
-                } catch (error) {
-                    showError(`Failed to apply suggestion: ${error.message}`);
-                    console.error(error);
-                }
-            }
-
-            // --- MWC Component Example Generation ---
-            function generateComponentExamples() {
-                if (!lastGeneratedTheme?.schemes) {
-                    showError("Cannot generate examples: No valid theme has been generated yet.");
-                    return;
-                }
-
-                // --- Generate CSS Variables for MWC ---
-                const lightCSS = [];
-                const darkCSS = [];
-
-                for (const [schemeKey, scheme] of Object.entries(lastGeneratedTheme.schemes)) {
+                for (const [schemeKey, scheme] of Object.entries(theme.schemes)) {
                     const isDark = schemeKey === 'dark';
-                    const selector = isDark ? '.dark-theme' : ':root'; // Target root for light, .dark-theme for dark
-                    const targetArray = isDark ? darkCSS : lightCSS;
-
-                    targetArray.push(`${selector} {`);
-
-                    // Add standard MWC system color variables
+                    const selector = isDark ? `${previewSelectorBase}.dark-theme` : `${previewSelectorBase}:not(.dark-theme)`;
+                    const target = isDark ? darkCSS : lightCSS;
+                    target.push(`${selector} {`);
                     for (const [token, value] of Object.entries(scheme)) {
-                        const kebabCaseToken = token.replace(/([A-Z])/g, '-$1').toLowerCase();
-                        const cssVarName = `--md-sys-color-${kebabCaseToken}`;
-                        targetArray.push(`  ${cssVarName}: ${argbIntToHex(value)};`);
+                        const kebab = token.replace(/([A-Z])/g, '-$1').toLowerCase();
+                        // Use --local- prefix for scoping within the component previews
+                        target.push(`--local-sys-color-${kebab}: ${argbIntToHex(value)};`);
                     }
-
-                    // Add custom color MWC variables (if custom colors exist in the theme)
-                    if (lastGeneratedTheme.customColors?.length > 0) {
-                        lastGeneratedTheme.customColors.forEach(customGroup => {
-                            // Ensure the scheme (light/dark) exists for this custom color group
+                    if (enableCustomColors && theme.customColors?.length > 0) {
+                        theme.customColors.forEach(customGroup => {
                             if (customGroup[schemeKey]) {
-                                // Create a CSS-safe name from the custom color name
-                                const baseName = (customGroup.color.name || 'custom')
-                                    .replace(/[^a-zA-Z0-9_-]/g, '-') // Replace invalid chars with hyphen
-                                    .replace(/-+/g, '-') // Collapse multiple hyphens
-                                    .toLowerCase();
-
+                                const baseName = (customGroup.color.name || 'custom').replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g, '-').toLowerCase();
                                 for (const [token, value] of Object.entries(customGroup[schemeKey])) {
-                                    const kebabCaseToken = token.replace(/([A-Z])/g, '-$1').toLowerCase(); // e.g., onColorContainer -> on-color-container
-                                    // Custom var name format: --md-sys-color-custom-[name]-[token]
-                                    const cssVarName = `--md-sys-color-custom-${baseName}-${kebabCaseToken}`;
-                                    targetArray.push(`  ${cssVarName}: ${argbIntToHex(value)};`);
+                                    const kebab = token.replace(/([A-Z])/g, '-$1').toLowerCase();
+                                    target.push(`--local-sys-color-custom-${baseName}-${kebab}: ${argbIntToHex(value)};`);
                                 }
                             }
                         });
                     }
+                    target.push('}');
+                }
+                dynamicThemeStyles.textContent = lightCSS.join('\n') + '\n' + darkCSS.join('\n');
+                // Re-trigger MWC preview generation if needed, or rely on CSS vars updating
+                generateMwcComponents(false); // Pass flag to avoid clearing styles
+            }
 
 
-                    targetArray.push('}');
+            function generateMwcComponents(applyStyles = true) {
+                if (!lastGeneratedTheme?.schemes) { showError("Generate theme first."); return; }
+
+                // Apply scoped styles if requested (usually on initial generation)
+                if (applyStyles) {
+                    applyScopedThemeStyles(lastGeneratedTheme);
                 }
 
-                // Inject the generated CSS into the dedicated style tag
-                dynamicThemeStyles.textContent = lightCSS.join('\n') + '\n' + darkCSS.join('\n');
-
-                // --- HTML for MWC Examples ---
-                // Assumes the MWC library and Material Icons are loaded
-                const mwcExampleHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div>
-                            <h5>Buttons</h5>
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-                                <md-filled-button>Filled</md-filled-button>
-                                <md-outlined-button>Outlined</md-outlined-button>
-                                <md-text-button>Text</md-text-button>
-                                <md-elevated-button>Elevated</md-elevated-button>
-                                <md-filled-tonal-button>Tonal</md-filled-tonal-button>
-                                <md-filled-button disabled>Disabled</md-filled-button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h5>Card</h5>
-                            <md-card style="padding: 16px; max-width: 350px;">
-                                <h4 style="margin-top: 0; margin-bottom: 8px;">Card Title</h4>
-                                <p style="margin-bottom: 16px; font-size: 0.9em;">
-                                    This is an example Material Web Card component using dynamically generated theme colors.
-                                </p>
-                                <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                                   <md-text-button>More Info</md-text-button>
-                                   <md-filled-button>Confirm</md-filled-button>
-                                </div>
-                            </md-card>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                            <div>
-                                <h5>FAB</h5>
-                                <md-fab aria-label="Add item">
-                                    <md-icon slot="icon">add</md-icon>
-                                </md-fab>
-                            </div>
-                            <div>
-                                <h5>Extended FAB</h5>
-                                <md-extended-fab label="Create New">
-                                     <md-icon slot="icon">edit</md-icon>
-                                </md-extended-fab>
-                            </div>
-                             <div>
-                                <h5>Small FAB</h5>
-                                <md-fab size="small" aria-label="Search">
-                                    <md-icon slot="icon">search</md-icon>
-                                </md-fab>
-                            </div>
-                             <div>
-                                <h5>Large FAB</h5>
-                                <md-fab size="large" aria-label="Compose">
-                                    <md-icon slot="icon">edit_square</md-icon>
-                                </md-fab>
-                            </div>
-                         </div>
-
-                        <div>
-                            <h5>Chips</h5>
-                             <md-chip-set style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                 <md-assist-chip label="Assist Chip"></md-assist-chip>
-                                 <md-filter-chip label="Filter Chip" elevated></md-filter-chip>
-                                 <md-input-chip label="Input Chip">
-                                      <md-icon slot="icon">event</md-icon>
-                                 </md-input-chip>
-                                 <md-suggestion-chip label="Suggestion Chip"></md-suggestion-chip>
-                                 <md-assist-chip label="Disabled" disabled></md-assist-chip>
-                             </md-chip-set>
-                        </div>
-
-                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                            <div>
-                                <h5>Icon Button</h5>
-                                <md-icon-button aria-label="Favorite">
-                                    <md-icon>favorite</md-icon>
-                                </md-icon-button>
-                                 <md-icon-button toggle aria-label="Toggle Visibility">
-                                    <md-icon>visibility</md-icon>
-                                    <md-icon slot="selected">visibility_off</md-icon>
-                                </md-icon-button>
-                                 <md-icon-button disabled aria-label="Disabled">
-                                    <md-icon>cloud_off</md-icon>
-                                </md-icon-button>
-                            </div>
-                            <div>
-                                <h5>Switch</h5>
-                                 <md-switch selected></md-switch>
-                                 <md-switch></md-switch>
-                                 <md-switch disabled></md-switch>
-                                 <md-switch selected disabled></md-switch>
-                            </div>
-                            <div>
-                                <h5>Checkbox</h5>
-                                <md-checkbox checked touch-target="wrapper"></md-checkbox>
-                                <md-checkbox touch-target="wrapper"></md-checkbox>
-                                <md-checkbox disabled touch-target="wrapper"></md-checkbox>
-                                <md-checkbox checked disabled touch-target="wrapper"></md-checkbox>
-                            </div>
-                        </div>
-
-                         <div>
-                           <h5>Radio Buttons</h5>
-                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                                    <md-radio name="radio-group-ex" value="radio1" checked touch-target="wrapper"></md-radio> Option 1
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                                    <md-radio name="radio-group-ex" value="radio2" touch-target="wrapper"></md-radio> Option 2
-                                </label>
-                                 <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; opacity: 0.6;">
-                                    <md-radio name="radio-group-ex" value="radio3" disabled touch-target="wrapper"></md-radio> Disabled
-                                </label>
-                           </div>
+                const mwcHTML = `<div style="display:flex;flex-direction:column;gap:25px;">
+                    <div>
+                        <h5>Buttons & FAB</h5>
+                        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+                            <md-filled-button>Filled</md-filled-button>
+                            <md-outlined-button>Outlined</md-outlined-button>
+                            <md-fab aria-label="Edit">
+                                <md-icon slot="icon">edit</md-icon>
+                            </md-fab>
                         </div>
                     </div>
-                `;
+                     <div>
+                         <h5>Chips</h5>
+                         <md-chip-set style="display:flex;flex-wrap:wrap;gap:8px;">
+                             <md-assist-chip label="Assist"></md-assist-chip>
+                             <md-filter-chip label="Filter" elevated></md-filter-chip>
+                             <md-suggestion-chip label="Suggest"></md-suggestion-chip>
+                         </md-chip-set>
+                    </div>
+                    <div>
+                        <h5>Slider</h5>
+                        <md-slider ticks value="65" style="width: 80%;"></md-slider>
+                    </div>
+                    <div>
+                        <h5>Card</h5>
+                        <md-card style="padding:16px;max-width:350px;">
+                            <p style="margin:0; font-weight: 500;">The Music Dance Experience is officially CANCELED.</p>
+                         </md-card>
+                    </div>
+                 </div>`;
 
-                // --- Inject HTML into Preview Areas ---
-                lightComponentPreview.innerHTML = `<h4>Light Theme</h4> ${mwcExampleHTML}`;
-                darkComponentPreview.innerHTML = `<h4>Dark Theme</h4> ${mwcExampleHTML}`;
-
-                // Make the component examples section visible
-                componentExamplesDiv.classList.remove('hidden');
-
-                // Optional: Scroll smoothly to the examples
-                componentExamplesDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                mwcComponentPreview.innerHTML = `<h4>MWC Preview</h4> ${mwcHTML}`;
+                mwcComponentPreview.classList.toggle('dark-theme', isDarkMode); // Ensure class is correct
             }
 
-            function updateBodyThemeClass(isDark) {
-                isDarkMode = isDark;
-                bodyElement.classList.toggle('dark-theme', isDarkMode);
-                // You might want to update a toggle switch UI element here if you add one
-            }
+            const GEMINI_COMPONENT_SYSTEM_PROMPT = `You are an expert web UI designe and engineer specializing in Material Design 3. You will be given:
+1. A Material Design 3 color theme (CSS custom properties following the --local-sys-color-... pattern for light mode, intended to be used within a container). You should create corresponding dark mode styles using a '.dark-theme' class selector and the same --local-sys-color-... variables (which will be dynamically swapped by the parent environment).
+2. An optional user style prompt.
 
-            // --- Event Listeners ---
-            modeRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => updateInputUI(e.target.value));
-            });
+Your task is to:
+- Create an HTML structure containing the following components:
+    - Two buttons: one filled, one outlined.
+    - One Floating Action Button (FAB) with an icon (e.g., 'edit' or 'add').
+    - Two or three chips (e.g., assist, filter, suggestion).
+    - One slider element.
+    - One card containing ONLY the text: "The Music Dance Experience is officially CANCELED."
+- Apply styling using ONLY inline 'style' attributes or by adding appropriate CSS classes DEFINED WITHIN A SINGLE '<style>' TAG in your response.
+- **CRITICAL:** Use the provided --local-sys-color-... CSS variables extensively and semantically for ALL colors (backgrounds, text, borders, icons, states etc.). Apply light mode styles directly and dark mode styles under a '.dark-theme' selector within your generated '<style>' tag. For example: \`button { color: var(--local-sys-color-primary); } .dark-theme button { color: var(--local-sys-color-primary); }\` (The variable values themselves change externally).
+- Incorporate the user's style prompt (if provided) to influence visual design (spacing, border-radius, font weights, layout). If no prompt, use a standard, clean Material Design style.
+- Ensure the output is visually appealing, uses appropriate spacing/layout, and is functional.
+- Respond ONLY with the final combined HTML structure and the single '<style>' tag. Do not include explanations, markdown formatting, <!DOCTYPE>, <html>, <body> tags, or anything else outside the requested component HTML and its associated style block.`;
 
-            // Image Drop/Upload
-            dropArea.addEventListener('click', () => imageInput.click());
-            dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag-over'); });
-            dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
-            dropArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropArea.classList.remove('drag-over');
-                if (e.dataTransfer.files.length) {
-                    handleImageFile(e.dataTransfer.files[0]);
-                }
-            });
-            imageInput.addEventListener('change', (e) => {
-                if (e.target.files.length) {
-                    handleImageFile(e.target.files[0]);
-                }
-            });
 
-            // Custom Colors
-            addCustomColorButton.addEventListener('click', addCustomColorRow);
-            // Note: Remove button listener is added in addCustomColorRow
-
-            // Text Prompt Suggestions
-            suggestColorsButton.addEventListener('click', async () => {
-                const promptText = textPromptInput.value.trim();
-                if (!promptText) {
-                    showError("Please enter a theme description first.");
-                    return;
-                }
-
-                hideError();
-                setSuggestionLoading(true);
-                textPromptSuggestionsContainer.classList.add('hidden'); // Hide old suggestions
-
+            async function fetchM3Content() {
+                // This function might not be needed if Gemini generates from scratch based on the prompt
+                // Keeping it in case it's used for reference or a base structure.
                 try {
-                    const useSimulation = useSimulationCheckbox.checked;
-                    const suggestionFn = useSimulation ? simulateGeminiCall : getGeminiSuggestions;
-                    const suggestionData = await suggestionFn(promptText);
-                    displaySuggestions(suggestionData);
+                    const response = await fetch('m3.txt');
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.text();
                 } catch (error) {
-                    showError(`Failed to get suggestions: ${error.message}`);
-                    textPromptSuggestionsContainer.innerHTML = '<label>Select a suggested color set:</label><p class="error">Failed to load suggestions.</p>';
-                    textPromptSuggestionsContainer.classList.remove('hidden');
-                    console.error(error);
-                } finally {
-                    setSuggestionLoading(false);
+                    console.error("Failed to fetch m3.txt:", error);
+                    showError("Failed to load base component structure (m3.txt). May affect Gemini generation.");
+                    return ""; // Return empty string instead of null
                 }
-            });
+            }
 
-            // Generate Theme Button
-            generateButton.addEventListener('click', async () => {
-                setUILoading(true);
-                paletteDisplay.innerHTML = '<p class="placeholder">Generating...</p>'; // Clear old results
-                seedColorsDisplayContainer.innerHTML = ''; // Clear old seeds
+            async function generateGeminiComponents() {
+                if (!lastGeneratedTheme) { showError("Generate theme first."); return; }
+                if (!isApiConfigValid) { showError("Gemini API not configured."); return; }
+
+                setGeminiComponentLoading(true);
+                geminiComponentPreview.innerHTML = '';
                 hideError();
-                generateComponentsButton.classList.add('hidden'); // Hide component button initially
-                componentExamplesDiv.classList.add('hidden'); // Hide component examples
-
-                // Check if dream.js functions are available
-                if (typeof themeFromSourceColor !== 'function' || typeof themeFromSourceColors !== 'function' || typeof sourceColorFromImage !== 'function' || typeof sourceColorsFromImage !== 'function') {
-                    showError("Core theme generation library (dream.js / material-color-utilities) not loaded correctly.");
-                    setUILoading(false);
-                    return;
-                }
 
                 try {
-                    let theme;
-                    let seeds = [];
-                    const customData = Array.from(customColorList.children).map(row => {
-                        const id = row.dataset.id;
-                        const nameInput = row.querySelector(`#custom-name-${id}`);
-                        const valueInput = row.querySelector(`#custom-value-${id}`);
-                        const blendInput = row.querySelector(`#custom-blend-${id}`);
-                        return {
-                            name: nameInput?.value || `custom_${id}`,
-                            value: hexToArgbInt(valueInput?.value),
-                            blend: blendInput?.checked || false
-                        };
-                    }).filter(c => c.value !== 0); // Filter out invalid colors (like #000000 if it wasn't intended)
+                    // const m3Content = await fetchM3Content(); // Optionally load base structure if needed by prompt
 
-                    // --- Theme Generation based on Mode ---
-                    if (currentMode === 'mode3' || currentMode === 'mode4') { // Single Source Color
-                        const input = document.getElementById('source-color-0');
-                        if (!input) throw new Error("Source color input not found.");
-                        const colorValue = hexToArgbInt(input.value);
-                        // Basic validation: Allow black (#000000) but throw error for other invalid hex values resulting in 0
-                        if (colorValue === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) {
-                            throw new Error(`Invalid source hex color: ${input.value}`);
+                    const stylePrompt = componentStylePromptInput.value.trim();
+                    // Convert ARGB numbers in the theme to Hex for the prompt
+                    const themeForPrompt = {};
+                    for (const [schemeKey, scheme] of Object.entries(lastGeneratedTheme.schemes)) {
+                        themeForPrompt[schemeKey] = {};
+                        for (const [token, value] of Object.entries(scheme)) {
+                            themeForPrompt[schemeKey][token] = argbIntToHex(value);
                         }
-                        seeds = [colorValue];
-                        theme = themeFromSourceColor(colorValue, currentMode === 'mode4' ? customData : []);
-
-                    } else if (currentMode === 'mode1' || currentMode === 'mode2' || currentMode === 'modeText') { // Multiple Source Colors or Text Prompt
-                        const inputs = [0, 1, 2].map(i => document.getElementById(`source-color-${i}`));
-                        if (inputs.some(input => !input)) throw new Error("One or more source color inputs not found.");
-
-                        const colorValues = inputs.map((input, index) => {
-                            if (input.disabled) return null; // Skip disabled inputs (relevant for initial text prompt state)
-                            const value = hexToArgbInt(input.value);
-                            if (value === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) {
-                                throw new Error(`Invalid hex color for ${input.previousElementSibling?.textContent || `Input ${index + 1}`}: ${input.value}`);
-                            }
-                            return value;
-                        }).filter(value => value !== null); // Filter out nulls from disabled inputs
-
-                        if (colorValues.length === 0) {
-                            if (currentMode === 'modeText') throw new Error("Please select a suggested color set first.");
-                            else throw new Error("Please provide at least one valid source color.");
-                        }
-                        seeds = colorValues;
-                        const opts = {
-                            harmonyStrategy: multiSourceOptionsArea.classList.contains('hidden') ? 'direct' : harmonyStrategySelect.value,
-                            customColors: (currentMode === 'mode2' || currentMode === 'modeText') ? customData : []
-                        };
-                        // Use themeFromSourceColor if only one seed ended up being valid/provided
-                        theme = seeds.length === 1 ? themeFromSourceColor(seeds[0], opts.customColors) : themeFromSourceColors(seeds, opts);
-
-                    } else if (currentMode === 'modeImageSingle' || currentMode === 'modeImageMulti') { // Image Input
-                        if (!currentImageFile || !imagePreview.src || imagePreview.src.startsWith('#')) {
-                            throw new Error("Please select or drop an image first.");
-                        }
-
-                        // Load image data properly
-                        const img = await new Promise((resolve, reject) => {
-                            const imageElement = new Image();
-                            imageElement.onload = () => resolve(imageElement);
-                            imageElement.onerror = (err) => reject(new Error(`Failed to load image data: ${err.type || 'error'}`));
-                            imageElement.src = imagePreview.src;
-                            // Handle cases where image might already be cached/loaded
-                            if (imageElement.complete && imageElement.naturalWidth) {
-                                resolve(imageElement);
-                            }
-                        });
-
-                        if (currentMode === 'modeImageSingle') {
-                            const sourceColor = await sourceColorFromImage(img); // Assumes this returns ARGB int
-                            if (sourceColor === undefined || sourceColor === null) throw new Error("Failed to extract dominant color from image.");
-                            seeds = [sourceColor];
-                            theme = themeFromSourceColor(sourceColor, customData);
-                        } else { // modeImageMulti
-                            const numSources = parseInt(numSourcesInput.value, 10) || 5;
-                            const quality = parseInt(extractQualityInput.value, 10) || 10;
-                            const opts = {
-                                numSources: numSources,
-                                extractQuality: quality,
-                                harmonyStrategy: harmonyStrategySelect.value,
-                                customColors: customData
-                            };
-
-                            // Prefer using the combined function if available in dream.js
-                            if (typeof themeFromImageUsingSources === 'function') {
-                                theme = await themeFromImageUsingSources(img, opts);
-                                // Try to get seeds separately for display if possible
-                                try {
-                                    seeds = await sourceColorsFromImage(img, numSources, quality);
-                                } catch (seedError) {
-                                    console.warn("Could not re-extract seeds for display:", seedError);
-                                    // Fallback: use the source color from the theme if available
-                                    seeds = theme?.source ? [theme.source] : [];
-                                }
-                            } else { // Fallback: extract seeds then generate theme
-                                seeds = await sourceColorsFromImage(img, numSources, quality);
-                                if (!seeds || seeds.length === 0) {
-                                    throw new Error("Failed to extract any significant colors from the image.");
-                                }
-                                theme = themeFromSourceColors(seeds, opts);
-                            }
-                        }
-                    } else {
-                        throw new Error('Invalid generation mode selected.');
-                    }
-
-                    // --- Display Results ---
-                    if (theme) {
-                        // Display Seed Colors
-                        if (seeds && seeds.length > 0) {
-                            seedColorsDisplayContainer.innerHTML = ''; // Clear placeholder
-                            seeds.forEach((seedArgb, i) => {
-                                if (typeof seedArgb === 'number') {
-                                    seedColorsDisplayContainer.innerHTML += createSwatchHtml(`Seed ${i + 1}`, seedArgb, 'seed-swatch');
+                        if (lastGeneratedTheme.customColors) {
+                            themeForPrompt[schemeKey].customColors = {};
+                            lastGeneratedTheme.customColors.forEach(customGroup => {
+                                if (customGroup[schemeKey]) {
+                                    const baseName = (customGroup.color.name || 'custom').replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g, '-').toLowerCase();
+                                    themeForPrompt[schemeKey].customColors[baseName] = {};
+                                    for (const [token, value] of Object.entries(customGroup[schemeKey])) {
+                                        themeForPrompt[schemeKey].customColors[baseName][token] = argbIntToHex(value);
+                                    }
                                 }
                             });
-                        } else if (theme.source) { // Fallback for single source themes if seeds array wasn't populated
-                            seedColorsDisplayContainer.innerHTML = createSwatchHtml(`Source`, theme.source, 'seed-swatch');
-                        } else {
-                            seedColorsDisplayContainer.innerHTML = '<p style="font-size:0.9em; color:var(--md-sys-color-outline-light);">Seed colors not available.</p>';
                         }
-
-                        // Display Palettes
-                        displayTheme(theme);
-                    } else {
-                        showError('Theme generation failed. The process completed but returned no theme data.');
-                        paletteDisplay.innerHTML = '<p class="placeholder error">Generation failed.</p>';
                     }
+                    const themeJsonString = JSON.stringify(themeForPrompt, null, 2);
+
+                    const fullPrompt = `MATERIAL DESIGN 3 THEME (Hex Values for Reference - Use --local-sys-color-... variables in CSS):\n\`\`\`json\n${themeJsonString}\n\`\`\`\n\nUSER STYLE PROMPT: ${stylePrompt || 'Default professional style.'}\n\nGenerate the HTML structure and CSS for the requested components based on the system instructions.`;
+
+                    const generatedHtml = await getGeminiContent(GEMINI_API_ENDPOINT_COMPONENT_GENERATOR, GEMINI_COMPONENT_SYSTEM_PROMPT, fullPrompt, false);
+
+                    // Clean potential markdown code fences from the Gemini response
+                    let cleanedHtml = generatedHtml
+                        .replace(/^\s*```(?:html|css|javascript|)\s*\n?/im, '') // Remove opening fence (```html, ```css, ``` etc.)
+                        .replace(/\n?\s*```\s*$/im, '') // Remove closing fence (```)
+                        .trim(); // Remove leading/trailing whitespace
+
+                    geminiComponentPreview.innerHTML = `<h4>Gemini Preview</h4> ${cleanedHtml}`;
+                    geminiComponentPreview.classList.toggle('dark-theme', isDarkMode); // Ensure class is correct for Gemini's CSS
 
                 } catch (error) {
-                    showError(`Generation Error: ${error.message}`);
-                    paletteDisplay.innerHTML = '<p class="placeholder error">An error occurred during generation.</p>';
-                    console.error("Generation Process Error:", error);
+                    showError(`Gemini component generation failed: ${error.message}`);
+                    geminiComponentPreview.innerHTML = `<p class="error">Failed to generate components via Gemini.</p>`;
                 } finally {
-                    setUILoading(false);
+                    setGeminiComponentLoading(false);
                 }
-            });
-
-            // Generate Component Examples Button
-            generateComponentsButton.addEventListener('click', generateComponentExamples);
+            }
 
 
-            // --- Initial Setup ---
-            const initialMode = document.querySelector('input[name="generationMode"]:checked');
-            updateInputUI(initialMode ? initialMode.value : 'mode3'); // Initialize UI based on default checked mode
+            function setupEventListeners() {
+                modeRadios.forEach(radio => radio.addEventListener('change', (e) => updateInputUI(e.target.value)));
+                dropArea.addEventListener('click', () => imageInput.click());
+                dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+                dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+                dropArea.addEventListener('drop', (e) => { e.preventDefault(); dropArea.classList.remove('drag-over'); if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]); });
+                imageInput.addEventListener('change', (e) => { if (e.target.files.length) handleImageFile(e.target.files[0]); });
+                if (enableCustomColors) addCustomColorButton.addEventListener('click', addCustomColorRow);
 
-            // Optional: Add a toggle for Light/Dark mode for the whole page preview
-            // const themeToggle = document.getElementById('theme-toggle-switch'); // Assuming you add a switch
-            // if (themeToggle) {
-            //     themeToggle.addEventListener('change', (e) => {
-            //         updateBodyThemeClass(e.target.checked);
-            //     });
-            //     // Set initial toggle state based on system preference maybe?
-            //     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            //     themeToggle.checked = prefersDark;
-            //     updateBodyThemeClass(prefersDark);
-            // }
+                suggestColorsButton.addEventListener('click', async () => {
+                    const promptText = textPromptInput.value.trim(); if (!promptText) { showError("Enter theme description."); return; }
+                    hideError(); setSuggestionLoading(true); textPromptSuggestionsContainer.classList.add('hidden');
+                    try {
+                        const useSim = useSimulationCheckbox.checked; const useApi = !useSim && isApiConfigValid;
+                        if (useApi) console.log("Calling Gemini API for suggestions..."); else if (!isApiConfigValid && !useSim) { console.warn("API request but invalid config."); showError("API not configured. Check simulation box or configure API."); setSuggestionLoading(false); return; } else console.log("Simulating suggestions...");
+                        const fn = useApi ? getGeminiSuggestions : simulateGeminiCall; const data = await fn(promptText); displaySuggestions(data);
+                    } catch (error) { showError(`Suggestions failed: ${error.message}`); textPromptSuggestionsContainer.innerHTML = '<label>Select colors:</label><p class="error">Failed load.</p>'; textPromptSuggestionsContainer.classList.remove('hidden'); console.error("Suggest Err:", error); } finally { setSuggestionLoading(false); }
+                });
 
+                generateButton.addEventListener('click', async () => {
+                    setUILoading(true); paletteDisplay.innerHTML = '<p class="placeholder">Generating...</p>'; seedColorsDisplayContainer.innerHTML = ''; hideError();
 
-        }); // End DOMContentLoaded
+                    // Check for dream.js functions
+                    if (typeof themeFromSourceColor !== 'function' || (enableImages && (typeof sourceColorFromImage !== 'function' || typeof sourceColorsFromImage !== 'function'))) {
+                        showError("Core library (dream.js) or one of its functions is missing/not loaded correctly."); setUILoading(false); return;
+                    }
+                    try {
+                        let theme, seeds = [];
+                        const customData = enableCustomColors ? Array.from(customColorList.children).map(row => { const id = row.dataset.id; return { name: row.querySelector(`#custom-name-${id}`)?.value || `c_${id}`, value: hexToArgbInt(row.querySelector(`#custom-value-${id}`)?.value), blend: row.querySelector(`#custom-blend-${id}`)?.checked || false }; }).filter(c => c.value !== 0) : [];
+
+                        let effectiveMode = currentMode;
+                        if (!enableCustomColors && (effectiveMode === 'mode4' || effectiveMode === 'mode2')) effectiveMode = effectiveMode === 'mode4' ? 'mode3' : 'mode1';
+                        if (!enableImages && (effectiveMode === 'modeImageSingle' || effectiveMode === 'modeImageMulti')) effectiveMode = 'mode3';
+
+                        if (effectiveMode === 'mode3' || effectiveMode === 'mode4') { const input = document.getElementById('source-color-0'); if (!input) throw new Error("Src input missing."); const v = hexToArgbInt(input.value); if (v === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) throw new Error(`Invalid hex: ${input.value}`); seeds = [v]; theme = themeFromSourceColor(v, customData); }
+                        else if (effectiveMode === 'mode1' || effectiveMode === 'mode2' || effectiveMode === 'modeText') { const inputs = [0, 1, 2].map(i => document.getElementById(`source-color-${i}`)); if (inputs.some(i => !i)) throw new Error("Src inputs missing."); const values = inputs.map((input, idx) => { if (input.disabled) return null; const v = hexToArgbInt(input.value); if (v === 0 && !['#000', '#000000'].includes(input.value.toLowerCase())) throw new Error(`Invalid hex ${idx + 1}: ${input.value}`); return v; }).filter(v => v !== null); if (values.length === 0) throw new Error(effectiveMode === 'modeText' ? "Select suggestion or provide source colors." : "Provide color(s)."); seeds = values; const opts = { harmonyStrategy: multiSourceOptionsArea.classList.contains('hidden') ? 'direct' : harmonyStrategySelect.value, customColors: customData }; theme = seeds.length === 1 ? themeFromSourceColor(seeds[0], opts.customColors) : themeFromSourceColors(seeds, opts); }
+                        else if (enableImages && (effectiveMode === 'modeImageSingle' || effectiveMode === 'modeImageMulti')) {
+                            if (!currentImageFile || !imagePreview.src || imagePreview.src.startsWith('#')) throw new Error("Select image."); const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = (e) => rej(new Error(`Img load err: ${e.type || 'error'}`)); i.src = imagePreview.src; if (i.complete && i.naturalWidth) setTimeout(() => res(i), 0); }); // Added timeout for sync complete case
+                            if (effectiveMode === 'modeImageSingle') { const srcColor = await sourceColorFromImage(img); if (srcColor === undefined || srcColor === null) throw new Error("Extract dominant failed."); seeds = [srcColor]; theme = themeFromSourceColor(srcColor, customData); }
+                            else { const num = parseInt(numSourcesInput.value, 10) || 5; const qual = parseInt(extractQualityInput.value, 10) || 10; const opts = { numSources: num, extractQuality: qual, harmonyStrategy: harmonyStrategySelect.value, customColors: customData }; if (typeof themeFromImageUsingSources === 'function') { theme = await themeFromImageUsingSources(img, opts); try { seeds = await sourceColorsFromImage(img, num, qual); } catch (e) { console.warn("Re-extract seeds failed:", e); seeds = theme?.source ? [theme.source] : []; } } else { seeds = await sourceColorsFromImage(img, num, qual); if (!seeds?.length) throw new Error("Extract colors failed."); theme = themeFromSourceColors(seeds, opts); } }
+                        } else { throw new Error('Invalid/Disabled mode.'); }
+
+                        if (theme) { seedColorsDisplayContainer.innerHTML = ''; if (seeds?.length) { seeds.forEach((seed, i) => { if (typeof seed === 'number') seedColorsDisplayContainer.innerHTML += createSwatchHtml(`Seed ${i + 1}`, seed, 'seed-swatch'); }); } else if (theme.source) { seedColorsDisplayContainer.innerHTML = createSwatchHtml(`Source`, theme.source, 'seed-swatch'); } else { seedColorsDisplayContainer.innerHTML = '<p style="font-size:0.9em;color:var(--md-sys-color-outline-light);">Seeds unavailable.</p>'; } displayTheme(theme); }
+                        else { showError('Generation failed.'); paletteDisplay.innerHTML = '<p class="placeholder error">Failed.</p>'; }
+                    } catch (error) { showError(`Gen Error: ${error.message}`); paletteDisplay.innerHTML = '<p class="placeholder error">Error.</p>'; console.error("Gen Error:", error); } finally { setUILoading(false); }
+                });
+
+                generateMwcComponentsButton.addEventListener('click', () => generateMwcComponents(true)); // Apply styles on click
+                generateGeminiComponentsButton.addEventListener('click', generateGeminiComponents);
+            }
+
+            initializeApp();
+
+        });
     </script>
 
 </body>

@@ -1,1 +1,12 @@
-node_modules
+# .gitignore
+
+# Configuration file containing sensitive API keys
+config.js
+js/config.js # Add this if you put config.js in a js/ folder
+
+# Other common ignores (optional)
+node_modules/
+dist/
+build/
+*.log
+.env

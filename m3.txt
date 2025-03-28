@@ -1,7 +1,3 @@
-Okay, here is the extracted text from the web component documentation, formatted for an LLM. I've tried to capture headings, paragraphs, list items, code examples (as text), image descriptions (alt/title), accessibility notes, and API table content.
-
----
-
 **Buttons**
 
 This documentation is fully rendered on the Material Web catalog (https://material-web.dev/components/button/).
