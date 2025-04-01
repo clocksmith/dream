@@ -129,7 +129,7 @@
 
         #workflow-minimap {
             position: fixed;
-            top: 15px;
+            bottom: 15px;
             left: 15px;
             background-color: color-mix(in srgb, var(--md-sys-color-surface-light) 85%, transparent);
             backdrop-filter: blur(5px);
@@ -139,7 +139,7 @@
             padding: 8px 10px;
             z-index: 1000;
             font-size: 10px;
-            max-width: 280px;
+            max-width: 420px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
@@ -167,7 +167,7 @@
             flex-wrap: wrap;
             gap: 4px 6px;
             align-items: center;
-            max-height: 70px;
+            max-height: 80px;
             overflow-y: auto;
         }
 
@@ -279,7 +279,7 @@
 
         .main-layout {
             display: grid;
-            grid-template-columns: minmax(300px, 1fr) 2fr;
+            grid-template-columns: minmax(1024px, 1fr) 2fr;
             gap: 30px;
         }
 
