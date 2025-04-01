@@ -1,39 +1,29 @@
-# dream (Fork of material-color-utilities)
+# dream
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**dream** is a Javascript library for dynamic color theming, originally forked from Google's excellent [material-color-utilities](https://github.com/material-foundation/material-color-utilities) project. It provides utilities for color science and dynamic color scheme generation based on the principles of Material Design 3.
+**dream** is a Javascript library for dynamic color theming, forked from Google's [material-color-utilities](https://github.com/material-foundation/material-color-utilities). It provides utilities for color science and dynamic color scheme generation based on Material Design 3 principles.
 
-This fork, **dream**, has been refactored into a **single `main.js` file** for ease of use in various JavaScript environments and is maintained and distributed under the **MIT License**.
-
-This fork currently includes 2 new functions:
-
-`themeFromSourceColors()` and `themeFromImageUsingSources()`, which are
-analogous to `themeFromSourceColor()` and `themeFromImageUsingSource()`,
-but generate themes and palletes from more then 1 seed/source.
-
-The demo "Multi Source" option uses 3 which map to primary, secodary, and tertiary.
+This fork has been refactored into a single [`dream.js`](./dream.js) file and is maintained under the MIT License. It includes functions like [`themeFromSourceColors()`](./dream.js#L<line_number>) and [`themeFromImageUsingSources()`](./dream.js#L<line_number>) for multi-seed theme generation. _(Note: Replace `<line_number>` with the actual starting line number of the functions in your `dream.js` file or remove the `#L...` part to link to the file generally)._
 
 ## Demo
 
-Use a local web server of your choice to server `index.html`
+All demo files are located in the `demo/` folder. The demo showcases the library's capabilities, allowing users to generate Material Design 3 color palettes from text prompts, specific colors, or image uploads. It demonstrates patterns like **Human-in-the-loop** interaction, leveraging **Large Language Models (LLMs)** for creative input (like color suggestions from text), and uses an orchestration approach inspired by concepts like **[Model-Context-Protocol (MCP)](https://ai.googleblog.com/2023/06/google-at-icml-2023.html)** (see related agentic workflow discussions) internally to manage the workflow between user input, LLM calls, and core color utilities ([`dream.js`](./dream.js) functions). It displays the resulting themes and previews how components would look with the generated colors.
 
-For example:
+Use a local web server of your choice from the root directory and navigate to `/demo/index.html`.
+
+For example, using Python's built-in server:
 
 ```bash
-pytnon -m http.server
+python -m http.server
 ```
 
-Then open the demo in a web browser.
+Then open http://localhost:8000/demo/ in your web browser.
 
 ## Acknowledgement
 
-**dream** is built upon the foundation of Google's open-source `material-color-utilities` project. We acknowledge and appreciate the work done by the original authors.
-
-The original `material-color-utilities` project is licensed under the Apache License 2.0. You can find the full license text here:
-
-[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+dream is built upon Google's material-color-utilities project (Apache License 2.0).
 
 ## License
 
-**dream** is distributed under the **MIT License**. See the `LICENSE` file for details. This allows for more permissive use and integration compared to the original Apache 2.0 license.
+dream is distributed under the MIT License. See the LICENSE file for details.
