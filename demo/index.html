@@ -12,845 +12,950 @@
         rel="stylesheet"
     />
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+               * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-:root {
-    --md-sys-color-primary-light: #6750a4;
-    --md-sys-color-on-primary-light: #ffffff;
-    --md-sys-color-primary-container-light: #eaddff;
-    --md-sys-color-on-primary-container-light: #21005d;
-    --md-sys-color-secondary-light: #625b71;
-    --md-sys-color-on-secondary-light: #ffffff;
-    --md-sys-color-secondary-container-light: #e8def8;
-    --md-sys-color-on-secondary-container-light: #1d192b;
-    --md-sys-color-tertiary-light: #7d5260;
-    --md-sys-color-on-tertiary-light: #ffffff;
-    --md-sys-color-tertiary-container-light: #ffd8e4;
-    --md-sys-color-on-tertiary-container-light: #31111d;
-    --md-sys-color-error-light: #b3261e;
-    --md-sys-color-on-error-light: #ffffff;
-    --md-sys-color-error-container-light: #f9dedc;
-    --md-sys-color-on-error-container-light: #410e0b;
-    --md-sys-color-background-light: #fffbfe;
-    --md-sys-color-on-background-light: #1c1b1f;
-    --md-sys-color-surface-light: #fffbfe;
-    --md-sys-color-on-surface-light: #1c1b1f;
-    --md-sys-color-surface-variant-light: #e7e0ec;
-    --md-sys-color-on-surface-variant-light: #49454f;
-    --md-sys-color-outline-light: #79747e;
-    --md-sys-color-outline-variant-light: #cac4d0;
-    --md-sys-color-shadow-light: #000000;
-    --md-sys-color-scrim-light: #000000;
-    --md-sys-color-inverse-surface-light: #313033;
-    --md-sys-color-inverse-on-surface-light: #f4eff4;
-    --md-sys-color-inverse-primary-light: #d0bcff;
-    --md-sys-color-primary-dark: #d0bcff;
-    --md-sys-color-on-primary-dark: #381e72;
-    --md-sys-color-primary-container-dark: #4f378b;
-    --md-sys-color-on-primary-container-dark: #eaddff;
-    --md-sys-color-secondary-dark: #ccc2dc;
-    --md-sys-color-on-secondary-dark: #332d41;
-    --md-sys-color-secondary-container-dark: #4a4458;
-    --md-sys-color-on-secondary-container-dark: #e8def8;
-    --md-sys-color-tertiary-dark: #efb8c8;
-    --md-sys-color-on-tertiary-dark: #492532;
-    --md-sys-color-tertiary-container-dark: #633b48;
-    --md-sys-color-on-tertiary-container-dark: #ffd8e4;
-    --md-sys-color-error-dark: #f2b8b5;
-    --md-sys-color-on-error-dark: #601410;
-    --md-sys-color-error-container-dark: #8c1d18;
-    --md-sys-color-on-error-container-dark: #f9dedc;
-    --md-sys-color-background-dark: #1c1b1f;
-    --md-sys-color-on-background-dark: #e6e1e5;
-    --md-sys-color-surface-dark: #1c1b1f;
-    --md-sys-color-on-surface-dark: #e6e1e5;
-    --md-sys-color-surface-variant-dark: #49454f;
-    --md-sys-color-on-surface-variant-dark: #cac4d0;
-    --md-sys-color-outline-dark: #938f99;
-    --md-sys-color-outline-variant-dark: #49454f;
-    --md-sys-color-shadow-dark: #000000;
-    --md-sys-color-scrim-dark: #000000;
-    --md-sys-color-inverse-surface-dark: #e6e1e5;
-    --md-sys-color-inverse-on-surface-dark: #313033;
-    --md-sys-color-inverse-primary-dark: #6750a4;
-    --comp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    --comp-border-radius: 4px;
-    --radio-chip-bg: var(--md-sys-color-surface-variant-light);
-    --radio-chip-border: var(--md-sys-color-outline-variant-light);
-    --radio-chip-text: var(--md-sys-color-on-surface-variant-light);
-    --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-light) 10%, transparent);
-    --radio-chip-hover-border: var(--md-sys-color-primary-light);
-    --radio-chip-selected-bg: var(--md-sys-color-primary-light);
-    --radio-chip-selected-border: var(--md-sys-color-primary-light);
-    --radio-chip-selected-text: var(--md-sys-color-on-primary-light);
-}
+        :root {
+            --md-sys-color-primary-light: #6750a4;
+            --md-sys-color-on-primary-light: #ffffff;
+            --md-sys-color-primary-container-light: #eaddff;
+            --md-sys-color-on-primary-container-light: #21005d;
+            --md-sys-color-secondary-light: #625b71;
+            --md-sys-color-on-secondary-light: #ffffff;
+            --md-sys-color-secondary-container-light: #e8def8;
+            --md-sys-color-on-secondary-container-light: #1d192b;
+            --md-sys-color-tertiary-light: #7d5260;
+            --md-sys-color-on-tertiary-light: #ffffff;
+            --md-sys-color-tertiary-container-light: #ffd8e4;
+            --md-sys-color-on-tertiary-container-light: #31111d;
+            --md-sys-color-error-light: #b3261e;
+            --md-sys-color-on-error-light: #ffffff;
+            --md-sys-color-error-container-light: #f9dedc;
+            --md-sys-color-on-error-container-light: #410e0b;
+            --md-sys-color-background-light: #fffbfe;
+            --md-sys-color-on-background-light: #1c1b1f;
+            --md-sys-color-surface-light: #fffbfe;
+            --md-sys-color-on-surface-light: #1c1b1f;
+            --md-sys-color-surface-variant-light: #e7e0ec;
+            --md-sys-color-on-surface-variant-light: #49454f;
+            --md-sys-color-outline-light: #79747e;
+            --md-sys-color-outline-variant-light: #cac4d0;
+            --md-sys-color-shadow-light: #000000;
+            --md-sys-color-scrim-light: #000000;
+            --md-sys-color-inverse-surface-light: #313033;
+            --md-sys-color-inverse-on-surface-light: #f4eff4;
+            --md-sys-color-inverse-primary-light: #d0bcff;
+            --md-sys-color-primary-dark: #d0bcff;
+            --md-sys-color-on-primary-dark: #381e72;
+            --md-sys-color-primary-container-dark: #4f378b;
+            --md-sys-color-on-primary-container-dark: #eaddff;
+            --md-sys-color-secondary-dark: #ccc2dc;
+            --md-sys-color-on-secondary-dark: #332d41;
+            --md-sys-color-secondary-container-dark: #4a4458;
+            --md-sys-color-on-secondary-container-dark: #e8def8;
+            --md-sys-color-tertiary-dark: #efb8c8;
+            --md-sys-color-on-tertiary-dark: #492532;
+            --md-sys-color-tertiary-container-dark: #633b48;
+            --md-sys-color-on-tertiary-container-dark: #ffd8e4;
+            --md-sys-color-error-dark: #f2b8b5;
+            --md-sys-color-on-error-dark: #601410;
+            --md-sys-color-error-container-dark: #8c1d18;
+            --md-sys-color-on-error-container-dark: #f9dedc;
+            --md-sys-color-background-dark: #1c1b1f;
+            --md-sys-color-on-background-dark: #e6e1e5;
+            --md-sys-color-surface-dark: #1c1b1f;
+            --md-sys-color-on-surface-dark: #e6e1e5;
+            --md-sys-color-surface-variant-dark: #49454f;
+            --md-sys-color-on-surface-variant-dark: #cac4d0;
+            --md-sys-color-outline-dark: #938f99;
+            --md-sys-color-outline-variant-dark: #49454f;
+            --md-sys-color-shadow-dark: #000000;
+            --md-sys-color-scrim-dark: #000000;
+            --md-sys-color-inverse-surface-dark: #e6e1e5;
+            --md-sys-color-inverse-on-surface-dark: #313033;
+            --md-sys-color-inverse-primary-dark: #6750a4;
+            --comp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            --comp-border-radius: 4px;
+            --radio-chip-bg: var(--md-sys-color-surface-variant-light);
+            --radio-chip-border: var(--md-sys-color-outline-variant-light);
+            --radio-chip-text: var(--md-sys-color-on-surface-variant-light);
+            --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-light) 10%, transparent);
+            --radio-chip-hover-border: var(--md-sys-color-primary-light);
+            --radio-chip-selected-bg: var(--md-sys-color-primary-light);
+            --radio-chip-selected-border: var(--md-sys-color-primary-light);
+            --radio-chip-selected-text: var(--md-sys-color-on-primary-light);
+            --minimap-tooltip-bg: color-mix(in srgb, var(--md-sys-color-inverse-surface-light) 95%, black);
+            --minimap-tooltip-text: var(--md-sys-color-inverse-on-surface-light);
+            --minimap-tooltip-code-bg: color-mix(in srgb, var(--md-sys-color-inverse-on-surface-light) 10%, transparent);
+            --minimap-tooltip-code-text: var(--md-sys-color-inverse-on-surface-light);
+        }
 
-.dark-theme {
-    --radio-chip-bg: var(--md-sys-color-surface-variant-dark);
-    --radio-chip-border: var(--md-sys-color-outline-variant-dark);
-    --radio-chip-text: var(--md-sys-color-on-surface-variant-dark);
-    --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-dark) 10%, transparent);
-    --radio-chip-hover-border: var(--md-sys-color-primary-dark);
-    --radio-chip-selected-bg: var(--md-sys-color-primary-dark);
-    --radio-chip-selected-border: var(--md-sys-color-primary-dark);
-    --radio-chip-selected-text: var(--md-sys-color-on-primary-dark);
-    background-color: var(--md-sys-color-background-dark);
-    color: var(--md-sys-color-on-background-dark);
-}
+        .dark-theme {
+            --radio-chip-bg: var(--md-sys-color-surface-variant-dark);
+            --radio-chip-border: var(--md-sys-color-outline-variant-dark);
+            --radio-chip-text: var(--md-sys-color-on-surface-variant-dark);
+            --radio-chip-hover-bg: color-mix(in srgb, var(--md-sys-color-primary-dark) 10%, transparent);
+            --radio-chip-hover-border: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-bg: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-border: var(--md-sys-color-primary-dark);
+            --radio-chip-selected-text: var(--md-sys-color-on-primary-dark);
+            background-color: var(--md-sys-color-background-dark);
+            color: var(--md-sys-color-on-background-dark);
+            --minimap-tooltip-bg: color-mix(in srgb, var(--md-sys-color-inverse-surface-dark) 95%, white);
+            --minimap-tooltip-text: var(--md-sys-color-inverse-on-surface-dark);
+            --minimap-tooltip-code-bg: color-mix(in srgb, var(--md-sys-color-inverse-on-surface-dark) 10%, transparent);
+            --minimap-tooltip-code-text: var(--md-sys-color-inverse-on-surface-dark);
+        }
 
-body {
-    font-family: var(--comp-font-family);
-    line-height: 1.6;
-    background-color: var(--md-sys-color-background-light);
-    color: var(--md-sys-color-on-background-light);
-    padding: 20px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    position: relative;
-}
+        body {
+            font-family: var(--comp-font-family);
+            line-height: 1.6;
+            background-color: var(--md-sys-color-background-light);
+            color: var(--md-sys-color-on-background-light);
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
 
-.container {
-    max-width: 1300px;
-    margin: 0 auto;
-}
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
 
-.main-content-grid {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 30px;
-    margin-top: 25px;
-}
+        .main-content-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            margin-top: 25px;
+        }
 
-.phases-container {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
+        .phases-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
 
-#workflow-minimap {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    background-color: color-mix(in srgb, var(--md-sys-color-surface-light) 85%, transparent);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid var(--md-sys-color-outline-variant-light);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-self: start;
-    position: sticky;
-    top: 20px;
-    width: 180px;
-}
+        #workflow-minimap {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            background-color: color-mix(in srgb, var(--md-sys-color-surface-light) 85%, transparent);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-self: start;
+            position: sticky;
+            top: 20px;
+            width: 180px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
 
-.dark-theme #workflow-minimap {
-    background-color: color-mix(in srgb, var(--md-sys-color-surface-dark) 85%, transparent);
-    border-color: var(--md-sys-color-outline-variant-dark);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
+        .dark-theme #workflow-minimap {
+            background-color: color-mix(in srgb, var(--md-sys-color-surface-dark) 85%, transparent);
+            border-color: var(--md-sys-color-outline-variant-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
 
-#minimap-title {
-    font-weight: 600;
-    margin-bottom: 3px;
-    color: var(--md-sys-color-on-surface-variant-light);
-    border-bottom: 1px solid var(--md-sys-color-outline-variant-light);
-    padding-bottom: 3px;
-}
+        #minimap-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--md-sys-color-on-surface-variant-light);
+            border-bottom: 1px solid var(--md-sys-color-outline-variant-light);
+            padding-bottom: 3px;
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 1;
+        }
 
-.dark-theme #minimap-title {
-    color: var(--md-sys-color-on-surface-variant-dark);
-    border-bottom-color: var(--md-sys-color-outline-variant-dark);
-}
+        .dark-theme #minimap-title {
+            color: var(--md-sys-color-on-surface-variant-dark);
+            border-bottom-color: var(--md-sys-color-outline-variant-dark);
+        }
 
-#minimap-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: stretch;
-}
+        #minimap-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: stretch;
+        }
 
-.minimap-node {
-    padding: 2px 5px;
-    border-radius: 3px;
-    border: 1px solid;
-    line-height: 1.2;
-    text-align: center;
-}
+        .minimap-node, .minimap-edge {
+            position: relative;
+            cursor: help;
+        }
 
-.minimap-edge {
-    padding: 0 3px;
-    font-weight: bold;
-    position: relative;
-    color: var(--md-sys-color-outline-light);
-    text-align: center;
-    height: 1em;
-    line-height: 1;
-}
+        .minimap-node {
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid;
+            line-height: 1.2;
+            text-align: center;
+        }
 
-.dark-theme .minimap-edge {
-    color: var(--md-sys-color-outline-dark);
-}
+        .minimap-edge {
+            padding: 0 3px;
+            font-weight: bold;
+            color: var(--md-sys-color-outline-light);
+            text-align: center;
+            height: 1em;
+            line-height: 1;
+        }
 
-.node-start { background-color: var(--md-sys-color-tertiary-container-light); border-color: var(--md-sys-color-tertiary-light); color: var(--md-sys-color-on-tertiary-container-light); }
-.dark-theme .node-start { background-color: var(--md-sys-color-tertiary-container-dark); border-color: var(--md-sys-color-tertiary-dark); color: var(--md-sys-color-on-tertiary-container-dark); }
-.node-human { background-color: var(--md-sys-color-primary-container-light); border-color: var(--md-sys-color-primary-light); color: var(--md-sys-color-on-primary-container-light); }
-.dark-theme .node-human { background-color: var(--md-sys-color-primary-container-dark); border-color: var(--md-sys-color-primary-dark); color: var(--md-sys-color-on-primary-container-dark); }
-.node-tool { background-color: var(--md-sys-color-secondary-container-light); border-color: var(--md-sys-color-secondary-light); color: var(--md-sys-color-on-secondary-container-light); }
-.dark-theme .node-tool { background-color: var(--md-sys-color-secondary-container-dark); border-color: var(--md-sys-color-secondary-dark); color: var(--md-sys-color-on-secondary-container-dark); }
-.node-mcp { background-color: #e0f7fa; border-color: #0097a7; color: #006064; }
-.dark-theme .node-mcp { background-color: #004d40; border-color: #4db6ac; color: #e0f2f1; }
-.node-llm { background-color: #fff3e0; border-color: #ffb74d; color: #e65100; }
-.dark-theme .node-llm { background-color: #4e342e; border-color: #ffcc80; color: #ffe0b2; }
-.node-result { background-color: #e8f5e9; border-color: #81c784; color: #1b5e20; }
-.dark-theme .node-result { background-color: #1b5e20; border-color: #a5d6a7; color: #c8e6c9; }
-.node-error { background-color: var(--md-sys-color-error-container-light); border-color: var(--md-sys-color-error-light); color: var(--md-sys-color-on-error-container-light); }
-.dark-theme .node-error { background-color: var(--md-sys-color-error-container-dark); border-color: var(--md-sys-color-error-dark); color: var(--md-sys-color-on-error-container-dark); }
+        .dark-theme .minimap-edge {
+            color: var(--md-sys-color-outline-dark);
+        }
 
-.edge-human { color: var(--md-sys-color-primary-light); }
-.dark-theme .edge-human { color: var(--md-sys-color-primary-dark); }
-.edge-tool { color: var(--md-sys-color-secondary-light); }
-.dark-theme .edge-tool { color: var(--md-sys-color-secondary-dark); }
-.edge-mcp { color: #0097a7; }
-.dark-theme .edge-mcp { color: #4db6ac; }
-.edge-llm { color: #ffb74d; }
-.dark-theme .edge-llm { color: #ffcc80; }
-.edge-gemini-bridge { color: #ffb74d; border: 1px dashed #ffb74d; padding: 0 2px; border-radius: 2px;}
-.dark-theme .edge-gemini-bridge { color: #ffcc80; border-color: #ffcc80;}
-.edge-error { color: var(--md-sys-color-error-light); }
-.dark-theme .edge-error { color: var(--md-sys-color-error-dark); }
-.edge-result { color: #81c784; }
-.dark-theme .edge-result { color: #a5d6a7; }
+        .minimap-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            background-color: var(--minimap-tooltip-bg);
+            color: var(--minimap-tooltip-text);
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            line-height: 1.4;
+            z-index: 10;
+            bottom: 105%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            max-width: 280px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            pointer-events: none;
+            white-space: normal;
+        }
 
-.minimap-node.active, .minimap-edge.active {
-    box-shadow: 0 0 0 2px var(--md-sys-color-primary-light);
-    font-weight: bold;
-}
-.dark-theme .minimap-node.active, .dark-theme .minimap-edge.active {
-    box-shadow: 0 0 0 2px var(--md-sys-color-primary-dark);
-}
-.minimap-edge::after {
-    content: '↓';
-    font-size: 1.2em;
-}
-.minimap-edge.edge-gemini-bridge::before {
-    content: '↑';
-    font-size: 1.2em;
-    margin-right: 2px;
-}
-.minimap-edge.edge-gemini-bridge::after {
-    content: '↓';
-    font-size: 1.2em;
-    margin-left: 2px;
-}
+        .minimap-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--minimap-tooltip-bg) transparent transparent transparent;
+        }
 
-#theme-toggle {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--md-sys-color-on-surface-variant-light);
-    padding: 8px;
-    border-radius: 50%;
-    z-index: 1001;
-}
+        .minimap-tooltip-code {
+            display: block;
+            background-color: var(--minimap-tooltip-code-bg);
+            color: var(--minimap-tooltip-code-text);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.95em;
+            padding: 4px 6px;
+            border-radius: 3px;
+            margin-top: 5px;
+            word-break: break-all;
+        }
 
-#theme-toggle:hover {
-    background-color: color-mix( in srgb, var(--md-sys-color-on-surface-variant-light) 10%, transparent );
-}
+        .minimap-node:hover .minimap-tooltip,
+        .minimap-edge:hover .minimap-tooltip,
+        .minimap-node:focus .minimap-tooltip,
+        .minimap-edge:focus .minimap-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
 
-.dark-theme #theme-toggle {
-    color: var(--md-sys-color-on-surface-variant-dark);
-}
 
-.dark-theme #theme-toggle:hover {
-    background-color: color-mix( in srgb, var(--md-sys-color-on-surface-variant-dark) 10%, transparent );
-}
+        .node-start { background-color: var(--md-sys-color-tertiary-container-light); border-color: var(--md-sys-color-tertiary-light); color: var(--md-sys-color-on-tertiary-container-light); }
+        .dark-theme .node-start { background-color: var(--md-sys-color-tertiary-container-dark); border-color: var(--md-sys-color-tertiary-dark); color: var(--md-sys-color-on-tertiary-container-dark); }
+        .node-human { background-color: var(--md-sys-color-primary-container-light); border-color: var(--md-sys-color-primary-light); color: var(--md-sys-color-on-primary-container-light); }
+        .dark-theme .node-human { background-color: var(--md-sys-color-primary-container-dark); border-color: var(--md-sys-color-primary-dark); color: var(--md-sys-color-on-primary-container-dark); }
+        .node-tool { background-color: var(--md-sys-color-secondary-container-light); border-color: var(--md-sys-color-secondary-light); color: var(--md-sys-color-on-secondary-container-light); }
+        .dark-theme .node-tool { background-color: var(--md-sys-color-secondary-container-dark); border-color: var(--md-sys-color-secondary-dark); color: var(--md-sys-color-on-secondary-container-dark); }
+        .node-mcp { background-color: #e0f7fa; border-color: #0097a7; color: #006064; }
+        .dark-theme .node-mcp { background-color: #004d40; border-color: #4db6ac; color: #e0f2f1; }
+        .node-llm { background-color: #fff3e0; border-color: #ffb74d; color: #e65100; }
+        .dark-theme .node-llm { background-color: #4e342e; border-color: #ffcc80; color: #ffe0b2; }
+        .node-result { background-color: #e8f5e9; border-color: #81c784; color: #1b5e20; }
+        .dark-theme .node-result { background-color: #1b5e20; border-color: #a5d6a7; color: #c8e6c9; }
+        .node-error { background-color: var(--md-sys-color-error-container-light); border-color: var(--md-sys-color-error-light); color: var(--md-sys-color-on-error-container-light); }
+        .dark-theme .node-error { background-color: var(--md-sys-color-error-container-dark); border-color: var(--md-sys-color-error-dark); color: var(--md-sys-color-on-error-container-dark); }
+        .node-decision { background-color: #f3e5f5; border-color: #ab47bc; color: #4a148c; }
+        .dark-theme .node-decision { background-color: #2c193f; border-color: #ce93d8; color: #f3e5f5; }
 
-.phase-card {
-    background-color: var(--md-sys-color-surface-light);
-    border-radius: 12px;
-    border: 1px solid var(--md-sys-color-outline-variant-light);
-    padding: 25px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-.dark-theme .phase-card {
-    background-color: var(--md-sys-color-surface-dark);
-    border-color: var(--md-sys-color-outline-variant-dark);
-}
-.phase-card-placeholder {
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--md-sys-color-outline-light);
-    font-style: italic;
-}
-.dark-theme .phase-card-placeholder {
-     color: var(--md-sys-color-outline-dark);
-}
+        .edge-human { color: var(--md-sys-color-primary-light); }
+        .dark-theme .edge-human { color: var(--md-sys-color-primary-dark); }
+        .edge-tool { color: var(--md-sys-color-secondary-light); }
+        .dark-theme .edge-tool { color: var(--md-sys-color-secondary-dark); }
+        .edge-mcp { color: #0097a7; }
+        .dark-theme .edge-mcp { color: #4db6ac; }
+        .edge-llm { color: #ffb74d; }
+        .dark-theme .edge-llm { color: #ffcc80; }
+        .edge-gemini-bridge { color: #ffb74d; border: 1px dashed #ffb74d; padding: 0 2px; border-radius: 2px;}
+        .dark-theme .edge-gemini-bridge { color: #ffcc80; border-color: #ffcc80;}
+        .edge-error { color: var(--md-sys-color-error-light); }
+        .dark-theme .edge-error { color: var(--md-sys-color-error-dark); }
+        .edge-result { color: #81c784; }
+        .dark-theme .edge-result { color: #a5d6a7; }
+        .edge-decision { color: #ab47bc; border: 1px dotted #ab47bc; padding: 0 2px; border-radius: 2px; }
+        .dark-theme .edge-decision { color: #ce93d8; border-color: #ce93d8;}
 
-h1, h2, h3, h4, h5 {
-    margin-bottom: 0.8em;
-    color: var(--md-sys-color-on-surface-light);
-    font-weight: 600;
-}
-.dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5 {
-    color: var(--md-sys-color-on-surface-dark);
-}
-h1 { font-size: 1.8em; margin-bottom: 1em; }
-h2 { margin-top: 1.5em; font-size: 1.4em; }
-h3 { margin-top: 1em; font-size: 1.15em; border-bottom: 1px solid var(--md-sys-color-outline-variant-light); padding-bottom: 0.4em; }
-.dark-theme h3 { border-bottom-color: var(--md-sys-color-outline-variant-dark); }
-h4 { font-size: 1em; margin-bottom: 0.8em; color: var(--md-sys-color-on-surface-variant-light); font-weight: 500; }
-.dark-theme h4 { color: var(--md-sys-color-on-surface-variant-dark); }
-h5 { font-size: 0.95em; margin-bottom: 0.5em; font-weight: 500; }
 
-p {
-    margin-bottom: 1em;
-    color: var(--md-sys-color-on-surface-variant-light);
-}
-.dark-theme p {
-    color: var(--md-sys-color-on-surface-variant-dark);
-}
+        .minimap-node.active, .minimap-edge.active {
+            box-shadow: 0 0 0 2px var(--md-sys-color-primary-light);
+            font-weight: bold;
+        }
+        .dark-theme .minimap-node.active, .dark-theme .minimap-edge.active {
+            box-shadow: 0 0 0 2px var(--md-sys-color-primary-dark);
+        }
+        .minimap-edge::after {
+            content: '↓';
+            font-size: 1.2em;
+        }
+        .minimap-edge.edge-gemini-bridge::before {
+            content: '↑';
+            font-size: 1.2em;
+            margin-right: 2px;
+        }
+        .minimap-edge.edge-gemini-bridge::after {
+            content: '↓';
+            font-size: 1.2em;
+            margin-left: 2px;
+        }
+        .minimap-edge.edge-decision::after {
+            content: '?';
+            font-size: 1.1em;
+            font-weight: bold;
+        }
 
-code {
-    background-color: #f0f0f0;
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 0.9em;
-    color: #111;
-    border: 1px solid #e0e0e0;
-}
-.dark-theme code {
-    background-color: #333;
-    color: #eee;
-    border-color: #555;
-}
 
-fieldset {
-    border: 1px solid var(--md-sys-color-outline-light);
-    border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 20px;
-}
-.dark-theme fieldset { border-color: var(--md-sys-color-outline-dark); }
-legend {
-    font-weight: 600;
-    padding: 0 8px;
-    font-size: 0.95em;
-    color: var(--md-sys-color-on-surface-light);
-}
-.dark-theme legend { color: var(--md-sys-color-on-surface-dark); }
+        #theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--md-sys-color-on-surface-variant-light);
+            padding: 8px;
+            border-radius: 50%;
+            z-index: 1001;
+        }
 
-.input-group { margin-bottom: 20px; }
-.input-group label, .checkbox-label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 6px;
-    font-size: 0.9em;
-    color: var(--md-sys-color-on-surface-variant-light);
-}
-.dark-theme .input-group label, .dark-theme .checkbox-label {
-    color: var(--md-sys-color-on-surface-variant-dark);
-}
+        #theme-toggle:hover {
+            background-color: color-mix( in srgb, var(--md-sys-color-on-surface-variant-light) 10%, transparent );
+        }
 
-.input-group input[type="text"],
-.input-group input[type="number"],
-.input-group select,
-.input-group textarea {
-    padding: 10px 12px;
-    border: 1px solid var(--md-sys-color-outline-light);
-    border-radius: 4px;
-    width: 100%;
-    margin-bottom: 5px;
-    background-color: var(--md-sys-color-surface-light);
-    color: var(--md-sys-color-on-surface-light);
-    font-size: 0.95em;
-    transition: border-color 0.2s ease;
-}
-.dark-theme .input-group input[type="text"],
-.dark-theme .input-group input[type="number"],
-.dark-theme .input-group select,
-.dark-theme .input-group textarea {
-    background-color: var(--md-sys-color-surface-dark);
-    color: var(--md-sys-color-on-surface-dark);
-    border-color: var(--md-sys-color-outline-dark);
-}
-#text-prompt-input { font-size: 1.05em; padding: 12px; min-height: 80px; }
-.input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus {
-    border-color: var(--md-sys-color-primary-light);
-    outline: 1px solid var(--md-sys-color-primary-light);
-}
-.dark-theme .input-group input:focus,
-.dark-theme .input-group select:focus,
-.dark-theme .input-group textarea:focus {
-    border-color: var(--md-sys-color-primary-dark);
-    outline-color: var(--md-sys-color-primary-dark);
-}
+        .dark-theme #theme-toggle {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
 
-.input-group input[type="color"] {
-    width: 42px; height: 42px; padding: 2px; vertical-align: middle;
-    border: 1px solid var(--md-sys-color-outline-light); border-radius: 4px; cursor: pointer; background-color: #fff;
-}
-.dark-theme .input-group input[type="color"] {
-    border-color: var(--md-sys-color-outline-dark); background-color: #333;
-}
-input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
-input[type="color"]::-moz-color-swatch { border: none; border-radius: 3px; }
+        .dark-theme #theme-toggle:hover {
+            background-color: color-mix( in srgb, var(--md-sys-color-on-surface-variant-dark) 10%, transparent );
+        }
 
-.input-group .color-input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.input-group .color-input-row label { width: 70px; margin-bottom: 0; text-align: right; font-size: 0.85em; color: var(--md-sys-color-on-surface-variant-light); }
-.dark-theme .input-group .color-input-row label { color: var(--md-sys-color-on-surface-variant-dark); }
+        .phase-card {
+            background-color: var(--md-sys-color-surface-light);
+            border-radius: 12px;
+            border: 1px solid var(--md-sys-color-outline-variant-light);
+            padding: 25px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .dark-theme .phase-card {
+            background-color: var(--md-sys-color-surface-dark);
+            border-color: var(--md-sys-color-outline-variant-dark);
+        }
+        .phase-card-placeholder {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--md-sys-color-outline-light);
+            font-style: italic;
+            border-style: dashed;
+        }
+        .dark-theme .phase-card-placeholder {
+             color: var(--md-sys-color-outline-dark);
+        }
 
-.mode-selection { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-.mode-selection input[type="radio"] { opacity: 0; position: absolute; width: 1px; height: 1px; }
-.mode-selection label {
-    display: inline-block; padding: 6px 14px; border: 1px solid var(--radio-chip-border);
-    background-color: var(--radio-chip-bg); color: var(--radio-chip-text); border-radius: 20px; cursor: pointer;
-    font-size: 0.9em; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; user-select: none;
-}
-.mode-selection label:hover { background-color: var(--radio-chip-hover-bg); border-color: var(--radio-chip-hover-border); }
-.mode-selection input[type="radio"]:checked + label {
-    background-color: var(--radio-chip-selected-bg); border-color: var(--radio-chip-selected-border); color: var(--radio-chip-selected-text); font-weight: 500;
-}
-.mode-selection input[type="radio"]:focus-visible + label { outline: 2px solid var(--md-sys-color-primary-light); outline-offset: 2px; }
-.dark-theme .mode-selection input[type="radio"]:focus-visible + label { outline-color: var(--md-sys-color-primary-dark); }
-.mode-selection label::before, .mode-selection label::after { display: none; }
-.mode-selection div { line-height: 1; }
+        .phase-card.phase-human-decision {
+            border-left: 5px solid var(--md-sys-color-primary-light);
+        }
+        .dark-theme .phase-card.phase-human-decision {
+            border-left-color: var(--md-sys-color-primary-dark);
+        }
+        .phase-card.phase-llm-decision {
+            border-left: 5px solid var(--md-sys-color-secondary-light);
+        }
+        .dark-theme .phase-card.phase-llm-decision {
+            border-left-color: var(--md-sys-color-secondary-dark);
+        }
+        .phase-card.phase-mcu-tool {
+            border-left: 5px solid var(--md-sys-color-tertiary-light);
+        }
+        .dark-theme .phase-card.phase-mcu-tool {
+            border-left-color: var(--md-sys-color-tertiary-dark);
+        }
 
-input[type="checkbox"].custom-styled { opacity: 0; position: absolute; width: 1px; height: 1px; }
-.checkbox-label { margin-left: 0; cursor: pointer; display: inline-flex; align-items: center; position: relative; padding-left: 28px; min-height: 20px; user-select: none; color: var(--md-sys-color-on-surface-light); }
-.dark-theme .checkbox-label { color: var(--md-sys-color-on-surface-dark); }
-.checkbox-label::before {
-    content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-    width: 18px; height: 18px; border: 1px solid var(--md-sys-color-outline-light);
-    background-color: var(--md-sys-color-surface-light); transition: all 0.2s ease; border-radius: 3px;
-}
-.dark-theme .checkbox-label::before { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-dark); }
-.checkbox-label:hover::before { border-color: var(--md-sys-color-primary-light); }
-.dark-theme .checkbox-label:hover::before { border-color: var(--md-sys-color-primary-dark); }
-input[type="checkbox"].custom-styled:focus-visible + .checkbox-label::before { outline: 2px solid var(--md-sys-color-primary-light); outline-offset: 2px; }
-.dark-theme input[type="checkbox"].custom-styled:focus-visible + .checkbox-label::before { outline-color: var(--md-sys-color-primary-dark); }
-input[type="checkbox"].custom-styled:checked + .checkbox-label::before { border-color: var(--md-sys-color-primary-light); background-color: var(--md-sys-color-primary-light); }
-.dark-theme input[type="checkbox"].custom-styled:checked + .checkbox-label::before { border-color: var(--md-sys-color-primary-dark); background-color: var(--md-sys-color-primary-dark); }
-input[type="checkbox"].custom-styled:checked + .checkbox-label::after {
-    content: ""; position: absolute; left: 6px; top: 50%; width: 3px; height: 8px;
-    border: solid var(--md-sys-color-on-primary-light); border-width: 0 2px 2px 0; transform: translateY(-60%) rotate(45deg);
-}
-.dark-theme input[type="checkbox"].custom-styled:checked + .checkbox-label::after { border-color: var(--md-sys-color-on-primary-dark); }
 
-button:not([id^="md-"]) {
-    padding: 10px 18px; background-color: var(--md-sys-color-primary-light); color: var(--md-sys-color-on-primary-light);
-    border: none; border-radius: 20px; cursor: pointer; font-size: 1em; font-weight: 500;
-    transition: background-color 0.2s ease, opacity 0.2s ease; display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;
-}
-.dark-theme button:not([id^="md-"]) { background-color: var(--md-sys-color-primary-dark); color: var(--md-sys-color-on-primary-dark); }
-button:not([id^="md-"]):hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-light) 90%, black ); }
-.dark-theme button:not([id^="md-"]):hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 90%, white ); }
-button:not([id^="md-"]):disabled {
-    background-color: color-mix( in srgb, var(--md-sys-color-on-surface-light) 30%, transparent ); color: color-mix( in srgb, var(--md-sys-color-on-surface-light) 50%, transparent );
-    cursor: not-allowed; opacity: 0.7;
-}
-.dark-theme button:not([id^="md-"]):disabled {
-    background-color: color-mix( in srgb, var(--md-sys-color-on-surface-dark) 30%, transparent ); color: color-mix( in srgb, var(--md-sys-color-on-surface-dark) 50%, transparent );
-}
+        h1, h2, h3, h4, h5 {
+            margin-bottom: 0.8em;
+            color: var(--md-sys-color-on-surface-light);
+            font-weight: 600;
+        }
+        .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5 {
+            color: var(--md-sys-color-on-surface-dark);
+        }
+        h1 { font-size: 1.8em; margin-bottom: 1em; }
+        h2 { margin-top: 1.5em; font-size: 1.4em; }
+        h3 { margin-top: 1em; font-size: 1.15em; border-bottom: 1px solid var(--md-sys-color-outline-variant-light); padding-bottom: 0.4em; }
+        .dark-theme h3 { border-bottom-color: var(--md-sys-color-outline-variant-dark); }
+        h4 { font-size: 1em; margin-bottom: 0.8em; color: var(--md-sys-color-on-surface-variant-light); font-weight: 500; }
+        .dark-theme h4 { color: var(--md-sys-color-on-surface-variant-dark); }
+        h5 { font-size: 0.95em; margin-bottom: 0.5em; font-weight: 500; }
 
-#generate-button { width: 100%; margin-top: 15px; font-size: 1.1em; justify-content: center; }
-#suggest-colors-button { margin-top: 5px; }
-#generate-mwc-components-button, #generate-gemini-components-button {
-    margin-top: 5px; background-color: var(--md-sys-color-secondary-light); color: var(--md-sys-color-on-secondary-light); font-size: 0.95em;
-}
-.dark-theme #generate-mwc-components-button, .dark-theme #generate-gemini-components-button { background-color: var(--md-sys-color-secondary-dark); color: var(--md-sys-color-on-secondary-dark); }
-#generate-mwc-components-button:hover, #generate-gemini-components-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-light) 90%, black ); }
-.dark-theme #generate-mwc-components-button:hover, .dark-theme #generate-gemini-components-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-dark) 90%, white ); }
-#add-custom-color-button {
-    margin-top: 0px; font-size: 0.9em; padding: 6px 12px; background-color: var(--md-sys-color-secondary-container-light);
-    color: var(--md-sys-color-on-secondary-container-light); border: 1px solid var(--md-sys-color-outline-light);
-}
-.dark-theme #add-custom-color-button { background-color: var(--md-sys-color-secondary-container-dark); color: var(--md-sys-color-on-secondary-container-dark); border-color: var(--md-sys-color-outline-dark); }
-#add-custom-color-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-container-light) 90%, black ); }
-.dark-theme #add-custom-color-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-container-dark) 90%, white ); }
+        p {
+            margin-bottom: 1em;
+            color: var(--md-sys-color-on-surface-variant-light);
+        }
+        .dark-theme p {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
 
-#drop-area {
-    border: 2px dashed var(--md-sys-color-outline-light); border-radius: 4px; padding: 25px; text-align: center; cursor: pointer;
-    background-color: var(--md-sys-color-surface-variant-light); transition: background-color 0.2s ease, border-color 0.2s ease;
-    position: relative; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.dark-theme #drop-area { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-variant-dark); }
-#drop-area.drag-over { background-color: var(--md-sys-color-secondary-container-light); border-color: var(--md-sys-color-primary-light); }
-.dark-theme #drop-area.drag-over { background-color: var(--md-sys-color-secondary-container-dark); border-color: var(--md-sys-color-primary-dark); }
-#drop-area p { margin: 0; color: var(--md-sys-color-on-surface-variant-light); font-size: 0.95em; }
-.dark-theme #drop-area p { color: var(--md-sys-color-on-surface-variant-dark); }
+        code {
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            color: #111;
+            border: 1px solid #e0e0e0;
+        }
+        .dark-theme code {
+            background-color: #333;
+            color: #eee;
+            border-color: #555;
+        }
 
-#image-preview { max-width: 100%; max-height: 150px; margin-top: 15px; border-radius: 4px; object-fit: contain; border: 1px solid var(--md-sys-color-outline-variant-light); }
-.dark-theme #image-preview { border-color: var(--md-sys-color-outline-variant-dark); }
-.image-options { margin-top: 15px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 15px; display: flex; flex-direction: column; gap: 8px; }
-.dark-theme .image-options { border-top-color: var(--md-sys-color-outline-variant-dark); }
-.image-options label { font-size: 0.85em; color: var(--md-sys-color-on-surface-variant-light); }
-.dark-theme .image-options label { color: var(--md-sys-color-on-surface-variant-dark); }
-.image-options input { max-width: 70px; }
+        fieldset {
+            border: 1px solid var(--md-sys-color-outline-light);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .dark-theme fieldset { border-color: var(--md-sys-color-outline-dark); }
+        legend {
+            font-weight: 600;
+            padding: 0 8px;
+            font-size: 0.95em;
+            color: var(--md-sys-color-on-surface-light);
+        }
+        .dark-theme legend { color: var(--md-sys-color-on-surface-dark); }
 
-#custom-color-list .custom-color-row {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 10px; border: 1px solid var(--md-sys-color-outline-variant-light);
-    padding: 8px 10px; border-radius: 4px; background-color: var(--md-sys-color-surface-light);
-}
-.dark-theme #custom-color-list .custom-color-row { border-color: var(--md-sys-color-outline-variant-dark); background-color: var(--md-sys-color-surface-dark); }
-#custom-color-list label { margin-bottom: 0; font-weight: normal; font-size: 0.85em; white-space: nowrap; color: var(--md-sys-color-on-surface-variant-light); }
-.dark-theme #custom-color-list label { color: var(--md-sys-color-on-surface-variant-dark); }
-#custom-color-list input[type="text"] { flex-grow: 1; min-width: 80px; font-size: 0.9em; padding: 6px 8px; }
-#custom-color-list input[type="checkbox"] { margin-left: 2px; transform: scale(0.9); }
-#custom-color-list button {
-    padding: 3px 7px; font-size: 0.8em; line-height: 1; background-color: transparent; border: none;
-    color: var(--md-sys-color-error-light); border-radius: 50%; cursor: pointer; font-weight: bold;
-}
-.dark-theme #custom-color-list button { color: var(--md-sys-color-error-dark); }
-#custom-color-list button:hover { background-color: color-mix( in srgb, var(--md-sys-color-error-light) 15%, transparent ); }
-.dark-theme #custom-color-list button:hover { background-color: color-mix( in srgb, var(--md-sys-color-error-dark) 15%, transparent ); }
+        .input-group { margin-bottom: 20px; }
+        .input-group label, .checkbox-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+            color: var(--md-sys-color-on-surface-variant-light);
+        }
+        .dark-theme .input-group label, .dark-theme .checkbox-label {
+            color: var(--md-sys-color-on-surface-variant-dark);
+        }
 
-.output-section { min-height: 300px; }
-.output-section .placeholder { color: var(--md-sys-color-outline-light); text-align: center; margin-top: 60px; font-style: italic; font-size: 0.95em; }
-.dark-theme .output-section .placeholder { color: var(--md-sys-color-outline-dark); }
-.color-group { margin-bottom: 30px; }
-.swatch-container { display: flex; flex-wrap: wrap; gap: 12px; }
-.swatch {
-    width: 110px; height: 110px; border-radius: 4px; display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 8px; font-size: 0.8em; color: white; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08);
-}
-.swatch span { display: block; line-height: 1.3; }
-.swatch .swatch-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.swatch .swatch-hex { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 0.9em; opacity: 0.9; }
-#seed-colors-display .swatch { width: 70px; height: 70px; font-size: 0.75em; padding: 5px; }
-#seed-colors-display h3 { border-bottom: none; margin-bottom: 0.5em; }
-.palette-section { margin-bottom: 20px; }
-.scheme-swatches { display: flex; flex-wrap: wrap; gap: 10px; }
-.custom-color-group-display { border-left: 3px solid var(--md-sys-color-outline-variant-light); padding-left: 15px; margin-left: 5px; margin-top: 15px; }
-.dark-theme .custom-color-group-display { border-left-color: var(--md-sys-color-outline-variant-dark); }
-.custom-color-group-display .scheme-pair { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .input-group input[type="text"],
+        .input-group input[type="number"],
+        .input-group select,
+        .input-group textarea {
+            padding: 10px 12px;
+            border: 1px solid var(--md-sys-color-outline-light);
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 5px;
+            background-color: var(--md-sys-color-surface-light);
+            color: var(--md-sys-color-on-surface-light);
+            font-size: 0.95em;
+            transition: border-color 0.2s ease;
+        }
+        .dark-theme .input-group input[type="text"],
+        .dark-theme .input-group input[type="number"],
+        .dark-theme .input-group select,
+        .dark-theme .input-group textarea {
+            background-color: var(--md-sys-color-surface-dark);
+            color: var(--md-sys-color-on-surface-dark);
+            border-color: var(--md-sys-color-outline-dark);
+        }
+        #text-prompt-input { font-size: 1.05em; padding: 12px; min-height: 80px; }
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: var(--md-sys-color-primary-light);
+            outline: 1px solid var(--md-sys-color-primary-light);
+        }
+        .dark-theme .input-group input:focus,
+        .dark-theme .input-group select:focus,
+        .dark-theme .input-group textarea:focus {
+            border-color: var(--md-sys-color-primary-dark);
+            outline-color: var(--md-sys-color-primary-dark);
+        }
 
-.hidden { display: none !important; }
-.error {
-    color: var(--md-sys-color-error-light); background-color: var(--md-sys-color-error-container-light); border: 1px solid color-mix(in srgb, var(--md-sys-color-error-light) 30%, transparent);
-    padding: 12px 15px; border-radius: 4px; margin-top: 15px; font-size: 0.9em;
-}
-.dark-theme .error { color: var(--md-sys-color-error-dark); background-color: var(--md-sys-color-error-container-dark); border-color: color-mix( in srgb, var(--md-sys-color-error-dark) 30%, transparent ); }
-#loading-indicator, #suggestion-loading-indicator, #gemini-component-loading { text-align: center; padding: 15px 10px; color: var(--md-sys-color-outline-light); font-style: italic; font-size: 0.95em; }
-.dark-theme #loading-indicator, .dark-theme #suggestion-loading-indicator, .dark-theme #gemini-component-loading { color: var(--md-sys-color-outline-dark); }
+        .input-group input[type="color"] {
+            width: 42px; height: 42px; padding: 2px; vertical-align: middle;
+            border: 1px solid var(--md-sys-color-outline-light); border-radius: 4px; cursor: pointer; background-color: #fff;
+        }
+        .dark-theme .input-group input[type="color"] {
+            border-color: var(--md-sys-color-outline-dark); background-color: #333;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
+        input[type="color"]::-moz-color-swatch { border: none; border-radius: 3px; }
 
-#text-prompt-options { margin: 10px 0 5px 0; font-size: 0.85em; }
-#text-prompt-suggestions { margin-top: 20px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 20px; }
-.dark-theme #text-prompt-suggestions { border-top-color: var(--md-sys-color-outline-variant-dark); }
-#text-prompt-suggestions > label { display: block; margin-bottom: 12px; font-weight: 500; font-size: 0.9em; color: var(--md-sys-color-on-surface-variant-light); }
-.dark-theme #text-prompt-suggestions > label { color: var(--md-sys-color-on-surface-variant-dark); }
-.suggestion-option {
-    padding: 10px 12px; border: 1px solid var(--md-sys-color-outline-light); border-radius: 4px; margin-bottom: 10px; cursor: pointer;
-    display: flex; align-items: center; gap: 10px; transition: background-color 0.2s ease, border-color 0.2s ease; background-color: var(--md-sys-color-surface-light);
-}
-.dark-theme .suggestion-option { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-dark); }
-.suggestion-option:hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-light) 8%, transparent ); border-color: var(--md-sys-color-primary-light); }
-.dark-theme .suggestion-option:hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 8%, transparent ); border-color: var(--md-sys-color-primary-dark); }
-.suggestion-option.selected { border-color: var(--md-sys-color-primary-light); background-color: var(--md-sys-color-primary-container-light); outline: 1px solid var(--md-sys-color-primary-light); }
-.dark-theme .suggestion-option.selected { border-color: var(--md-sys-color-primary-dark); background-color: var(--md-sys-color-primary-container-dark); outline-color: var(--md-sys-color-primary-dark); }
-.suggestion-option.selected span:not(.suggestion-swatch) { font-weight: 600; color: var(--md-sys-color-on-primary-container-light); }
-.dark-theme .suggestion-option.selected span:not(.suggestion-swatch) { color: var(--md-sys-color-on-primary-container-dark); }
-.suggestion-option input[type="radio"] { opacity: 0; width: 1px; height: 1px; position: absolute; }
-.suggestion-option label { display: flex; align-items: center; gap: 8px; cursor: pointer; width: 100%; margin: 0; font-weight: normal; color: var(--md-sys-color-on-surface-light); }
-.dark-theme .suggestion-option label { color: var(--md-sys-color-on-surface-dark); }
-.suggestion-swatch { width: 22px; height: 22px; border-radius: 3px; border: 1px solid var(--md-sys-color-outline-variant-light); display: inline-block; flex-shrink: 0; }
-.dark-theme .suggestion-swatch { border-color: var(--md-sys-color-outline-variant-dark); }
+        .input-group .color-input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .input-group .color-input-row label { width: 70px; margin-bottom: 0; text-align: right; font-size: 0.85em; color: var(--md-sys-color-on-surface-variant-light); }
+        .dark-theme .input-group .color-input-row label { color: var(--md-sys-color-on-surface-variant-dark); }
 
-#component-examples { margin-top: 30px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 25px; }
-.dark-theme #component-examples { border-top-color: var(--md-sys-color-outline-variant-dark); }
-.custom-checkbox-container { display: flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
-.custom-checkbox-container input[type="checkbox"] { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
-.custom-checkbox-container label.checkbox-label { position: relative; cursor: pointer; user-select: none; padding-left: 28px; line-height: 20px; display: inline-block; }
-.custom-checkbox-container label.checkbox-label::before {
-    content: ""; position: absolute; left: 0; top: 0px; width: 18px; height: 18px;
-    border: 1px solid var(--md-sys-color-outline, #79747E); background-color: var(--md-sys-color-surface, #FEF7FF);
-    border-radius: 3px; transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-.custom-checkbox-container input[type="checkbox"]:checked + label.checkbox-label::before { background-color: #C775A4; border-color: #C775A4; }
-.custom-checkbox-container label.checkbox-label::after {
-    content: ""; position: absolute; left: 6px; top: 3px; width: 5px; height: 10px;
-    border: solid var(--md-sys-color-on-primary, white); border-width: 0 2px 2px 0; transform: rotate(45deg); opacity: 0; transition: opacity 0.1s ease-in-out;
-}
-.custom-checkbox-container input[type="checkbox"]:checked + label.checkbox-label::after { opacity: 1; }
-.custom-checkbox-container input[type="checkbox"]:focus-visible + label.checkbox-label::before { outline: 2px solid var(--md-sys-color-primary, #6750A4); outline-offset: 2px; }
-.custom-checkbox-container:hover label.checkbox-label::before { border-color: var(--md-sys-color-on-surface, #1D1B20); }
-.custom-checkbox-container input[type="checkbox"]:checked:hover + label.checkbox-label::before { background-color: #b86896; border-color: #b86896; }
+        .mode-selection { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .mode-selection input[type="radio"] { opacity: 0; position: absolute; width: 1px; height: 1px; }
+        .mode-selection label {
+            display: inline-block; padding: 6px 14px; border: 1px solid var(--radio-chip-border);
+            background-color: var(--radio-chip-bg); color: var(--radio-chip-text); border-radius: 20px; cursor: pointer;
+            font-size: 0.9em; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; user-select: none;
+        }
+        .mode-selection label:hover { background-color: var(--radio-chip-hover-bg); border-color: var(--radio-chip-hover-border); }
+        .mode-selection input[type="radio"]:checked + label {
+            background-color: var(--radio-chip-selected-bg); border-color: var(--radio-chip-selected-border); color: var(--radio-chip-selected-text); font-weight: 500;
+        }
+        .mode-selection input[type="radio"]:focus-visible + label { outline: 2px solid var(--md-sys-color-primary-light); outline-offset: 2px; }
+        .dark-theme .mode-selection input[type="radio"]:focus-visible + label { outline-color: var(--md-sys-color-primary-dark); }
+        .mode-selection label::before, .mode-selection label::after { display: none; }
+        .mode-selection div { line-height: 1; }
 
-#component-examples h3 { border-bottom: none; margin-bottom: 15px; }
-.component-generation-options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; }
-.component-generation-options .input-group { margin-bottom: 0; width: 100%; }
-.component-buttons-container { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
-.component-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.component-preview-area {
-    display: flex; flex-direction: column; gap: 15px; padding: 25px; border-radius: 8px; border: 1px solid var(--md-sys-color-outline-variant-light);
-    background-color: var(--md-sys-color-background-light); color: var(--md-sys-color-on-background-light); transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; min-height: 300px;
-    background-color: var( --local-sys-color-background, var(--md-sys-color-background-light) ); color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-light) ); border-color: var( --local-sys-color-outline-variant, var(--md-sys-color-outline-variant-light) );
-}
-.component-preview-area.dark-theme { background-color: var( --local-sys-color-background, var(--md-sys-color-background-dark) ); color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-dark) ); border-color: var( --local-sys-color-outline-variant, var(--md-sys-color-outline-variant-dark) ); }
-.component-preview-area h4 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-light) ); margin-top: 0; margin-bottom: 10px; font-size: 1.2em; }
-.dark-theme .component-preview-area h4 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
-.component-preview-area h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-light) ); margin-bottom: 10px; font-size: 1em; }
-.dark-theme .component-preview-area h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
+        input[type="checkbox"].custom-styled { opacity: 0; position: absolute; width: 1px; height: 1px; }
+        .checkbox-label { margin-left: 0; cursor: pointer; display: inline-flex; align-items: center; position: relative; padding-left: 28px; min-height: 20px; user-select: none; color: var(--md-sys-color-on-surface-light); }
+        .dark-theme .checkbox-label { color: var(--md-sys-color-on-surface-dark); }
+        .checkbox-label::before {
+            content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; border: 1px solid var(--md-sys-color-outline-light);
+            background-color: var(--md-sys-color-surface-light); transition: all 0.2s ease; border-radius: 3px;
+        }
+        .dark-theme .checkbox-label::before { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-dark); }
+        .checkbox-label:hover::before { border-color: var(--md-sys-color-primary-light); }
+        .dark-theme .checkbox-label:hover::before { border-color: var(--md-sys-color-primary-dark); }
+        input[type="checkbox"].custom-styled:focus-visible + .checkbox-label::before { outline: 2px solid var(--md-sys-color-primary-light); outline-offset: 2px; }
+        .dark-theme input[type="checkbox"].custom-styled:focus-visible + .checkbox-label::before { outline-color: var(--md-sys-color-primary-dark); }
+        input[type="checkbox"].custom-styled:checked + .checkbox-label::before { border-color: var(--md-sys-color-primary-light); background-color: var(--md-sys-color-primary-light); }
+        .dark-theme input[type="checkbox"].custom-styled:checked + .checkbox-label::before { border-color: var(--md-sys-color-primary-dark); background-color: var(--md-sys-color-primary-dark); }
+        input[type="checkbox"].custom-styled:checked + .checkbox-label::after {
+            content: ""; position: absolute; left: 6px; top: 50%; width: 3px; height: 8px;
+            border: solid var(--md-sys-color-on-primary-light); border-width: 0 2px 2px 0; transform: translateY(-60%) rotate(45deg);
+        }
+        .dark-theme input[type="checkbox"].custom-styled:checked + .checkbox-label::after { border-color: var(--md-sys-color-on-primary-dark); }
 
-#mwc-component-preview md-filled-button,
-#mwc-component-preview md-outlined-button,
-#mwc-component-preview md-fab,
-#mwc-component-preview md-chip-set md-assist-chip,
-#mwc-component-preview md-chip-set md-filter-chip,
-#mwc-component-preview md-chip-set md-suggestion-chip,
-#mwc-component-preview md-slider,
-#mwc-component-preview md-card {
-    --md-sys-color-primary: var(--local-sys-color-primary); --md-sys-color-on-primary: var(--local-sys-color-on-primary);
-    --md-sys-color-primary-container: var( --local-sys-color-primary-container ); --md-sys-color-on-primary-container: var( --local-sys-color-on-primary-container );
-    --md-sys-color-secondary: var(--local-sys-color-secondary); --md-sys-color-on-secondary: var(--local-sys-color-on-secondary);
-    --md-sys-color-secondary-container: var( --local-sys-color-secondary-container ); --md-sys-color-on-secondary-container: var( --local-sys-color-on-secondary-container );
-    --md-sys-color-tertiary: var(--local-sys-color-tertiary); --md-sys-color-on-tertiary: var(--local-sys-color-on-tertiary);
-    --md-sys-color-tertiary-container: var( --local-sys-color-tertiary-container ); --md-sys-color-on-tertiary-container: var( --local-sys-color-on-tertiary-container );
-    --md-sys-color-error: var(--local-sys-color-error); --md-sys-color-on-error: var(--local-sys-color-on-error);
-    --md-sys-color-error-container: var(--local-sys-color-error-container); --md-sys-color-on-error-container: var( --local-sys-color-on-error-container );
-    --md-sys-color-surface: var(--local-sys-color-surface); --md-sys-color-on-surface: var(--local-sys-color-on-surface);
-    --md-sys-color-surface-variant: var(--local-sys-color-surface-variant); --md-sys-color-on-surface-variant: var( --local-sys-color-on-surface-variant );
-    --md-sys-color-outline: var(--local-sys-color-outline); --md-sys-color-outline-variant: var(--local-sys-color-outline-variant);
-    --md-sys-color-inverse-surface: var(--local-sys-color-inverse-surface); --md-sys-color-inverse-on-surface: var( --local-sys-color-inverse-on-surface );
-    --md-sys-color-inverse-primary: var(--local-sys-color-inverse-primary); --md-sys-color-background: var(--local-sys-color-background); --md-sys-color-on-background: var(--local-sys-color-on-background);
-}
+        button:not([id^="md-"]) {
+            padding: 10px 18px; background-color: var(--md-sys-color-primary-light); color: var(--md-sys-color-on-primary-light);
+            border: none; border-radius: 20px; cursor: pointer; font-size: 1em; font-weight: 500;
+            transition: background-color 0.2s ease, opacity 0.2s ease; display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;
+        }
+        .dark-theme button:not([id^="md-"]) { background-color: var(--md-sys-color-primary-dark); color: var(--md-sys-color-on-primary-dark); }
+        button:not([id^="md-"]):hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-light) 90%, black ); }
+        .dark-theme button:not([id^="md-"]):hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 90%, white ); }
+        button:not([id^="md-"]):disabled {
+            background-color: color-mix( in srgb, var(--md-sys-color-on-surface-light) 30%, transparent ); color: color-mix( in srgb, var(--md-sys-color-on-surface-light) 50%, transparent );
+            cursor: not-allowed; opacity: 0.7;
+        }
+        .dark-theme button:not([id^="md-"]):disabled {
+            background-color: color-mix( in srgb, var(--md-sys-color-on-surface-dark) 30%, transparent ); color: color-mix( in srgb, var(--md-sys-color-on-surface-dark) 50%, transparent );
+        }
 
-#mwc-component-preview md-card p { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-light) ); }
-.dark-theme #mwc-component-preview md-card p { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark) ); }
-.dark-theme #gemini-component-preview h1,
-.dark-theme #gemini-component-preview h2,
-.dark-theme #gemini-component-preview h3,
-.dark-theme #gemini-component-preview h4,
-.dark-theme #gemini-component-preview h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
-.dark-theme #gemini-component-preview p,
-.dark-theme #gemini-component-preview li { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark) ); }
-.dark-theme #gemini-component-preview code { background-color: #333; color: #eee; border-color: #555; }
-.dark-theme #gemini-component-preview a { color: var(--local-sys-color-primary, var(--md-sys-color-primary-dark)); }
+        #generate-button { width: 100%; margin-top: 15px; font-size: 1.1em; justify-content: center; }
+        #suggest-colors-button { margin-top: 5px; }
+        #generate-mwc-components-button, #generate-gemini-components-button {
+            margin-top: 5px; background-color: var(--md-sys-color-secondary-light); color: var(--md-sys-color-on-secondary-light); font-size: 0.95em;
+        }
+        .dark-theme #generate-mwc-components-button, .dark-theme #generate-gemini-components-button { background-color: var(--md-sys-color-secondary-dark); color: var(--md-sys-color-on-secondary-dark); }
+        #generate-mwc-components-button:hover, #generate-gemini-components-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-light) 90%, black ); }
+        .dark-theme #generate-mwc-components-button:hover, .dark-theme #generate-gemini-components-button:hover { background-color: color-mix( in srgb, var(--md-sys-color-secondary-dark) 90%, white ); }
+        /* Removed #add-custom-color-button styles */
 
-#dynamic-theme-styles { display: none; }
+        #drop-area {
+            border: 2px dashed var(--md-sys-color-outline-light); border-radius: 4px; padding: 25px; text-align: center; cursor: pointer;
+            background-color: var(--md-sys-color-surface-variant-light); transition: background-color 0.2s ease, border-color 0.2s ease;
+            position: relative; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .dark-theme #drop-area { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-variant-dark); }
+        #drop-area.drag-over { background-color: var(--md-sys-color-secondary-container-light); border-color: var(--md-sys-color-primary-light); }
+        .dark-theme #drop-area.drag-over { background-color: var(--md-sys-color-secondary-container-dark); border-color: var(--md-sys-color-primary-dark); }
+        #drop-area p { margin: 0; color: var(--md-sys-color-on-surface-variant-light); font-size: 0.95em; }
+        .dark-theme #drop-area p { color: var(--md-sys-color-on-surface-variant-dark); }
 
-@media (max-width: 900px) {
-    .main-content-grid { grid-template-columns: 1fr; }
-    #workflow-minimap { grid-row: auto; grid-column: auto; width: auto; max-width: calc(100vw - 40px); font-size: 9px; padding: 6px 8px; margin-top: 20px; }
-    #theme-toggle { top: 10px; right: 15px; }
-}
-@media (max-width: 1100px) {
-    .component-preview-grid { grid-template-columns: 1fr; }
-}
+        #image-preview { max-width: 100%; max-height: 150px; margin-top: 15px; border-radius: 4px; object-fit: contain; border: 1px solid var(--md-sys-color-outline-variant-light); }
+        .dark-theme #image-preview { border-color: var(--md-sys-color-outline-variant-dark); }
+        .image-options { margin-top: 15px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .dark-theme .image-options { border-top-color: var(--md-sys-color-outline-variant-dark); }
+        .image-options label { font-size: 0.85em; color: var(--md-sys-color-on-surface-variant-light); }
+        .dark-theme .image-options label { color: var(--md-sys-color-on-surface-variant-dark); }
+        .image-options input { max-width: 70px; }
+
+        /* Removed #custom-color-list styles */
+
+        .output-section { min-height: 300px; }
+        .output-section .placeholder { color: var(--md-sys-color-outline-light); text-align: center; margin-top: 60px; font-style: italic; font-size: 0.95em; }
+        .dark-theme .output-section .placeholder { color: var(--md-sys-color-outline-dark); }
+        .color-group { margin-bottom: 30px; }
+        .swatch-container { display: flex; flex-wrap: wrap; gap: 12px; }
+        .swatch {
+            width: 110px; height: 110px; border-radius: 4px; display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 8px; font-size: 0.8em; color: white; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .swatch span { display: block; line-height: 1.3; }
+        .swatch .swatch-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .swatch .swatch-hex { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 0.9em; opacity: 0.9; }
+        #seed-colors-display .swatch { width: 70px; height: 70px; font-size: 0.75em; padding: 5px; }
+        #seed-colors-display h3 { border-bottom: none; margin-bottom: 0.5em; }
+        .palette-section { margin-bottom: 20px; }
+        .scheme-swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+        /* Removed .custom-color-group-display styles */
+
+        .hidden { display: none !important; }
+        .error {
+            color: var(--md-sys-color-error-light); background-color: var(--md-sys-color-error-container-light); border: 1px solid color-mix(in srgb, var(--md-sys-color-error-light) 30%, transparent);
+            padding: 12px 15px; border-radius: 4px; margin-top: 15px; font-size: 0.9em;
+        }
+        .dark-theme .error { color: var(--md-sys-color-error-dark); background-color: var(--md-sys-color-error-container-dark); border-color: color-mix( in srgb, var(--md-sys-color-error-dark) 30%, transparent ); }
+        #loading-indicator, #suggestion-loading-indicator, #gemini-component-loading { text-align: center; padding: 15px 10px; color: var(--md-sys-color-outline-light); font-style: italic; font-size: 0.95em; }
+        .dark-theme #loading-indicator, .dark-theme #suggestion-loading-indicator, .dark-theme #gemini-component-loading { color: var(--md-sys-color-outline-dark); }
+
+        #text-prompt-options { margin: 10px 0 5px 0; font-size: 0.85em; }
+        #text-prompt-suggestions { margin-top: 20px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 20px; }
+        .dark-theme #text-prompt-suggestions { border-top-color: var(--md-sys-color-outline-variant-dark); }
+        #text-prompt-suggestions > label { display: block; margin-bottom: 12px; font-weight: 500; font-size: 0.9em; color: var(--md-sys-color-on-surface-variant-light); }
+        .dark-theme #text-prompt-suggestions > label { color: var(--md-sys-color-on-surface-variant-dark); }
+        .suggestion-option {
+            padding: 10px 12px; border: 1px solid var(--md-sys-color-outline-light); border-radius: 4px; margin-bottom: 10px; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; transition: background-color 0.2s ease, border-color 0.2s ease; background-color: var(--md-sys-color-surface-light);
+        }
+        .dark-theme .suggestion-option { border-color: var(--md-sys-color-outline-dark); background-color: var(--md-sys-color-surface-dark); }
+        .suggestion-option:hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-light) 8%, transparent ); border-color: var(--md-sys-color-primary-light); }
+        .dark-theme .suggestion-option:hover { background-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 8%, transparent ); border-color: var(--md-sys-color-primary-dark); }
+        .suggestion-option.selected { border-color: var(--md-sys-color-primary-light); background-color: var(--md-sys-color-primary-container-light); outline: 1px solid var(--md-sys-color-primary-light); }
+        .dark-theme .suggestion-option.selected { border-color: var(--md-sys-color-primary-dark); background-color: var(--md-sys-color-primary-container-dark); outline-color: var(--md-sys-color-primary-dark); }
+        .suggestion-option.selected span:not(.suggestion-swatch) { font-weight: 600; color: var(--md-sys-color-on-primary-container-light); }
+        .dark-theme .suggestion-option.selected span:not(.suggestion-swatch) { color: var(--md-sys-color-on-primary-container-dark); }
+        .suggestion-option input[type="radio"] { opacity: 0; width: 1px; height: 1px; position: absolute; }
+        .suggestion-option label { display: flex; align-items: center; gap: 8px; cursor: pointer; width: 100%; margin: 0; font-weight: normal; color: var(--md-sys-color-on-surface-light); }
+        .dark-theme .suggestion-option label { color: var(--md-sys-color-on-surface-dark); }
+        .suggestion-swatch { width: 22px; height: 22px; border-radius: 3px; border: 1px solid var(--md-sys-color-outline-variant-light); display: inline-block; flex-shrink: 0; }
+        .dark-theme .suggestion-swatch { border-color: var(--md-sys-color-outline-variant-dark); }
+
+        #component-examples { margin-top: 30px; border-top: 1px solid var(--md-sys-color-outline-variant-light); padding-top: 25px; }
+        .dark-theme #component-examples { border-top-color: var(--md-sys-color-outline-variant-dark); }
+        .custom-checkbox-container { display: flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+        .custom-checkbox-container input[type="checkbox"] { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .custom-checkbox-container label.checkbox-label { position: relative; cursor: pointer; user-select: none; padding-left: 28px; line-height: 20px; display: inline-block; }
+        .custom-checkbox-container label.checkbox-label::before {
+            content: ""; position: absolute; left: 0; top: 0px; width: 18px; height: 18px;
+            border: 1px solid var(--md-sys-color-outline, #79747E); background-color: var(--md-sys-color-surface, #FEF7FF);
+            border-radius: 3px; transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        }
+        .custom-checkbox-container input[type="checkbox"]:checked + label.checkbox-label::before { background-color: var(--md-sys-color-primary-light); border-color: var(--md-sys-color-primary-light); }
+        .dark-theme .custom-checkbox-container input[type="checkbox"]:checked + label.checkbox-label::before { background-color: var(--md-sys-color-primary-dark); border-color: var(--md-sys-color-primary-dark); }
+
+        .custom-checkbox-container label.checkbox-label::after {
+            content: ""; position: absolute; left: 6px; top: 3px; width: 5px; height: 10px;
+            border: solid var(--md-sys-color-on-primary, white); border-width: 0 2px 2px 0; transform: rotate(45deg); opacity: 0; transition: opacity 0.1s ease-in-out;
+        }
+        .custom-checkbox-container input[type="checkbox"]:checked + label.checkbox-label::after { opacity: 1; }
+        .custom-checkbox-container input[type="checkbox"]:focus-visible + label.checkbox-label::before { outline: 2px solid var(--md-sys-color-primary, #6750A4); outline-offset: 2px; }
+        .custom-checkbox-container:hover label.checkbox-label::before { border-color: var(--md-sys-color-on-surface, #1D1B20); }
+        .custom-checkbox-container input[type="checkbox"]:checked:hover + label.checkbox-label::before { background-color: color-mix( in srgb, var(--md-sys-color-primary-light) 90%, black ); border-color: color-mix( in srgb, var(--md-sys-color-primary-light) 90%, black ); }
+        .dark-theme .custom-checkbox-container input[type="checkbox"]:checked:hover + label.checkbox-label::before { background-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 90%, white ); border-color: color-mix( in srgb, var(--md-sys-color-primary-dark) 90%, white ); }
+
+        #component-examples h3 { border-bottom: none; margin-bottom: 15px; }
+        .component-generation-options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; }
+        .component-generation-options .input-group { margin-bottom: 0; width: 100%; }
+        .component-buttons-container { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+        .component-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .component-preview-area {
+            display: flex; flex-direction: column; gap: 15px; padding: 25px; border-radius: 8px; border: 1px solid var(--md-sys-color-outline-variant-light);
+            background-color: var(--md-sys-color-background-light); color: var(--md-sys-color-on-background-light); transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; min-height: 300px;
+            background-color: var( --local-sys-color-background, var(--md-sys-color-background-light) ); color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-light) ); border-color: var( --local-sys-color-outline-variant, var(--md-sys-color-outline-variant-light) );
+        }
+        .component-preview-area.dark-theme { background-color: var( --local-sys-color-background, var(--md-sys-color-background-dark) ); color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-dark) ); border-color: var( --local-sys-color-outline-variant, var(--md-sys-color-outline-variant-dark) ); }
+        .component-preview-area h4 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-light) ); margin-top: 0; margin-bottom: 10px; font-size: 1.2em; }
+        .dark-theme .component-preview-area h4 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
+        .component-preview-area h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-light) ); margin-bottom: 10px; font-size: 1em; }
+        .dark-theme .component-preview-area h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
+
+        #mwc-component-preview md-filled-button,
+        #mwc-component-preview md-outlined-button,
+        #mwc-component-preview md-fab,
+        #mwc-component-preview md-chip-set md-assist-chip,
+        #mwc-component-preview md-chip-set md-filter-chip,
+        #mwc-component-preview md-chip-set md-suggestion-chip,
+        #mwc-component-preview md-slider,
+        #mwc-component-preview md-card {
+            /* Note: Custom color variables (--local-sys-color-custom-...) are removed from the generation logic in JS */
+            --md-sys-color-primary: var(--local-sys-color-primary); --md-sys-color-on-primary: var(--local-sys-color-on-primary);
+            --md-sys-color-primary-container: var( --local-sys-color-primary-container ); --md-sys-color-on-primary-container: var( --local-sys-color-on-primary-container );
+            --md-sys-color-secondary: var(--local-sys-color-secondary); --md-sys-color-on-secondary: var(--local-sys-color-on-secondary);
+            --md-sys-color-secondary-container: var( --local-sys-color-secondary-container ); --md-sys-color-on-secondary-container: var( --local-sys-color-on-secondary-container );
+            --md-sys-color-tertiary: var(--local-sys-color-tertiary); --md-sys-color-on-tertiary: var(--local-sys-color-on-tertiary);
+            --md-sys-color-tertiary-container: var( --local-sys-color-tertiary-container ); --md-sys-color-on-tertiary-container: var( --local-sys-color-on-tertiary-container );
+            --md-sys-color-error: var(--local-sys-color-error); --md-sys-color-on-error: var(--local-sys-color-on-error);
+            --md-sys-color-error-container: var(--local-sys-color-error-container); --md-sys-color-on-error-container: var( --local-sys-color-on-error-container );
+            --md-sys-color-surface: var(--local-sys-color-surface); --md-sys-color-on-surface: var(--local-sys-color-on-surface);
+            --md-sys-color-surface-variant: var(--local-sys-color-surface-variant); --md-sys-color-on-surface-variant: var( --local-sys-color-on-surface-variant );
+            --md-sys-color-outline: var(--local-sys-color-outline); --md-sys-color-outline-variant: var(--local-sys-color-outline-variant);
+            --md-sys-color-inverse-surface: var(--local-sys-color-inverse-surface); --md-sys-color-inverse-on-surface: var( --local-sys-color-inverse-on-surface );
+            --md-sys-color-inverse-primary: var(--local-sys-color-inverse-primary); --md-sys-color-background: var(--local-sys-color-background); --md-sys-color-on-background: var(--local-sys-color-on-background);
+        }
+
+        #mwc-component-preview md-card p { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-light) ); }
+        .dark-theme #mwc-component-preview md-card p { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark) ); }
+
+        #gemini-component-preview {
+            font-family: var(--comp-font-family);
+            line-height: 1.6;
+            color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-light) );
+        }
+        .dark-theme #gemini-component-preview {
+            color: var( --local-sys-color-on-background, var(--md-sys-color-on-background-dark) );
+        }
+
+        #gemini-component-preview h1,
+        #gemini-component-preview h2,
+        #gemini-component-preview h3,
+        #gemini-component-preview h4,
+        #gemini-component-preview h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-light) ); margin-bottom: 0.8em; font-weight: 600; }
+        .dark-theme #gemini-component-preview h1,
+        .dark-theme #gemini-component-preview h2,
+        .dark-theme #gemini-component-preview h3,
+        .dark-theme #gemini-component-preview h4,
+        .dark-theme #gemini-component-preview h5 { color: var( --local-sys-color-on-surface, var(--md-sys-color-on-surface-dark) ); }
+        #gemini-component-preview p,
+        #gemini-component-preview li { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-light) ); margin-bottom: 1em; }
+        .dark-theme #gemini-component-preview p,
+        .dark-theme #gemini-component-preview li { color: var( --local-sys-color-on-surface-variant, var(--md-sys-color-on-surface-variant-dark) ); }
+        #gemini-component-preview code { background-color: #f0f0f0; padding: 0.2em 0.4em; border-radius: 3px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 0.9em; color: #111; border: 1px solid #e0e0e0; }
+        .dark-theme #gemini-component-preview code { background-color: #333; color: #eee; border-color: #555; }
+        #gemini-component-preview a { color: var(--local-sys-color-primary, var(--md-sys-color-primary-light)); text-decoration: none; }
+        .dark-theme #gemini-component-preview a { color: var(--local-sys-color-primary, var(--md-sys-color-primary-dark)); }
+        #gemini-component-preview a:hover { text-decoration: underline; }
+
+
+        #dynamic-theme-styles { display: none; }
+
+        @media (max-width: 900px) {
+            .main-content-grid { grid-template-columns: 1fr; }
+            #workflow-minimap { grid-row: auto; grid-column: auto; width: auto; max-width: calc(100vw - 40px); font-size: 9px; padding: 6px 8px; margin-top: 20px; }
+            #theme-toggle { top: 10px; right: 15px; }
+            .minimap-tooltip { max-width: 220px; font-size: 10px; }
+        }
+        @media (max-width: 1100px) {
+            .component-preview-grid { grid-template-columns: 1fr; }
+        }
+        
 </style>
 
 </head>
 <body>
-<button id="theme-toggle" title="Toggle Light/Dark Mode">
-    <span class="material-icons"></span>
-</button>
+  <button id="theme-toggle" title="Toggle Light/Dark Mode">
+      <span class="material-icons"></span>
+  </button>
 
-<div class="container">
-    <h1>
-    MILCHICK: Material Integration Leveraging Creative Human-LLM
-    Intelligence Colors Kit
-    </h1>
-    <p>
-    Generate Material Design 3 color palettes from colors, images, or text
-    prompts. Uses a pure js fork of
-    <a
-        href="https://github.com/material-foundation/material-color-utilities/tree/main/typescript"
-        target="_blank"
-        rel="noopener"
-        >material-color-utilities</a
-    >
-    via <code>dream.js</code>.
-    </p>
+  <div class="container">
+      <h1>
+      MILCHICK: Material Integration Leveraging Creative Human-LLM
+      Intelligence Colors Kit
+      </h1>
+      <p>
+      Generate Material Design 3 color palettes from colors, images, or text
+      prompts. Uses a pure js fork of
+      <a
+          href="https://github.com/material-foundation/material-color-utilities/tree/main/typescript"
+          target="_blank"
+          rel="noopener"
+          >material-color-utilities</a
+      >
+      via <code>dream.js</code>.
+      </p>
 
-    <div class="main-content-grid">
-    <div class="phases-container">
-        <div class="phase-card input-section">
-        <h2>Configuration</h2>
-        <fieldset class="mode-selection">
-            <legend>Input Mode</legend>
-            <div>
-            <input type="radio" id="modeText" name="generationMode" value="modeText" checked />
-            <label for="modeText" title="Generate seed colors using a text prompt via Gemini.">Gemini Prompt</label>
-            </div>
-            <div>
-            <input type="radio" id="mode3" name="generationMode" value="mode3" />
-            <label for="mode3" title="Generate theme from a single source color.">Single Source</label>
-            </div>
-            <div id="mode4-container">
-            <input type="radio" id="mode4" name="generationMode" value="mode4" />
-            <label for="mode4" title="Generate theme from one source plus custom accent colors.">Single + Custom</label>
-            </div>
-            <div>
-            <input type="radio" id="mode1" name="generationMode" value="mode1" />
-            <label for="mode1" title="Generate theme from multiple source colors (Primary, Secondary, Tertiary).">Multiple Sources</label>
-            </div>
-            <div id="mode2-container">
-            <input type="radio" id="mode2" name="generationMode" value="mode2" />
-            <label for="mode2" title="Generate theme from multiple sources plus custom accent colors.">Multiple + Custom</label>
-            </div>
-            <div id="modeImageSingle-container">
-            <input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle" />
-            <label for="modeImageSingle" title="Generate theme from the single most dominant color in an image.">Image (Single)</label>
-            </div>
-            <div id="modeImageMulti-container">
-            <input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti" />
-            <label for="modeImageMulti" title="Generate theme from multiple seed colors extracted from an image.">Image (Multiple)</label>
-            </div>
-        </fieldset>
+      <div class="main-content-grid">
+      <div class="phases-container">
+          <div class="phase-card input-section phase-human-decision">
+          <h2>Configuration</h2>
+          <fieldset class="mode-selection">
+              <legend>Input Mode</legend>
+              <div>
+              <input type="radio" id="modeText" name="generationMode" value="modeText" checked />
+              <label for="modeText" title="Generate seed colors using a text prompt via Gemini.">Gemini Prompt</label>
+              </div>
+              <div>
+              <input type="radio" id="mode3" name="generationMode" value="mode3" />
+              <label for="mode3" title="Generate theme from a single source color.">Single Source</label>
+              </div>
+              <div>
+              <input type="radio" id="mode1" name="generationMode" value="mode1" />
+              <label for="mode1" title="Generate theme from multiple source colors (Primary, Secondary, Tertiary).">Multiple Sources</label>
+              </div>
+              <div id="modeImageSingle-container">
+              <input type="radio" id="modeImageSingle" name="generationMode" value="modeImageSingle" />
+              <label for="modeImageSingle" title="Generate theme from the single most dominant color in an image.">Image (Single)</label>
+              </div>
+              <div id="modeImageMulti-container">
+              <input type="radio" id="modeImageMulti" name="generationMode" value="modeImageMulti" />
+              <label for="modeImageMulti" title="Generate theme from multiple seed colors extracted from an image.">Image (Multiple)</label>
+              </div>
+               <div id="modeTextAuto-container">
+                  <input type="radio" id="modeTextAuto" name="generationMode" value="modeTextAuto" />
+                  <label for="modeTextAuto" title="LLM suggests AND selects the best color set.">Gemini Auto (Suggest + Select)</label>
+              </div>
+              <div id="modeTextAutoGenerate-container">
+                  <input type="radio" id="modeTextAutoGenerate" name="generationMode" value="modeTextAutoGenerate" />
+                  <label for="modeTextAutoGenerate" title="LLM suggests, selects, AND generates the theme.">Gemini Auto (Full)</label>
+              </div>
+          </fieldset>
 
-        <div id="text-prompt-area" class="input-group">
-            <label for="text-prompt-input">Describe your theme:</label>
-            <textarea id="text-prompt-input" rows="3" placeholder="e.g., calm ocean sunset, vibrant forest floor..."></textarea>
-            <div id="text-prompt-options">
-            <input type="checkbox" id="use-gemini-simulation" class="custom-styled" />
-            <label for="use-gemini-simulation" class="checkbox-label">Use Simulation (Offline)</label>
-            </div>
-            <button type="button" id="suggest-colors-button">Suggest Colors</button>
-            <div id="suggestion-loading-indicator" class="hidden">Getting suggestions...</div>
-            <div id="text-prompt-suggestions" class="hidden">
-            <label>Select a suggested color set:</label>
-            <p style="font-size: 0.8em; color: var(--md-sys-color-outline-light); margin-top: 5px;">
-                Select a suggestion to populate Source Colors.
-            </p>
-            </div>
-        </div>
+          <div id="text-prompt-area" class="input-group">
+              <label for="text-prompt-input">Describe your theme:</label>
+              <textarea id="text-prompt-input" rows="3" placeholder="e.g., calm ocean sunset, vibrant forest floor..."></textarea>
+              <div id="text-prompt-options">
+              <input type="checkbox" id="use-gemini-simulation" class="custom-styled" />
+              <label for="use-gemini-simulation" class="checkbox-label">Use Simulation (Offline)</label>
+              </div>
+              <button type="button" id="suggest-colors-button">Suggest Colors</button>
+              <div id="suggestion-loading-indicator" class="hidden">Getting suggestions...</div>
+              <div id="text-prompt-suggestions" class="hidden">
+              <label>Select a suggested color set:</label>
+              <p style="font-size: 0.8em; color: var(--md-sys-color-outline-light); margin-top: 5px;">
+                  Select a suggestion to populate Source Colors, or use an Auto mode.
+              </p>
+              </div>
+          </div>
 
-        <div id="image-input-area" class="input-group hidden">
-            <label>Upload or Drop Image:</label>
-            <div id="drop-area">
-            <p>Drag & Drop or click</p>
-            <input type="file" id="image-input" accept="image/*" hidden />
-            <img id="image-preview" src="#" alt="Preview" class="hidden" />
-            </div>
-            <div class="image-options hidden" id="image-multi-options">
-            <label for="numSources">Max Colors:</label>
-            <input type="number" id="numSources" value="5" min="1" max="20" />
-            <label for="extractQuality">Quality (1=Best):</label>
-            <input type="number" id="extractQuality" value="10" min="1" max="50" />
-            </div>
-        </div>
+          <div id="image-input-area" class="input-group hidden">
+              <label>Upload or Drop Image:</label>
+              <div id="drop-area">
+              <p>Drag & Drop or click</p>
+              <input type="file" id="image-input" accept="image/*" hidden />
+              <img id="image-preview" src="#" alt="Preview" class="hidden" />
+              </div>
+              <div class="image-options hidden" id="image-multi-options">
+              <label for="numSources">Max Colors:</label>
+              <input type="number" id="numSources" value="5" min="1" max="20" />
+              <label for="extractQuality">Quality (1=Best):</label>
+              <input type="number" id="extractQuality" value="10" min="1" max="50" />
+              </div>
+          </div>
 
-        <div id="source-color-area" class="input-group hidden">
-            <label id="source-color-label">Source Color:</label>
-            <div id="source-color-inputs"></div>
-        </div>
+          <div id="source-color-area" class="input-group hidden">
+              <label id="source-color-label">Source Color:</label>
+              <div id="source-color-inputs"></div>
+          </div>
 
-        <div id="custom-color-area" class="input-group hidden">
-            <label>Custom Accent Colors:</label>
-            <div id="custom-color-list"></div>
-            <button type="button" id="add-custom-color-button">Add Custom</button>
-        </div>
+          <div id="multi-source-options" class="input-group hidden">
+              <label for="harmonyStrategy">Multi-Color Strategy:</label>
+              <select id="harmonyStrategy">
+              <option value="direct" selected>Direct</option>
+              <option value="harmonized">Harmonized</option>
+              </select>
+          </div>
 
-        <div id="multi-source-options" class="input-group hidden">
-            <label for="harmonyStrategy">Multi-Color Strategy:</label>
-            <select id="harmonyStrategy">
-            <option value="direct" selected>Direct</option>
-            <option value="harmonized">Harmonized</option>
-            </select>
-        </div>
+          <button type="button" id="generate-button">Generate Theme</button>
+          <div id="loading-indicator" class="hidden">Generating theme...</div>
+          <div id="error-message" class="error hidden"></div>
+          </div>
 
-        <button type="button" id="generate-button">Generate Theme</button>
-        <div id="loading-indicator" class="hidden">Generating theme...</div>
-        <div id="error-message" class="error hidden"></div>
-        </div>
+          <div class="phase-card output-section phase-mcu-tool">
+          <h2>Generated Theme</h2>
+          <div id="seed-colors-display" class="color-group">
+              <h3>Seed Color(s) Used</h3>
+              <div class="swatch-container">
+              <p class="placeholder">Seeds appear here.</p>
+              </div>
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;" />
+          <div id="palette-display">
+              <p class="placeholder">Configure inputs and click Generate.</p>
+          </div>
 
-        <div class="phase-card output-section">
-        <h2>Generated Theme</h2>
-        <div id="seed-colors-display" class="color-group">
-            <h3>Seed Color(s) Used</h3>
-            <div class="swatch-container">
-            <p class="placeholder">Seeds appear here.</p>
-            </div>
-        </div>
-        <hr style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;" />
-        <div id="palette-display">
-            <p class="placeholder">Configure inputs and click Generate.</p>
-        </div>
+          <div id="component-examples" class="hidden">
+              <hr style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;" />
+              <h3>Component Examples</h3>
+              <div class="component-generation-options">
+              <div class="input-group">
+                  <label for="component-style-prompt">Optional Gemini Style Prompt:</label>
+                  <input type="text" id="component-style-prompt" placeholder="e.g., modern and clean, playful, brutalist..." />
+              </div>
+              <div class="component-buttons-container">
+                  <button type="button" id="generate-mwc-components-button" title="Apply theme to standard Material Web Components">
+                  Generate deterministic component set
+                  </button>
+                  <button type="button" id="generate-gemini-components-button" title="Use Gemini to generate styled HTML based on the theme and your style prompt">
+                  Generate gemini created component set
+                  </button>
+                  <div class="form-group custom-checkbox-container">
+                  <input type="checkbox" id="use-m3-guidance-checkbox" class="custom-styled" checked>
+                  <label for="use-m3-guidance-checkbox" class="checkbox-label">
+                      Use M3 Guidance for Gemini Components:
+                  </label>
+                  </div>
+              </div>
+              </div>
+              <div id="gemini-component-loading" class="hidden">Generating Gemini components...</div>
 
-        <div id="component-examples" class="hidden">
-            <hr style="border: none; border-top: 1px solid var(--md-sys-color-outline-variant-light); margin: 25px 0;" />
-            <h3>Component Examples</h3>
-            <div class="component-generation-options">
-            <div class="input-group">
-                <label for="component-style-prompt">Optional Gemini Style Prompt:</label>
-                <input type="text" id="component-style-prompt" placeholder="e.g., modern and clean, playful, brutalist..." />
-            </div>
-            <div class="component-buttons-container">
-                <button type="button" id="generate-mwc-components-button" title="Apply theme to standard Material Web Components">
-                Generate deterministic component set
-                </button>
-                <button type="button" id="generate-gemini-components-button" title="Use Gemini to generate styled HTML based on the theme and your style prompt">
-                Generate gemini created component set
-                </button>
-                <div class="form-group custom-checkbox-container">
-                <input type="checkbox" id="use-m3-guidance-checkbox" checked>
-                <label for="use-m3-guidance-checkbox" class="checkbox-label">
-                    Use M3 Guidance for Gemini Components:
-                </label>
-                </div>
-            </div>
-            </div>
-            <div id="gemini-component-loading" class="hidden">Generating Gemini components...</div>
+              <div class="component-preview-grid">
+              <div class="component-preview-area" id="mwc-component-preview">
+                  <h4>MWC Preview</h4>
+                  <p class="placeholder">Click "Gen MWC" to preview.</p>
+              </div>
+              <div class="component-preview-area" id="gemini-component-preview">
+                  <h4>Gemini Preview</h4>
+                  <p class="placeholder">Click "Gen Gemini Comp" to preview.</p>
+              </div>
+              </div>
+          </div>
+          </div>
 
-            <div class="component-preview-grid">
-            <div class="component-preview-area" id="mwc-component-preview">
-                <h4>MWC Preview</h4>
-                <p class="placeholder">Click "Gen MWC" to preview.</p>
-            </div>
-            <div class="component-preview-area" id="gemini-component-preview">
-                <h4>Gemini Preview</h4>
-                <p class="placeholder">Click "Gen Gemini Comp" to preview.</p>
-            </div>
-            </div>
-        </div>
-        </div>
+          <div class="phase-card phase-card-placeholder">
+          Phase 3: Generate mini app placeholder
+          </div>
+           <div class="phase-card phase-card-placeholder">
+          Phase 4: Adapt mini app as to laser / hologram / projection placeholder
+          </div>
+      </div>
 
-        <div class="phase-card phase-card-placeholder">
-        Phase 3 Placeholder
-        </div>
-    </div>
+      <div id="workflow-minimap">
+          <div id="minimap-title">Workflow Path</div>
+          <div id="minimap-content"></div>
+      </div>
+      </div>
+  </div>
 
-    <div id="workflow-minimap">
-        <div id="minimap-title">Workflow Path</div>
-        <div id="minimap-content"></div>
-    </div>
-    </div>
-</div>
-
-<style id="dynamic-theme-styles"></style>
-<script src="config.js" defer></script>
-<script src="dream.js" defer></script>
-<script type="module" src="https://cdn.skypack.dev/@material/web/all.js" defer></script>
-<script type="module" defer>
+  <style id="dynamic-theme-styles"></style>
+  <script src="config.js" defer></script>
+  <script src="dream.js" defer></script>
+  <script type="module" src="https://cdn.skypack.dev/@material/web/all.js" defer></script>
+  <script type="module" defer>
     const config = {
         API_KEY: null, GEMINI_MODEL: null, GEMINI_MODEL_COLOR_PICKER: null, GEMINI_MODEL_COMPONENT_GENERATOR: null,
-        USE_M3_TXT_SYS_PROMPT: false, ENABLE_CUSTOM_COLORS: false, ENABLE_IMAGES: false, isApiConfigValid: false,
+        USE_M3_TXT_SYS_PROMPT: false, ENABLE_IMAGES: false, isApiConfigValid: false,
         geminiApiEndpointBase: '', geminiApiEndpointColorPicker: '', geminiApiEndpointComponentGenerator: '', defaultMode: "modeText",
+        ENABLE_AUTO_MODES: true,
     };
-    const state = { currentImageFile: null, currentMode: config.defaultMode, lastGeneratedTheme: null, isDarkMode: false, m3ContentCache: null, currentPath: [] };
+    const state = { currentImageFile: null, currentMode: config.defaultMode, lastGeneratedTheme: null, isDarkMode: false, m3ContentCache: null, currentPath: [], lastSuggestions: null };
     const dom = {
         modeRadios: document.querySelectorAll('input[name="generationMode"]'), imageInputArea: document.getElementById("image-input-area"), dropArea: document.getElementById("drop-area"),
         imageInput: document.getElementById("image-input"), imagePreview: document.getElementById("image-preview"), imageMultiOptions: document.getElementById("image-multi-options"),
         sourceColorArea: document.getElementById("source-color-area"), sourceColorLabel: document.getElementById("source-color-label"), sourceColorInputsContainer: document.getElementById("source-color-inputs"),
-        customColorArea: document.getElementById("custom-color-area"), customColorList: document.getElementById("custom-color-list"), addCustomColorButton: document.getElementById("add-custom-color-button"),
         multiSourceOptionsArea: document.getElementById("multi-source-options"), harmonyStrategySelect: document.getElementById("harmonyStrategy"), generateButton: document.getElementById("generate-button"),
         loadingIndicator: document.getElementById("loading-indicator"), errorMessageDiv: document.getElementById("error-message"), seedColorsDisplayContainer: document.getElementById("seed-colors-display").querySelector(".swatch-container"),
         paletteDisplay: document.getElementById("palette-display"), numSourcesInput: document.getElementById("numSources"), extractQualityInput: document.getElementById("extractQuality"),
@@ -860,7 +965,8 @@ button:not([id^="md-"]):disabled {
         componentStylePromptInput: document.getElementById("component-style-prompt"), geminiComponentLoadingIndicator: document.getElementById("gemini-component-loading"), mwcComponentPreview: document.getElementById("mwc-component-preview"),
         geminiComponentPreview: document.getElementById("gemini-component-preview"), dynamicThemeStyles: document.getElementById("dynamic-theme-styles"), bodyElement: document.body,
         themeToggleButton: document.getElementById("theme-toggle"), themeToggleIcon: document.getElementById("theme-toggle").querySelector(".material-icons"), minimapContent: document.getElementById('minimap-content'),
-        mode4Container: document.getElementById("mode4-container"), mode2Container: document.getElementById("mode2-container"), modeImageSingleContainer: document.getElementById("modeImageSingle-container"), modeImageMultiContainer: document.getElementById("modeImageMulti-container"),
+        modeImageSingleContainer: document.getElementById("modeImageSingle-container"), modeImageMultiContainer: document.getElementById("modeImageMulti-container"),
+        modeTextAutoContainer: document.getElementById("modeTextAuto-container"), modeTextAutoGenerateContainer: document.getElementById("modeTextAutoGenerate-container"),
         useM3GuidanceCheckbox: document.getElementById("use-m3-guidance-checkbox")
     };
     const placeholders = {
@@ -870,18 +976,42 @@ button:not([id^="md-"]):disabled {
         mwcPreview: '<h4>MWC Preview</h4><p class="placeholder">Click "Gen MWC" to preview.</p>', geminiPreview: '<h4>Gemini Preview</h4><p class="placeholder">Click "Gen Gemini Comp" to preview.</p>', geminiPreviewError: '<h4 class="error">Gemini Preview</h4><p class="error">Failed to generate components via Gemini.</p>',
         generating: '<p class="placeholder">Generating theme...</p>', paletteError: '<p class="placeholder error">Error generating theme.</p>', seedUnavailable: '<p style="font-size:0.9em;color:var(--md-sys-color-outline-light);">Seed colors unavailable.</p>',
     };
+
     const workflowSteps = {
-        START: { id: 'start', label: 'Start', type: 'start' }, SELECT_MODE: { id: 'select_mode', label: 'Select Mode', type: 'human' }, INPUT_TEXT: { id: 'input_text', label: 'Input Text', type: 'human' },
-        INPUT_COLOR: { id: 'input_color', label: 'Input Color(s)', type: 'human' }, INPUT_IMAGE: { id: 'input_image', label: 'Input Image', type: 'human' }, INPUT_CUSTOM: { id: 'input_custom', label: 'Input Custom Colors', type: 'human' },
-        CLICK_SUGGEST: { id: 'click_suggest', label: 'Suggest Colors', type: 'human' }, CLICK_GENERATE: { id: 'click_generate', label: 'Generate Theme', type: 'human' }, CLICK_GEN_MWC: { id: 'click_gen_mwc', label: 'Gen MWC', type: 'human'},
-        CLICK_GEN_GEMINI: { id: 'click_gen_gemini', label: 'Gen Gemini Comp', type: 'human'}, MCP_WRAP_SUGGEST: { id: 'mcp_wrap_suggest', label: 'MCP: SuggestColors', type: 'mcp' }, MCP_WRAP_GENERATE: { id: 'mcp_wrap_generate', label: 'MCP: GenerateTheme', type: 'mcp' },
-        MCP_WRAP_GEN_COMP: { id: 'mcp_wrap_gen_comp', label: 'MCP: GenerateComponents', type: 'mcp'}, LLM_SUGGEST: { id: 'llm_suggest', label: 'LLM: Suggest', type: 'llm' }, LLM_GEN_COMP: { id: 'llm_gen_comp', label: 'LLM: Generate Comp', type: 'llm'},
-        TOOL_IMAGE_PROC: { id: 'tool_image_proc', label: 'Tool: Image Proc', type: 'tool' }, TOOL_COLOR_MATH: { id: 'tool_color_math', label: 'Tool: Color Math', type: 'tool' }, TOOL_RENDER_MWC: { id: 'tool_render_mwc', label: 'Tool: Render MWC', type: 'tool'},
-        SELECT_SUGGESTION: { id: 'select_suggestion', label: 'Select Suggestion', type: 'human' }, DISPLAY_SUGGESTIONS: { id: 'display_suggestions', label: 'Display Suggestions', type: 'result' }, DISPLAY_THEME: { id: 'display_theme', label: 'Display Theme', type: 'result' },
-        DISPLAY_COMPONENTS: { id: 'display_components', label: 'Display Components', type: 'result' }, ERROR: { id: 'error', label: 'Error', type: 'error' }
+        START: { id: 'start', label: 'Start', type: 'start', description: 'Workflow begins.', code: 'initializeApp()' },
+        SELECT_MODE: { id: 'select_mode', label: 'Select Mode', type: 'human', description: 'User chooses an input method (Text, Color, Image, Auto).', code: 'updateInputUI(mode)' },
+        INPUT_TEXT: { id: 'input_text', label: 'Input Text', type: 'human', description: 'User types a theme description.', code: 'dom.textPromptInput.value' },
+        INPUT_COLOR: { id: 'input_color', label: 'Input Color(s)', type: 'human', description: 'User selects seed color(s) via color pickers.', code: 'dom.sourceColorInputsContainer inputs' },
+        INPUT_IMAGE: { id: 'input_image', label: 'Input Image', type: 'human', description: 'User uploads or drops an image file.', code: 'handleImageFile(file)' },
+        CLICK_SUGGEST: { id: 'click_suggest', label: 'Suggest Colors', type: 'human', description: 'User clicks button to request color suggestions based on text prompt.', code: 'handleSuggestColorsClick()' },
+        CLICK_GENERATE: { id: 'click_generate', label: 'Generate Theme', type: 'human', description: 'User clicks button to generate theme from current inputs.', code: 'handleGenerateClick()' },
+        CLICK_GEN_MWC: { id: 'click_gen_mwc', label: 'Gen MWC', type: 'human', description: 'User clicks button to render Material Web Components preview.', code: 'handleGenerateMwcComponents()' },
+        CLICK_GEN_GEMINI: { id: 'click_gen_gemini', label: 'Gen Gemini Comp', type: 'human', description: 'User clicks button to generate LLM-styled HTML components.', code: 'handleGenerateGeminiComponents()' },
+        MCP_WRAP_SUGGEST: { id: 'mcp_wrap_suggest', label: 'MCP: SuggestColors', type: 'mcp', description: 'System prepares and wraps the request to the LLM for color suggestions.', code: 'getGeminiSuggestions(prompt) / simulateGeminiCall(prompt)' },
+        MCP_WRAP_SELECT: { id: 'mcp_wrap_select', label: 'MCP: SelectBest', type: 'mcp', description: 'System prepares and wraps the request for the LLM to select the best suggestion.', code: 'getGeminiBestSuggestion(suggestions, prompt)' },
+        MCP_WRAP_GENERATE: { id: 'mcp_wrap_generate', label: 'MCP: GenerateTheme', type: 'mcp', description: 'System prepares inputs and wraps the call to the color utility library.', code: 'themeFromSourceColor(s)(...) / themeFromImageUsingSources(...)' },
+        MCP_WRAP_AUTO_GENERATE: { id: 'mcp_wrap_auto_generate', label: 'MCP: AutoGenerate', type: 'mcp', description: 'System orchestrates LLM selection and theme generation tool call.', code: 'handleAutoGenerate()' },
+        MCP_WRAP_GEN_COMP: { id: 'mcp_wrap_gen_comp', label: 'MCP: GenerateComponents', type: 'mcp', description: 'System prepares theme data and wraps the request to the LLM for component generation.', code: 'getGeminiContent(..., componentPrompt, ...)' },
+        LLM_SUGGEST: { id: 'llm_suggest', label: 'LLM: Suggest', type: 'llm', description: 'LLM processes text prompt and returns color suggestions.', code: 'fetch(geminiApiEndpointColorPicker, ...)' },
+        LLM_SELECT_BEST: { id: 'llm_select_best', label: 'LLM: Select Best', type: 'llm', description: 'LLM analyzes suggestions and selects the best fit for the prompt.', code: 'fetch(geminiApiEndpointColorPicker, ...)' },
+        LLM_GEN_COMP: { id: 'llm_gen_comp', label: 'LLM: Generate Comp', type: 'llm', description: 'LLM generates HTML/CSS components based on theme and style prompt.', code: 'fetch(geminiApiEndpointComponentGenerator, ...)' },
+        TOOL_IMAGE_PROC: { id: 'tool_image_proc', label: 'Tool: Image Proc', type: 'tool', description: 'Color utility library extracts dominant color(s) from image data.', code: 'sourceColor(s)FromImage(img, ...)' },
+        TOOL_COLOR_MATH: { id: 'tool_color_math', label: 'Tool: Color Math', type: 'tool', description: 'Color utility library calculates the full theme palette from seed colors.', code: 'themeFromSourceColor(s)(...)' },
+        TOOL_RENDER_MWC: { id: 'tool_render_mwc', label: 'Tool: Render MWC', type: 'tool', description: 'System renders standard Material Web Components with the generated theme.', code: 'dom.mwcComponentPreview.innerHTML = ...' },
+        SELECT_SUGGESTION: { id: 'select_suggestion', label: 'Select Suggestion', type: 'human', description: 'User clicks on one of the suggested color sets.', code: 'handleSuggestionSelection()' },
+        APPLY_LLM_SELECTION: { id: 'apply_llm_selection', label: 'Apply LLM Selection', type: 'decision', description: 'System automatically applies the LLM-selected colors to the UI.', code: 'applySuggestionToUI(bestSuggestion)' },
+        DISPLAY_SUGGESTIONS: { id: 'display_suggestions', label: 'Display Suggestions', type: 'result', description: 'Color suggestions are rendered in the UI for user selection.', code: 'displaySuggestions(data)' },
+        DISPLAY_THEME: { id: 'display_theme', label: 'Display Theme', type: 'result', description: 'Generated color palette swatches are displayed.', code: 'displayTheme(theme)' },
+        DISPLAY_COMPONENTS: { id: 'display_components', label: 'Display Components', type: 'result', description: 'MWC or LLM-generated component previews are displayed.', code: 'dom.mwcComponentPreview / dom.geminiComponentPreview' },
+        ERROR: { id: 'error', label: 'Error', type: 'error', description: 'An error occurred during the process.', code: 'showError(message)' }
     };
+
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-    const sanitizeHtml = (str) => String(str).replace(/</g, "<").replace(/>/g, ">");
+    const sanitizeHtml = (str) => {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+    };
     const kebabCase = (str) => str.replace(/([A-Z])/g, "-$1").toLowerCase();
     const sanitizeForCssVariable = (str) => (str || "custom").replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
     const toggleElement = (el, show, attribute = 'class', value = 'hidden') => {
@@ -926,20 +1056,67 @@ button:not([id^="md-"]):disabled {
     }
     function setSuggestionLoading(isLoading) { toggleElement(dom.suggestionLoadingIndicator, isLoading); dom.suggestColorsButton.disabled = isLoading; dom.textPromptInput.disabled = isLoading; }
     function setGeminiComponentLoading(isLoading) { toggleElement(dom.geminiComponentLoadingIndicator, isLoading); dom.generateGeminiComponentsButton.disabled = isLoading; dom.generateMwcComponentsButton.disabled = isLoading; }
+
     function updateMinimap(newStep = null, edgeType = null) {
-        if (newStep && newStep !== state.currentPath[state.currentPath.length -1]) { state.currentPath.push({ ...newStep, edge: edgeType || 'human' }); }
+        let actualStep = newStep;
+        if (actualStep && (!state.currentPath.length || actualStep.id !== state.currentPath[state.currentPath.length - 1].id)) {
+             state.currentPath.push({ ...actualStep, edge: edgeType || 'human' });
+        } else if (actualStep && state.currentPath.length > 0 && actualStep.id === state.currentPath[state.currentPath.length - 1].id) {
+             state.currentPath[state.currentPath.length - 1].edge = edgeType || state.currentPath[state.currentPath.length - 1].edge || 'human';
+        }
+
         dom.minimapContent.innerHTML = '';
         state.currentPath.forEach((step, index) => {
-            const nodeEl = document.createElement('span'); nodeEl.classList.add('minimap-node', `node-${step.type}`); nodeEl.textContent = step.label; nodeEl.title = `Step ${index + 1}: ${step.label} (${step.type})`;
-            if (index === state.currentPath.length - 1) nodeEl.classList.add('active'); dom.minimapContent.appendChild(nodeEl);
+            const isLastNode = index === state.currentPath.length - 1;
+            const nodeEl = document.createElement('div');
+            nodeEl.classList.add('minimap-node', `node-${step.type}`);
+            nodeEl.textContent = step.label;
+            nodeEl.tabIndex = 0;
+            if (isLastNode) nodeEl.classList.add('active');
+
+            const tooltipEl = document.createElement('div');
+            tooltipEl.classList.add('minimap-tooltip');
+            let tooltipContent = step.description || `Step: ${step.label}`;
+            if (step.code) {
+                 tooltipContent += `<code class="minimap-tooltip-code">${sanitizeHtml(step.code)}</code>`;
+            }
+            tooltipEl.innerHTML = tooltipContent;
+            nodeEl.appendChild(tooltipEl);
+            dom.minimapContent.appendChild(nodeEl);
+
             if (index < state.currentPath.length - 1) {
-                const nextStep = state.currentPath[index + 1]; const edgeEl = document.createElement('span'); const edgeClass = nextStep.edge || 'human';
-                edgeEl.classList.add('minimap-edge', `edge-${edgeClass}`); edgeEl.title = edgeClass === 'gemini-bridge' ? 'Gemini API Call' : `Via: ${edgeClass}`;
-                if (index === state.currentPath.length - 2) edgeEl.classList.add('active'); dom.minimapContent.appendChild(edgeEl);
+                const nextStep = state.currentPath[index + 1];
+                const edgeEl = document.createElement('div');
+                const edgeClass = nextStep.edge || 'human';
+                edgeEl.classList.add('minimap-edge', `edge-${edgeClass}`);
+                edgeEl.tabIndex = 0;
+                 const edgeStep = {
+                    id: `edge_${step.id}_${nextStep.id}`,
+                    label: `Transition via ${edgeClass}`,
+                    type: 'edge',
+                    description: edgeClass === 'gemini-bridge' ? `LLM API call (${step.label} -> ${nextStep.label})` : `Transition from ${step.label} to ${nextStep.label} via ${edgeClass}.`,
+                    code: step.code ? `${step.code} -> ${nextStep.code || '...'}` : `Via: ${edgeClass}`
+                };
+                const edgeTooltipEl = document.createElement('div');
+                edgeTooltipEl.classList.add('minimap-tooltip');
+                let edgeTooltipContent = edgeStep.description;
+                 if (edgeStep.code && edgeClass !== 'human' && edgeClass !== 'result') {
+                     edgeTooltipContent += `<code class="minimap-tooltip-code">${sanitizeHtml(edgeStep.code)}</code>`;
+                 }
+                edgeTooltipEl.innerHTML = edgeTooltipContent;
+                edgeEl.appendChild(edgeTooltipEl);
+
+                if (index === state.currentPath.length - 2) edgeEl.classList.add('active');
+                dom.minimapContent.appendChild(edgeEl);
             }
         });
-        dom.minimapContent.scrollTop = dom.minimapContent.scrollHeight;
+
+        const lastElement = dom.minimapContent.lastElementChild;
+        if(lastElement) {
+            lastElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     }
+
     function resetMinimap(startNode = workflowSteps.START) { state.currentPath = [startNode]; updateMinimap(); }
     function loadImageFromSrc(src) {
         return new Promise((resolve, reject) => {
@@ -952,16 +1129,11 @@ button:not([id^="md-"]):disabled {
         if (argb === 0 && !['#000', '#000000'].includes(hex?.toLowerCase())) { throw new Error(`Invalid hex value for ${label}: ${hex}`); }
         return argb;
     }
-    function getCustomColorData() {
-        return Array.from(dom.customColorList.children).map(row => {
-            const id = row.dataset.id; const nameInput = row.querySelector(`#custom-name-${id}`); const valueInput = row.querySelector(`#custom-value-${id}`); const blendInput = row.querySelector(`#custom-blend-${id}`);
-            return { name: nameInput?.value || `custom_${id}`, value: hexToArgbInt(valueInput?.value), blend: blendInput?.checked || false, };
-        }).filter(c => typeof c.value === 'number' && c.value !== 0);
-    }
+
     function getEffectiveMode(currentModeSelection) {
         let effective = currentModeSelection;
-        if (!config.ENABLE_CUSTOM_COLORS && ['mode4', 'mode2'].includes(effective)) { effective = (effective === 'mode4') ? 'mode3' : 'mode1'; }
         if (!config.ENABLE_IMAGES && effective.startsWith('modeImage')) { effective = config.defaultMode; }
+        if (!config.ENABLE_AUTO_MODES && ['modeTextAuto', 'modeTextAutoGenerate'].includes(effective)) { effective = 'modeText'; }
         return effective;
     }
     function displaySeedColors(seeds, theme) {
@@ -974,10 +1146,16 @@ button:not([id^="md-"]):disabled {
     function loadConfig() {
         try {
             if (typeof APP_CONFIG === "undefined") throw new Error("config.js not loaded or APP_CONFIG missing.");
-            config.ENABLE_CUSTOM_COLORS = !!APP_CONFIG.ENABLE_CUSTOM_COLORS; config.ENABLE_IMAGES = !!APP_CONFIG.ENABLE_IMAGES; config.USE_M3_TXT_SYS_PROMPT = !!APP_CONFIG.USE_M3_TXT_SYS_PROMPT;
+            config.ENABLE_IMAGES = !!APP_CONFIG.ENABLE_IMAGES; config.USE_M3_TXT_SYS_PROMPT = !!APP_CONFIG.USE_M3_TXT_SYS_PROMPT;
+            config.ENABLE_AUTO_MODES = !!APP_CONFIG.ENABLE_AUTO_MODES;
             config.API_KEY = APP_CONFIG.API_KEY || null; config.GEMINI_MODEL = APP_CONFIG.GEMINI_MODEL || null;
             config.GEMINI_MODEL_COLOR_PICKER = APP_CONFIG.GEMINI_MODEL_COLOR_PICKER || config.GEMINI_MODEL; config.GEMINI_MODEL_COMPONENT_GENERATOR = APP_CONFIG.GEMINI_MODEL_COMPONENT_GENERATOR || config.GEMINI_MODEL;
-            config.defaultMode = APP_CONFIG.DEFAULT_MODE || "modeText"; state.currentMode = config.defaultMode;
+            config.defaultMode = APP_CONFIG.DEFAULT_MODE || "modeText";
+            if (config.defaultMode.startsWith('modeImage') && !config.ENABLE_IMAGES) {
+                 console.warn(`Default mode ${config.defaultMode} requires disabled Images feature. Resetting to modeText.`);
+                 config.defaultMode = 'modeText';
+             }
+            state.currentMode = config.defaultMode;
             if (!config.API_KEY || config.API_KEY === "YOUR_API_KEY_HERE" || !config.GEMINI_MODEL) { config.isApiConfigValid = false; showError("Gemini API config missing/invalid in config.js. Using simulation where possible."); }
             else {
                 const modelIdBase = config.GEMINI_MODEL.startsWith("models/") ? config.GEMINI_MODEL : `models/${config.GEMINI_MODEL}`;
@@ -991,17 +1169,23 @@ button:not([id^="md-"]):disabled {
         finally { const defaultRadio = document.getElementById(config.defaultMode); if(defaultRadio) defaultRadio.checked = true; else document.getElementById("modeText").checked = true; }
     }
     function applyFeatureVisibility() {
-        const features = { custom: config.ENABLE_CUSTOM_COLORS, image: config.ENABLE_IMAGES };
-        toggleElement(dom.mode4Container, features.custom); toggleElement(dom.mode2Container, features.custom); toggleElement(dom.addCustomColorButton, features.custom);
+        const features = { image: config.ENABLE_IMAGES, auto: config.ENABLE_AUTO_MODES && config.isApiConfigValid };
         toggleElement(dom.modeImageSingleContainer, features.image); toggleElement(dom.modeImageMultiContainer, features.image);
+        toggleElement(dom.modeTextAutoContainer, features.auto); toggleElement(dom.modeTextAutoGenerateContainer, features.auto);
         toggleElement(dom.suggestColorsButton, config.isApiConfigValid, 'disabled', true); toggleElement(dom.generateGeminiComponentsButton, config.isApiConfigValid, 'disabled', true);
         toggleElement(dom.useM3GuidanceCheckbox, config.isApiConfigValid);
+        toggleElement(dom.useM3GuidanceCheckbox?.closest('.form-group'), config.isApiConfigValid);
+
         dom.suggestColorsButton.title = !config.isApiConfigValid ? "Gemini API not configured." : ""; dom.generateGeminiComponentsButton.title = !config.isApiConfigValid ? "Gemini API not configured." : "";
-        if (dom.useM3GuidanceCheckbox?.labels?.[0]) {
-            dom.useM3GuidanceCheckbox.labels[0].title = !config.isApiConfigValid ? "Gemini API not configured." : "";
-        }
-        const selectedRadio = document.querySelector('input[name="generationMode"]:checked'); const selectedContainer = selectedRadio?.closest("div");
-        const isDisabledFeatureSelected = ( (selectedContainer?.id === 'mode4-container' && !features.custom) || (selectedContainer?.id === 'mode2-container' && !features.custom) || (selectedContainer?.id === 'modeImageSingle-container' && !features.image) || (selectedContainer?.id === 'modeImageMulti-container' && !features.image) );
+         if (dom.useM3GuidanceCheckbox?.labels?.[0]) {
+             const label = dom.useM3GuidanceCheckbox.labels[0];
+             label.title = !config.isApiConfigValid ? "Gemini API not configured." : "";
+             label.style.opacity = config.isApiConfigValid ? '1' : '0.6';
+             label.style.cursor = config.isApiConfigValid ? 'pointer' : 'not-allowed';
+         }
+        dom.useM3GuidanceCheckbox.disabled = !config.isApiConfigValid;
+
+        const selectedRadio = document.querySelector('input[name="generationMode"]:checked'); const selectedContainer = selectedRadio?.closest("div");        const isDisabledFeatureSelected = ( (selectedContainer?.id === 'modeImageSingle-container' && !features.image) || (selectedContainer?.id === 'modeImageMulti-container' && !features.image) || (selectedContainer?.id === 'modeTextAuto-container' && !features.auto) || (selectedContainer?.id === 'modeTextAutoGenerate-container' && !features.auto) );
         if (isDisabledFeatureSelected) { console.warn("Previously selected mode relies on a disabled feature. Resetting to default."); state.currentMode = config.defaultMode; document.getElementById(state.currentMode).checked = true; }
     }
     function applyTheme() {
@@ -1024,19 +1208,6 @@ button:not([id^="md-"]):disabled {
             roles.forEach((r) => { const scheme = theme.schemes[r.s]; if (scheme && typeof scheme[r.k] === 'number') { swatches.innerHTML += createSwatchHtml(r.n, scheme[r.k]); } });
             if (swatches.hasChildNodes()) { section.appendChild(swatches); dom.paletteDisplay.appendChild(section); }
         });
-        if (config.ENABLE_CUSTOM_COLORS && theme.customColors?.length > 0) {
-            const customSection = document.createElement("div"); customSection.classList.add("palette-section", "color-group"); customSection.innerHTML = `<h4>Custom Colors</h4>`;
-            theme.customColors.forEach((group) => {
-                if (!group?.color?.value || !group.light || !group.dark) return;
-                const groupDiv = document.createElement("div"); groupDiv.classList.add("custom-color-group-display"); const safeName = sanitizeHtml(group.color.name || "Unnamed"); const seedHex = argbIntToHex(group.color.value); const finalHex = argbIntToHex(group.value);
-                const harmonizedInfo = seedHex !== finalHex ? `, Harmonized: ${finalHex}` : ''; groupDiv.innerHTML = `<h5>${safeName} (Seed: ${seedHex}${harmonizedInfo})</h5>`;
-                const pairDiv = document.createElement("div"); pairDiv.classList.add("scheme-pair");
-                const customRoles = [ { n: `Color(L)`, s: "light", k: "color" }, { n: `On Color(L)`, s: "light", k: "onColor" }, { n: `Container(L)`, s: "light", k: "colorContainer" }, { n: `On Container(L)`, s: "light", k: "onColorContainer" }, { n: `Color(D)`, s: "dark", k: "color" }, { n: `On Color(D)`, s: "dark", k: "onColor" }, { n: `Container(D)`, s: "dark", k: "colorContainer" }, { n: `On Container(D)`, s: "dark", k: "onColorContainer" }, ];
-                customRoles.forEach((r) => { if (group[r.s]?.[r.k] !== undefined && typeof group[r.s][r.k] === 'number') { pairDiv.innerHTML += createSwatchHtml(r.n, group[r.s][r.k]); } });
-                if (pairDiv.hasChildNodes()) groupDiv.appendChild(pairDiv); if (groupDiv.querySelector(".scheme-pair")) customSection.appendChild(groupDiv);
-            });
-            if (customSection.querySelector(".custom-color-group-display")) { dom.paletteDisplay.appendChild(customSection); }
-        }
         if (!dom.paletteDisplay.hasChildNodes()) { dom.paletteDisplay.innerHTML = placeholders.noPalettes; dom.componentExamplesDiv.classList.add("hidden"); }
         else {
             dom.componentExamplesDiv.classList.remove("hidden");
@@ -1049,17 +1220,46 @@ button:not([id^="md-"]):disabled {
     function updateInputUI(mode) {
         state.currentMode = mode; hideError(); dom.sourceColorInputsContainer.innerHTML = ""; dom.textPromptSuggestionsContainer.innerHTML = placeholders.suggestionsLabel; dom.textPromptSuggestionsContainer.classList.add("hidden");
         dom.paletteDisplay.innerHTML = placeholders.palette; dom.seedColorsDisplayContainer.innerHTML = placeholders.seeds; dom.componentExamplesDiv.classList.add("hidden"); dom.mwcComponentPreview.innerHTML = placeholders.mwcPreview; dom.geminiComponentPreview.innerHTML = placeholders.geminiPreview;
-        const features = { custom: config.ENABLE_CUSTOM_COLORS, image: config.ENABLE_IMAGES };
-        const isImageMode = features.image && mode.startsWith("modeImage"); const needsCustomArea = features.custom && ["mode4", "mode2"].includes(mode);
-        const needsMultiSourceOptions = ["mode1", "mode2", "modeImageMulti"].includes(mode) && (!mode.startsWith("modeImage") || features.image); const needsSourceColorArea = !isImageMode && mode !== 'modeText';
+        state.lastSuggestions = null;
+
+        const effectiveMode = getEffectiveMode(mode);
+        if (effectiveMode !== mode) {
+            console.warn(`Mode ${mode} requires disabled features. Switching to ${effectiveMode}.`);
+            document.getElementById(effectiveMode).checked = true;
+            state.currentMode = effectiveMode;
+            mode = effectiveMode;
+        }
+
+        const features = { image: config.ENABLE_IMAGES, auto: config.ENABLE_AUTO_MODES && config.isApiConfigValid};
+        const isImageMode = features.image && mode.startsWith("modeImage");
+
+        const needsMultiSourceOptions = ["mode1", "modeImageMulti"].includes(mode) && (!mode.startsWith("modeImage") || features.image); // Adjusted for removed mode2
+        const needsSourceColorArea = !isImageMode && !mode.startsWith('modeText');
+        const isTextMode = mode.startsWith('modeText');
+        const isAutoMode = features.auto && (mode === 'modeTextAuto' || mode === 'modeTextAutoGenerate');
+
+
         toggleElement(dom.imageInputArea, isImageMode); toggleElement(dom.imageMultiOptions, mode === "modeImageMulti" && features.image); toggleElement(dom.sourceColorArea, needsSourceColorArea);
-        toggleElement(dom.customColorArea, needsCustomArea); toggleElement(dom.multiSourceOptionsArea, needsMultiSourceOptions); toggleElement(dom.textPromptArea, mode === 'modeText');
+
+        toggleElement(dom.multiSourceOptionsArea, needsMultiSourceOptions); toggleElement(dom.textPromptArea, isTextMode);
+
+        toggleElement(dom.suggestColorsButton, isTextMode && !isAutoMode);
+        toggleElement(dom.generateButton, !isAutoMode || mode === 'modeTextAuto');
+        dom.generateButton.textContent = isAutoMode && mode === 'modeTextAuto' ? "Auto Select & Generate" : "Generate Theme";
+        toggleElement(dom.textPromptSuggestionsContainer, false);
+
         resetMinimap(workflowSteps.SELECT_MODE);
-        if (mode === 'modeText') { dom.useSimulationCheckbox.disabled = !config.isApiConfigValid; dom.useSimulationCheckbox.checked = !config.isApiConfigValid; updateMinimap(workflowSteps.INPUT_TEXT, 'human'); }
+        if (isTextMode) { dom.useSimulationCheckbox.disabled = !config.isApiConfigValid; dom.useSimulationCheckbox.checked = !config.isApiConfigValid; updateMinimap(workflowSteps.INPUT_TEXT, 'human'); }
         else if (isImageMode) { if (!state.currentImageFile) { dom.imagePreview.classList.add("hidden"); dom.imagePreview.src = "#"; } updateMinimap(workflowSteps.INPUT_IMAGE, 'human'); }
-        else if (mode === "mode3" || (mode === "mode4" && features.custom)) { dom.sourceColorLabel.textContent = "Source Color:"; addSourceColorInput(0); updateMinimap(workflowSteps.INPUT_COLOR, 'human'); }
-        else if (mode === "mode1" || (mode === "mode2" && features.custom)) { dom.sourceColorLabel.textContent = "Source Colors:"; addSourceColorInput(0, "Primary"); addSourceColorInput(1, "Secondary"); addSourceColorInput(2, "Tertiary"); updateMinimap(workflowSteps.INPUT_COLOR, 'human'); }
-        if (needsCustomArea && dom.customColorList.children.length === 0) { addCustomColorRow(); } else if (!needsCustomArea) { dom.customColorList.innerHTML = ""; }
+        else if (mode === "mode3") {
+            dom.sourceColorLabel.textContent = "Source Color:"; addSourceColorInput(0); updateMinimap(workflowSteps.INPUT_COLOR, 'human'); }
+        else if (mode === "mode1") {
+            dom.sourceColorLabel.textContent = "Source Colors:"; addSourceColorInput(0, "Primary"); addSourceColorInput(1, "Secondary"); addSourceColorInput(2, "Tertiary"); updateMinimap(workflowSteps.INPUT_COLOR, 'human'); }
+
+        if (isAutoMode) {
+            dom.textPromptSuggestionsContainer.classList.add('hidden');
+            dom.sourceColorArea.classList.add('hidden');
+        }
     }
     function addSourceColorInput(index, label = "", disabled = false) {
         const row = document.createElement("div"); row.classList.add("color-input-row"); const id = `source-color-${index}`; const defaults = ["#6750A4", "#625B71", "#7D5260"];
@@ -1067,14 +1267,7 @@ button:not([id^="md-"]):disabled {
         row.innerHTML = `${labelHtml}${inputHtml}`; dom.sourceColorInputsContainer.appendChild(row);
         row.querySelector('input[type="color"]').addEventListener('input', () => { updateMinimap(workflowSteps.INPUT_COLOR, 'human'); });
     }
-    function addCustomColorRow() {
-        if (!config.ENABLE_CUSTOM_COLORS) return; const index = Date.now(); const row = document.createElement("div"); row.classList.add("custom-color-row"); row.dataset.id = index;
-        row.innerHTML = ` <label for="custom-name-${index}">Name:</label> <input type="text" id="custom-name-${index}" value="custom${dom.customColorList.children.length + 1}" placeholder="e.g., Brand"> <label for="custom-value-${index}">Value:</label> <input type="color" id="custom-value-${index}" value="#808080"> <label for="custom-blend-${index}" title="Harmonize with Primary">Blend:</label> <input type="checkbox" id="custom-blend-${index}" checked class="custom-styled"> <label for="custom-blend-${index}" class="checkbox-label"></label> <button type="button" class="remove-custom-color" data-id="${index}" title="Remove Custom Color"> <span class="material-icons" style="font-size: 1.1em; vertical-align: middle;">delete_outline</span> </button>`;
-        dom.customColorList.appendChild(row);
-        row.querySelector(`#custom-name-${index}`).addEventListener('input', () => updateMinimap(workflowSteps.INPUT_CUSTOM, 'human')); row.querySelector(`#custom-value-${index}`).addEventListener('input', () => updateMinimap(workflowSteps.INPUT_CUSTOM, 'human')); row.querySelector(`#custom-blend-${index}`).addEventListener('change', () => updateMinimap(workflowSteps.INPUT_CUSTOM, 'human'));
-        row.querySelector(".remove-custom-color").addEventListener("click", (e) => { e.target.closest(".custom-color-row")?.remove(); updateMinimap(workflowSteps.INPUT_CUSTOM, 'human'); });
-        updateMinimap(workflowSteps.INPUT_CUSTOM, 'human');
-    }
+
     function handleImageFile(file) {
         if (!file?.type.startsWith("image/")) { showError("Invalid file type. Please upload an image."); return; } state.currentImageFile = file; const reader = new FileReader();
         reader.onload = (e) => { dom.imagePreview.src = e.target.result; dom.imagePreview.classList.remove("hidden"); hideError(); updateMinimap(workflowSteps.INPUT_IMAGE, 'human'); };
@@ -1086,14 +1279,13 @@ button:not([id^="md-"]):disabled {
         try { const response = await fetch("m3.txt"); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); state.m3ContentCache = await response.text(); return state.m3ContentCache; }
         catch (error) { console.error("Failed to fetch m3.txt:", error); showError("Failed to load base component guidelines (m3.txt). Gemini generation might be less accurate."); return ""; }
     }
-    async function getGeminiContent(endpoint, systemPrompt = "", userPrompt, isJsonResponse = false, useM3Guidance = false) {
+    async function getGeminiContent(endpoint, systemPrompt = "", userPrompt, isJsonResponse = false, useM3Guidance = false, callingStep = workflowSteps.LLM_SUGGEST) {
         if (!config.isApiConfigValid) throw new Error("Gemini API is not configured in config.js");
         const fullApiUrl = `${endpoint}:generateContent?key=${config.API_KEY}`; let effectiveSystemPrompt = systemPrompt;
         if (useM3Guidance && systemPrompt.includes("Material Design 3")) {
             const m3Content = await fetchM3Content();
             if (m3Content) {
                 effectiveSystemPrompt += `\n\n# Material Design 3 Component Guidelines and Specifications\n\n${m3Content}`;
-                console.log("Appended m3.txt content to system prompt for Gemini.");
             } else {
                 console.warn("Requested M3 guidance but failed to fetch m3.txt content.");
             }
@@ -1102,7 +1294,7 @@ button:not([id^="md-"]):disabled {
         const requestBody = { contents: [{ role: "user", parts: parts }], generationConfig: { temperature: 0.6, maxOutputTokens: isJsonResponse ? 1024 : 4096, }, };
         if (isJsonResponse) requestBody.generationConfig.responseMimeType = "application/json";
         try {
-            updateMinimap(workflowSteps.LLM_SUGGEST, 'gemini-bridge');
+            updateMinimap(callingStep, 'gemini-bridge');
             const response = await fetch(fullApiUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestBody), });
             if (!response.ok) { let errorBodyText = await response.text(); let errorDetails = errorBodyText; try { errorDetails = JSON.parse(errorBodyText); } catch (e) {} console.error("Gemini API Error:", response.status, errorDetails); throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${JSON.stringify(errorDetails)}`); }
             const data = await response.json();
@@ -1110,25 +1302,60 @@ button:not([id^="md-"]):disabled {
             const candidate = data.candidates?.[0]; if (!candidate) throw new Error("API response missing candidates.");
             if (candidate.finishReason && !["STOP", "MAX_TOKENS"].includes(candidate.finishReason)) { const safetyInfo = candidate.safetyRatings ? `Safety: ${JSON.stringify(candidate.safetyRatings)}` : ""; throw new Error(`Generation stopped unexpectedly: ${candidate.finishReason}. ${safetyInfo}`); }
             const contentText = candidate.content?.parts?.[0]?.text; if (typeof contentText !== 'string') throw new Error("API response missing valid text content.");
-            updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp'); return contentText;
+            return contentText;
         } catch (error) { console.error("Error during Gemini API call:", error); updateMinimap(workflowSteps.ERROR, 'error'); throw error; }
     }
     async function getGeminiSuggestions(promptText) {
         updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp');
         const GEMINI_COLOR_SYSTEM_PROMPT = `You are a helpful color palette assistant. Given a text description, suggest exactly 3 DIFFERENT sets of 3 complementary hex color codes suitable for a Material Design 3 theme (Primary, Secondary, Tertiary). Respond ONLY with a valid JSON object containing a single key "suggestions". The value of "suggestions" must be an array containing exactly 3 sub-arrays. Each sub-array must contain exactly 3 valid 6-digit hex color strings (e.g., ["#RRGGBB", "#RRGGBB", "#RRGGBB"]). Example: {"suggestions": [["#6750A4", "#625B71", "#7D5260"], ["#00695C", "#4DB6AC", "#B2DFDB"], ["#B71C1C", "#EF9A9A", "#FFEBEE"]]}. Do not include any other text, explanations, apologies, or markdown formatting. Ensure the hex codes are valid and distinct sets are provided, reflecting the user's prompt.`;
-        const jsonResponse = await getGeminiContent(config.geminiApiEndpointColorPicker, GEMINI_COLOR_SYSTEM_PROMPT, promptText, true, false);
+        const jsonResponse = await getGeminiContent(config.geminiApiEndpointColorPicker, GEMINI_COLOR_SYSTEM_PROMPT, promptText, true, false, workflowSteps.LLM_SUGGEST);
         try {
             const parsed = JSON.parse(jsonResponse); if (!parsed?.suggestions || !Array.isArray(parsed.suggestions) || parsed.suggestions.length === 0) { throw new Error("Parsed JSON missing 'suggestions' array or is empty."); }
             const validSuggestions = parsed.suggestions.filter(s => Array.isArray(s) && s.length === 3 && s.every(c => typeof c === 'string' && /^#[0-9A-F]{6}$/i.test(c)));
-            if (validSuggestions.length === 0) { throw new Error("No valid suggestions found in the 'suggestions' array. Check structure and hex codes."); } return { suggestions: validSuggestions };
+            if (validSuggestions.length === 0) { throw new Error("No valid suggestions found in the 'suggestions' array. Check structure and hex codes."); }
+            state.lastSuggestions = validSuggestions; updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp'); return { suggestions: validSuggestions };
         } catch (parseError) { console.error("Failed to parse Gemini JSON response:", parseError, "\nReceived:", jsonResponse); throw new Error(`Model returned invalid JSON or structure: ${parseError.message}`); }
     }
     async function simulateGeminiCall(promptText) {
         updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp'); console.log("Simulating Gemini suggestion call for:", promptText); await delay(600 + Math.random() * 400);
         const predefinedSets = [ ["#6750A4", "#625B71", "#7D5260"], ["#00695C", "#4DB6AC", "#B2DFDB"], ["#B71C1C", "#EF9A9A", "#FFEBEE"], ["#0D47A1", "#90CAF9", "#E3F2FD"], ["#EF6C00", "#FFCA28", "#FFF9C4"], ["#4E342E", "#A1887F", "#D7CCC8"], ["#311B92", "#9575CD", "#EDE7F6"], ];
         const suggestions = []; const availableIndices = [...Array(predefinedSets.length).keys()]; while (suggestions.length < 3 && availableIndices.length > 0) { const randomIndex = Math.floor(Math.random() * availableIndices.length); const selectedIndex = availableIndices.splice(randomIndex, 1)[0]; suggestions.push(predefinedSets[selectedIndex]); }
-        updateMinimap(workflowSteps.LLM_SUGGEST, 'tool'); updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp'); return { suggestions };
+        state.lastSuggestions = suggestions; updateMinimap(workflowSteps.LLM_SUGGEST, 'tool'); updateMinimap(workflowSteps.MCP_WRAP_SUGGEST, 'mcp'); return { suggestions };
     }
+
+    async function getGeminiBestSuggestion(suggestions, promptText) {
+        updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+        const GEMINI_SELECT_SYSTEM_PROMPT = `You are a design critic. Given a user prompt describing a desired theme and a list of 3 color palettes (each palette has Primary, Secondary, Tertiary hex codes), choose the single BEST palette that matches the user's prompt. Respond ONLY with the index number (0, 1, or 2) of the best matching palette. Do not include any other text, explanations, or formatting. Example Response: 1`;
+        const userQuery = `User Prompt: "${promptText}"\n\nPalettes:\n0: ${JSON.stringify(suggestions[0])}\n1: ${JSON.stringify(suggestions[1])}\n2: ${JSON.stringify(suggestions[2])}\n\nWhich index (0, 1, or 2) is the best match? Respond with only the index number.`;
+
+        const responseText = await getGeminiContent(config.geminiApiEndpointColorPicker, GEMINI_SELECT_SYSTEM_PROMPT, userQuery, false, false, workflowSteps.LLM_SELECT_BEST);
+        try {
+            const index = parseInt(responseText.trim(), 10);
+            if (isNaN(index) || index < 0 || index >= suggestions.length) {
+                console.warn(`LLM returned invalid index '${responseText}'. Defaulting to index 0.`);
+                return suggestions[0];
+            }
+            updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+            return suggestions[index];
+        } catch (error) {
+            console.error("Failed to parse LLM selection response:", error, "\nReceived:", responseText);
+            console.warn("Defaulting to the first suggestion (index 0).");
+             updateMinimap(workflowSteps.ERROR, 'error');
+            return suggestions[0];
+        }
+    }
+
+     async function simulateBestSuggestion(suggestions, promptText) {
+        updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+        console.log("Simulating LLM selection for:", promptText);
+        await delay(300 + Math.random() * 200);
+        const randomIndex = Math.floor(Math.random() * suggestions.length);
+        updateMinimap(workflowSteps.LLM_SELECT_BEST, 'tool');
+        updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+        return suggestions[randomIndex];
+    }
+
+
     function displaySuggestions(suggestionData) {
         dom.textPromptSuggestionsContainer.innerHTML = placeholders.suggestionsLabel;
         if (!suggestionData?.suggestions?.length) { dom.textPromptSuggestionsContainer.innerHTML += placeholders.noSuggestions; dom.textPromptSuggestionsContainer.classList.remove("hidden"); updateMinimap(workflowSteps.DISPLAY_SUGGESTIONS, 'result'); return; }
@@ -1144,18 +1371,56 @@ button:not([id^="md-"]):disabled {
         else { dom.textPromptSuggestionsContainer.innerHTML += placeholders.noValidSuggestions; dom.textPromptSuggestionsContainer.classList.remove("hidden"); }
         updateMinimap(workflowSteps.DISPLAY_SUGGESTIONS, 'result');
     }
+
+    function applySuggestionToUI(colors, markAsSelected = true) {
+         if (!Array.isArray(colors) || colors.length !== 3) throw new Error("Invalid color data provided to apply.");
+
+        let sourceInputs = dom.sourceColorInputsContainer.querySelectorAll('input[type="color"]');
+
+        if (sourceInputs.length === 0 && !dom.sourceColorArea.classList.contains('hidden')) {
+            dom.sourceColorArea.classList.remove('hidden');
+        }
+
+        if (sourceInputs.length < 3 ) {
+             toggleElement(dom.sourceColorArea, true);
+             dom.sourceColorLabel.textContent = "Source Colors:";
+             dom.sourceColorInputsContainer.innerHTML = '';
+             addSourceColorInput(0, "Primary", false);
+             addSourceColorInput(1, "Secondary", false);
+             addSourceColorInput(2, "Tertiary", false);
+             sourceInputs = dom.sourceColorInputsContainer.querySelectorAll('input[type="color"]');
+             if (sourceInputs.length < 3) throw new Error("Failed to create source color inputs for applying suggestion.");
+        }
+
+
+         colors.forEach((color, index) => {
+            if (sourceInputs[index]) {
+                sourceInputs[index].value = color;
+                sourceInputs[index].disabled = false;
+                sourceInputs[index].dispatchEvent(new Event('input', { bubbles: true }));
+            }
+         });
+
+         if (markAsSelected) {
+            document.querySelectorAll(".suggestion-option.selected").forEach((el) => el.classList.remove("selected"));
+             const matchingSuggestionDiv = Array.from(dom.textPromptSuggestionsContainer.querySelectorAll('.suggestion-option'))
+                 .find(div => div.dataset.colors === JSON.stringify(colors));
+            if (matchingSuggestionDiv) {
+                 matchingSuggestionDiv.classList.add("selected");
+                 const radio = matchingSuggestionDiv.querySelector('input[type="radio"]');
+                 if (radio) radio.checked = true;
+            }
+         }
+         hideError();
+    }
+
     function applyScopedThemeStyles(theme) {
         if (!theme?.schemes) return; const lightCSS = [], darkCSS = []; const previewSelectorBase = `#mwc-component-preview, #gemini-component-preview`;
         for (const [schemeKey, scheme] of Object.entries(theme.schemes)) {
             const isDark = schemeKey === "dark"; const selector = isDark ? `${previewSelectorBase}.dark-theme` : `${previewSelectorBase}:not(.dark-theme)`; const targetCSS = isDark ? darkCSS : lightCSS;
             targetCSS.push(`${selector} {`);
             for (const [token, value] of Object.entries(scheme)) { if (typeof value === 'number') { targetCSS.push(`--local-sys-color-${kebabCase(token)}: ${argbIntToHex(value)};`); } }
-            if (config.ENABLE_CUSTOM_COLORS && theme.customColors?.length > 0) {
-                theme.customColors.forEach((customGroup) => {
-                    if (customGroup[schemeKey]) { const baseName = sanitizeForCssVariable(customGroup.color.name || "custom") || `custom-${customGroup.color.value}`;
-                        for (const [token, value] of Object.entries(customGroup[schemeKey])) { if (typeof value === 'number') { targetCSS.push(`--local-sys-color-custom-${baseName}-${kebabCase(token)}: ${argbIntToHex(value)};`); } } }
-                });
-            } targetCSS.push("}");
+            targetCSS.push("}");
         } dom.dynamicThemeStyles.textContent = `${lightCSS.join("\n")}\n${darkCSS.join("\n")}`;
     }
     function handleGenerateMwcComponents() {
@@ -1192,72 +1457,129 @@ button:not([id^="md-"]):disabled {
         updateMinimap(workflowSteps.CLICK_GEN_GEMINI, 'human'); updateMinimap(workflowSteps.MCP_WRAP_GEN_COMP, 'mcp');
         setGeminiComponentLoading(true); dom.geminiComponentPreview.innerHTML = ''; hideError();
         try {
-            const stylePrompt = dom.componentStylePromptInput.value.trim(); let themeVariablesString = "/* Light Theme Variables (Example Values) */\n:root {\n";
+            const stylePrompt = dom.componentStylePromptInput.value.trim(); let themeVariablesString = ":root {\n";
             if (state.lastGeneratedTheme.schemes.light) {
                 for (const [token, value] of Object.entries(state.lastGeneratedTheme.schemes.light)) { if (typeof value === 'number') { themeVariablesString += `  --local-sys-color-${kebabCase(token)}: ${argbIntToHex(value)};\n`; } }
-                if (config.ENABLE_CUSTOM_COLORS && state.lastGeneratedTheme.customColors?.length > 0) {
-                    state.lastGeneratedTheme.customColors.forEach((customGroup) => {
-                        if (customGroup.light) { const baseName = sanitizeForCssVariable(customGroup.color.name || "custom") || `custom-${customGroup.color.value}`;
-                            for (const [token, value] of Object.entries(customGroup.light)) { if (typeof value === 'number') { themeVariablesString += `  --local-sys-color-custom-${baseName}-${kebabCase(token)}: ${argbIntToHex(value)};\n`; } } }
-                    });
-                } themeVariablesString += "}\n";
+                themeVariablesString += "}";
             }
             const fullPrompt = `MATERIAL DESIGN 3 THEME VARIABLES (Use these variable names in your CSS):\n\`\`\`css\n${themeVariablesString}\n\`\`\`\n\nUSER STYLE PROMPT: ${stylePrompt || "Default clean Material Design style."}\n\nGenerate the HTML structure and CSS for the requested components based on the system instructions. Use the EXACT HTML tags and classes specified. Ensure CSS uses the --local-sys-color-... variables.`;
             const useM3Guidance = dom.useM3GuidanceCheckbox.checked;
-            const generatedHtmlAndCss = await getGeminiContent( config.geminiApiEndpointComponentGenerator, GEMINI_COMPONENT_SYSTEM_PROMPT, fullPrompt, false, useM3Guidance );
+            const generatedHtmlAndCss = await getGeminiContent( config.geminiApiEndpointComponentGenerator, GEMINI_COMPONENT_SYSTEM_PROMPT, fullPrompt, false, useM3Guidance, workflowSteps.LLM_GEN_COMP );
             const cleanedHtmlCss = generatedHtmlAndCss.replace(/^\s*```(?:html|css|markup|)\s*\n?/im, "").replace(/\n?\s*```\s*$/im, "").trim();
             dom.geminiComponentPreview.innerHTML = `<h4>Gemini Preview</h4> ${cleanedHtmlCss}`; dom.geminiComponentPreview.classList.toggle("dark-theme", state.isDarkMode);
             applyScopedThemeStyles(state.lastGeneratedTheme);
             updateMinimap(workflowSteps.DISPLAY_COMPONENTS, 'result');
         } catch (error) { showError(`Gemini component generation failed: ${error.message}`); dom.geminiComponentPreview.innerHTML = placeholders.geminiPreviewError; }
-        finally { setGeminiComponentLoading(false); }
+        finally { setGeminiComponentLoading(false); updateMinimap(workflowSteps.MCP_WRAP_GEN_COMP, 'mcp');}
     }
+
     function handleSuggestionSelection(event) {
         const selectedDiv = this; event.preventDefault(); const colorsJson = selectedDiv.dataset.colors; if (!colorsJson) return;
         try {
-            const colors = JSON.parse(colorsJson); if (!Array.isArray(colors) || colors.length !== 3) throw new Error("Invalid color data in suggestion.");
-            let sourceInputs = dom.sourceColorInputsContainer.querySelectorAll('input[type="color"]');
-            if (sourceInputs.length < 3) {
-                toggleElement(dom.sourceColorArea, true); dom.sourceColorLabel.textContent = "Source Colors:"; dom.sourceColorInputsContainer.innerHTML = '';
-                addSourceColorInput(0, "Primary", false); addSourceColorInput(1, "Secondary", false); addSourceColorInput(2, "Tertiary", false);
-                sourceInputs = dom.sourceColorInputsContainer.querySelectorAll('input[type="color"]'); if (sourceInputs.length < 3) throw new Error("Failed to create source color inputs.");
-            }
-            colors.forEach((color, index) => { if (sourceInputs[index]) { sourceInputs[index].value = color; sourceInputs[index].disabled = false; sourceInputs[index].dispatchEvent(new Event('input', { bubbles: true })); } });
-            document.querySelectorAll(".suggestion-option.selected").forEach((el) => el.classList.remove("selected")); selectedDiv.classList.add("selected"); const radio = selectedDiv.querySelector('input[type="radio"]'); if (radio) radio.checked = true;
-            hideError(); updateMinimap(workflowSteps.SELECT_SUGGESTION, 'human');
+            const colors = JSON.parse(colorsJson);
+            applySuggestionToUI(colors, false);
+            document.querySelectorAll(".suggestion-option.selected").forEach((el) => el.classList.remove("selected"));
+            selectedDiv.classList.add("selected");
+            const radio = selectedDiv.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            updateMinimap(workflowSteps.SELECT_SUGGESTION, 'human');
         } catch (error) { showError(`Failed to apply suggestion: ${error.message}`); console.error("Suggestion application error:", error); }
     }
+
+    async function generateThemeInternal(seeds, options) {
+         if (!seeds || seeds.length === 0) {
+             throw new Error("No valid seed colors provided for theme generation.");
+         }
+         updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool');
+         let theme;
+         // Note: options no longer contains customColors
+         if (seeds.length === 1) {
+             theme = themeFromSourceColor(seeds[0]);
+         } else {
+             theme = themeFromSourceColors(seeds, options);
+         }
+         return { theme, seeds };
+    }
+
+
     async function handleGenerateClick() {
-        updateMinimap(workflowSteps.CLICK_GENERATE, 'human'); updateMinimap(workflowSteps.MCP_WRAP_GENERATE, 'mcp');
+        updateMinimap(workflowSteps.CLICK_GENERATE, 'human');
+
+        const isAutoSelectMode = state.currentMode === 'modeTextAuto';
+        const isAutoGenerateMode = state.currentMode === 'modeTextAutoGenerate';
+
+        if (isAutoGenerateMode) {
+             await handleAutoGenerate();
+             return;
+        }
+
+        updateMinimap(workflowSteps.MCP_WRAP_GENERATE, 'mcp');
         setUILoading(true, state.currentMode); dom.paletteDisplay.innerHTML = placeholders.generating; dom.seedColorsDisplayContainer.innerHTML = ""; hideError();
         const dreamExists = typeof themeFromSourceColor === 'function' && typeof themeFromSourceColors === 'function' && (!config.ENABLE_IMAGES || (typeof sourceColorFromImage === 'function' && typeof sourceColorsFromImage === 'function'));
         if (!dreamExists) { showError("Core color generation library (dream.js) or required functions not found. Check console."); console.error("Missing functions from dream.js. Ensure it's loaded correctly."); setUILoading(false); return; }
+
         try {
-            let theme, seeds = []; const customData = config.ENABLE_CUSTOM_COLORS ? getCustomColorData() : [];
+            let theme, seeds = [];
             let effectiveMode = getEffectiveMode(state.currentMode);
-            if (effectiveMode !== state.currentMode) { document.getElementById(effectiveMode).checked = true; updateInputUI(effectiveMode); showError("Image or Custom Color modes disabled in config. Defaulting mode."); setUILoading(false); return; }
-            const harmony = dom.multiSourceOptionsArea.classList.contains('hidden') ? "direct" : dom.harmonyStrategySelect.value; const themeOptions = { harmonyStrategy: harmony, customColors: customData };
-            if (effectiveMode === 'mode3' || effectiveMode === 'mode4') {
+            if (effectiveMode !== state.currentMode) { document.getElementById(effectiveMode).checked = true; updateInputUI(effectiveMode); showError("Selected mode relies on disabled features. Switching mode."); setUILoading(false); return; }
+            const harmony = dom.multiSourceOptionsArea.classList.contains('hidden') ? "direct" : dom.harmonyStrategySelect.value;
+            const themeOptions = { harmonyStrategy: harmony };
+
+            if (effectiveMode === 'mode3') {
                 const input = dom.sourceColorInputsContainer.querySelector('#source-color-0'); if (!input) throw new Error("Source color input #0 is missing.");
-                const colorValue = validateAndConvertHex(input.value, 'Source Color'); seeds = [colorValue]; updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool');
-                theme = themeFromSourceColor(colorValue, themeOptions.customColors);
-            } else if (['mode1', 'mode2', 'modeText'].includes(effectiveMode)) {
-                const inputs = [0, 1, 2].map(i => dom.sourceColorInputsContainer.querySelector(`#source-color-${i}`)); if (inputs.some(input => !input)) throw new Error("One or more source color inputs are missing.");
-                seeds = inputs.map((input, idx) => { if (input.disabled) return null; const label = input.previousElementSibling?.textContent || `Color ${idx + 1}`; return validateAndConvertHex(input.value, label); }).filter(v => typeof v === 'number');
-                if (seeds.length === 0) { throw new Error(effectiveMode === 'modeText' ? "Please select a suggestion or provide source colors manually." : "Please provide at least one source color."); }
-                updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool'); theme = seeds.length === 1 ? themeFromSourceColor(seeds[0], themeOptions.customColors) : themeFromSourceColors(seeds, themeOptions);
+                const colorValue = validateAndConvertHex(input.value, 'Source Color'); seeds = [colorValue];
+                ({ theme, seeds } = await generateThemeInternal(seeds, themeOptions));
+            } else if (['mode1', 'modeText', 'modeTextAuto'].includes(effectiveMode)) { 
+                if (effectiveMode === 'modeTextAuto' && state.lastSuggestions) {
+                     const promptText = dom.textPromptInput.value.trim();
+                     if (!promptText) throw new Error("Please enter a theme description for Auto Select mode.");
+                     updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+                     const useSim = dom.useSimulationCheckbox.checked;
+                     const useApi = !useSim && config.isApiConfigValid;
+                     let bestSuggestion;
+                     if (useApi) {
+                         bestSuggestion = await getGeminiBestSuggestion(state.lastSuggestions, promptText);
+                     } else {
+                         bestSuggestion = await simulateBestSuggestion(state.lastSuggestions, promptText);
+                     }
+                     updateMinimap(workflowSteps.APPLY_LLM_SELECTION, 'decision');
+                     applySuggestionToUI(bestSuggestion, true);
+                     seeds = bestSuggestion.map(hex => validateAndConvertHex(hex, 'LLM Selected Color'));
+
+                } else {
+                     const inputs = [0, 1, 2].map(i => dom.sourceColorInputsContainer.querySelector(`#source-color-${i}`)); if (inputs.some(input => !input) && (effectiveMode !== 'modeText' && effectiveMode !== 'modeTextAuto')) { throw new Error("One or more source color inputs are missing."); }
+                      seeds = inputs
+                          .map((input, idx) => {
+                              if (!input || input.disabled) return null;
+                              const label = input.previousElementSibling?.textContent || `Color ${idx + 1}`;
+                              return validateAndConvertHex(input.value, label);
+                          })
+                          .filter(v => typeof v === 'number');
+                }
+
+                 if (seeds.length === 0) {
+                    if (effectiveMode === 'modeText' || effectiveMode === 'modeTextAuto') { throw new Error(isAutoSelectMode ? "Could not determine seeds automatically." : "Please select a suggestion or provide source colors manually."); }
+                     else { throw new Error("Please provide at least one source color."); }
+                 }
+                 ({ theme, seeds } = await generateThemeInternal(seeds, themeOptions));
+
             } else if (config.ENABLE_IMAGES && effectiveMode.startsWith('modeImage')) {
                 if (!state.currentImageFile || !dom.imagePreview.src || dom.imagePreview.src.startsWith('#')) throw new Error("Please upload or select an image.");
                 updateMinimap(workflowSteps.TOOL_IMAGE_PROC, 'tool'); const img = await loadImageFromSrc(dom.imagePreview.src);
                 if (effectiveMode === 'modeImageSingle') {
                     const srcColor = await sourceColorFromImage(img); if (typeof srcColor !== 'number') throw new Error("Failed to extract dominant color from image."); seeds = [srcColor];
-                    updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool'); theme = themeFromSourceColor(srcColor, themeOptions.customColors);
+                     ({ theme, seeds } = await generateThemeInternal(seeds, themeOptions));
                 } else {
-                    const num = parseInt(dom.numSourcesInput.value, 10) || 5; const qual = parseInt(dom.extractQualityInput.value, 10) || 10; themeOptions.numSources = num; themeOptions.extractQuality = qual;
+                    const num = parseInt(dom.numSourcesInput.value, 10) || 5; const qual = parseInt(dom.extractQualityInput.value, 10) || 10;
+                    const imageThemeOptions = { ...themeOptions, numSources: num, extractQuality: qual };
                     if (typeof themeFromImageUsingSources === "function") {
-                        theme = await themeFromImageUsingSources(img, themeOptions); try { seeds = await sourceColorsFromImage(img, num, qual); } catch (seedError) { console.warn("Could not re-extract seeds for display:", seedError); seeds = theme?.source ? (Array.isArray(theme.source) ? theme.source : [theme.source]) : []; }
+                        theme = await themeFromImageUsingSources(img, imageThemeOptions); try { seeds = await sourceColorsFromImage(img, num, qual); } catch (seedError) { console.warn("Could not re-extract seeds for display:", seedError); seeds = theme?.source ? (Array.isArray(theme.source) ? theme.source : [theme.source]) : []; }
                         updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool');
-                    } else { seeds = await sourceColorsFromImage(img, num, qual); if (!seeds?.length) throw new Error("Failed to extract multiple colors from image."); updateMinimap(workflowSteps.TOOL_COLOR_MATH, 'tool'); theme = themeFromSourceColors(seeds, themeOptions); }
+                    } else {
+                         seeds = await sourceColorsFromImage(img, num, qual);
+                         if (!seeds?.length) throw new Error("Failed to extract multiple colors from image.");
+                         ({ theme, seeds } = await generateThemeInternal(seeds, imageThemeOptions)); 
+                     }
                 }
             } else { throw new Error("Invalid or unsupported generation mode selected."); }
             if (theme) { state.lastGeneratedTheme = theme; displaySeedColors(seeds, theme); displayTheme(theme); }
@@ -1265,25 +1587,100 @@ button:not([id^="md-"]):disabled {
         } catch (error) { showError(`Generation Error: ${error.message}`); dom.paletteDisplay.innerHTML = placeholders.paletteError; console.error("Generation Process Error:", error); }
         finally { setUILoading(false); updateMinimap(workflowSteps.MCP_WRAP_GENERATE, 'mcp'); }
     }
+
     async function handleSuggestColorsClick() {
         const promptText = dom.textPromptInput.value.trim(); if (!promptText) { showError("Please enter a theme description first."); return; }
-        updateMinimap(workflowSteps.CLICK_SUGGEST, 'human'); hideError(); setSuggestionLoading(true); dom.textPromptSuggestionsContainer.classList.add("hidden");
+        updateMinimap(workflowSteps.CLICK_SUGGEST, 'human'); hideError(); setSuggestionLoading(true); dom.textPromptSuggestionsContainer.classList.add("hidden"); dom.textPromptSuggestionsContainer.innerHTML = placeholders.suggestionsLabel;
+        state.lastSuggestions = null;
+
         try {
             const useSim = dom.useSimulationCheckbox.checked; const useApi = !useSim && config.isApiConfigValid; let data;
-            if (useApi) { console.log("Calling Gemini API for color suggestions..."); data = await getGeminiSuggestions(promptText); }
+            if (useApi) { data = await getGeminiSuggestions(promptText); }
             else if (!config.isApiConfigValid && !useSim) { console.warn("API request attempted but config is invalid and simulation unchecked."); showError("Gemini API not configured. Check simulation box or configure API in config.js."); dom.textPromptSuggestionsContainer.innerHTML = placeholders.suggestionsApiError; dom.textPromptSuggestionsContainer.classList.remove('hidden'); updateMinimap(workflowSteps.ERROR, 'error'); return; }
-            else { console.log("Simulating color suggestions..."); data = await simulateGeminiCall(promptText); }
+            else { data = await simulateGeminiCall(promptText); }
             displaySuggestions(data);
         } catch (error) { showError(`Failed to get suggestions: ${error.message}`); dom.textPromptSuggestionsContainer.innerHTML = placeholders.suggestionsLoadError; dom.textPromptSuggestionsContainer.classList.remove('hidden'); console.error("Suggestion Error:", error); }
         finally { setSuggestionLoading(false); }
     }
+
+    async function handleAutoGenerate() {
+        const promptText = dom.textPromptInput.value.trim();
+        if (!promptText) {
+            showError("Please enter a theme description for Auto Generate mode.");
+            return;
+        }
+        updateMinimap(workflowSteps.MCP_WRAP_AUTO_GENERATE, 'mcp');
+        setUILoading(true, state.currentMode);
+        dom.paletteDisplay.innerHTML = placeholders.generating;
+        dom.seedColorsDisplayContainer.innerHTML = "";
+        hideError();
+        state.lastSuggestions = null;
+
+        try {
+            const useSim = dom.useSimulationCheckbox.checked;
+            const useApi = !useSim && config.isApiConfigValid;
+            let suggestions;
+
+            if (useApi) {
+                ({ suggestions } = await getGeminiSuggestions(promptText));
+            } else {
+                 if (!config.isApiConfigValid && !useSim) {
+                     throw new Error("Gemini API not configured and simulation not enabled.");
+                 }
+                ({ suggestions } = await simulateGeminiCall(promptText));
+            }
+
+            if (!suggestions || suggestions.length === 0) {
+                throw new Error("No suggestions were generated to select from.");
+            }
+
+            updateMinimap(workflowSteps.MCP_WRAP_SELECT, 'mcp');
+            let bestSuggestion;
+            if(useApi) {
+                 bestSuggestion = await getGeminiBestSuggestion(suggestions, promptText);
+            } else {
+                 bestSuggestion = await simulateBestSuggestion(suggestions, promptText);
+            }
+
+            updateMinimap(workflowSteps.APPLY_LLM_SELECTION, 'decision');
+            applySuggestionToUI(bestSuggestion, true);
+
+            const seeds = bestSuggestion.map(hex => validateAndConvertHex(hex, 'LLM Auto Color'));
+            if (seeds.length === 0) {
+                throw new Error("LLM-selected colors could not be validated.");
+            }
+
+            updateMinimap(workflowSteps.MCP_WRAP_GENERATE, 'mcp');
+            const themeOptions = { harmonyStrategy: 'direct' };
+
+            const { theme } = await generateThemeInternal(seeds, themeOptions);
+
+            if (theme) {
+                state.lastGeneratedTheme = theme;
+                displaySeedColors(seeds, theme);
+                displayTheme(theme);
+             } else {
+                showError("Theme generation failed after auto-selection.");
+            }
+
+        } catch (error) {
+            showError(`Auto Generation Error: ${error.message}`);
+            dom.paletteDisplay.innerHTML = placeholders.paletteError;
+            console.error("Auto Generation Process Error:", error);
+        } finally {
+            setUILoading(false);
+            updateMinimap(workflowSteps.MCP_WRAP_AUTO_GENERATE, 'mcp');
+        }
+    }
+
+
     function setupEventListeners() {
         dom.modeRadios.forEach((radio) => radio.addEventListener("change", (e) => updateInputUI(e.target.value)));
         dom.dropArea.addEventListener("click", () => dom.imageInput.click()); dom.dropArea.addEventListener("dragover", (e) => { e.preventDefault(); dom.dropArea.classList.add("drag-over"); });
         dom.dropArea.addEventListener("dragleave", () => dom.dropArea.classList.remove("drag-over")); dom.dropArea.addEventListener("drop", (e) => { e.preventDefault(); dom.dropArea.classList.remove("drag-over"); if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]); });
         dom.imageInput.addEventListener("change", (e) => { if (e.target.files.length) handleImageFile(e.target.files[0]); });
-        if (config.ENABLE_CUSTOM_COLORS) { dom.addCustomColorButton.addEventListener("click", addCustomColorRow); }
-        dom.suggestColorsButton.addEventListener("click", handleSuggestColorsClick); dom.generateButton.addEventListener("click", handleGenerateClick);
+        dom.suggestColorsButton.addEventListener("click", handleSuggestColorsClick);
+        dom.generateButton.addEventListener("click", handleGenerateClick);
         dom.generateMwcComponentsButton.addEventListener("click", handleGenerateMwcComponents);
         dom.generateGeminiComponentsButton.addEventListener("click", handleGenerateGeminiComponents);
         dom.themeToggleButton.addEventListener("click", handleThemeToggle);
@@ -1293,5 +1690,8 @@ button:not([id^="md-"]):disabled {
     }
     initializeApp();
 </script>
+  </script>
+
 </body>
+ 
 </html>
