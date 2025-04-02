@@ -2982,7 +2982,7 @@
         introSequenceIndex: 0,
       };
 
-      const modifiedExampleSequence = [
+      const sevSequenceNotes = [
         "E4",
         "G4",
         "E4",
@@ -2995,7 +2995,7 @@
         "E5",
       ];
 
-      const severanceSequenceEdges = [
+      const sevSequenceEdges = [
         workflowSteps.SELECT_SOURCE,
         workflowSteps.INPUT_TEXT,
         workflowSteps.CLICK_PROCESS_TEXT,
@@ -3008,7 +3008,7 @@
         workflowSteps.DISPLAY_THEME,
       ];
 
-      const severanceSequenceTypes = [
+      const sevSequenceTypes = [
         "note",
         "note",
         "note",
@@ -3282,7 +3282,7 @@
             ...step,
             edge: edgeType || "human",
           });
-          playSeveranceIntroStep();
+          playSevSequenceStep();
         } else if (state.currentMinimapSteps.length > 0) {
           state.currentMinimapSteps[state.currentMinimapSteps.length - 1].edge =
             edgeType ||
@@ -3397,17 +3397,16 @@
         }
       }
 
-      function playSeveranceIntroStep() {
+      function playSevSequenceStep() {
         if (!audio.isInitialized) {
           initializeAudio();
           if (!audio.isInitialized) return;
         }
         if (audio.context && audio.context.state === "suspended")
           audio.context.resume();
-        if (audio.introSequenceIndex < severanceSequenceNotes.length) {
-          const note = severanceSequenceNotes[audio.introSequenceIndex];
-          const type =
-            severanceSequenceTypes[audio.introSequenceIndex] || "note";
+        if (audio.introSequenceIndex < sevSequenceNotes.length) {
+          const note = sevSequenceNotes[audio.introSequenceIndex];
+          const type = sevSequenceTypes[audio.introSequenceIndex] || "note";
           if (type === "note") playNote(note, 0.15);
           else if (type === "chord") playChord(note, 0.3);
           audio.introSequenceIndex++;
