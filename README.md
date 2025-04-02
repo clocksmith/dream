@@ -27,20 +27,3 @@ dream is built upon Google's material-color-utilities project (Apache License 2.
 ## License
 
 dream is distributed under the MIT License. See the LICENSE file for details.
-
-# TODO
-
-input options
-
-input text (gemini) to single seed
-input text (gemini) to multi seed (3)
-color selector input to single seed
-color selector input to multi seed (3) (make sure these display in a row not a column)
-picture upload to single seed w/ gemini
-picture upload to multi seed (3) w/ gemini
-picture upload to single seed w/ dream.js
-picture upload to multi seed (3) w/ dream.js
-
-For each of these cases there should be secondary option where either:
-
-1. Gemini generates 3
