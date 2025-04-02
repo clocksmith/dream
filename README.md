@@ -4,7 +4,7 @@
 
 **dream** is a Javascript library for dynamic color theming, forked from Google's [material-color-utilities](https://github.com/material-foundation/material-color-utilities). It provides utilities for color science and dynamic color scheme generation based on Material Design 3 principles.
 
-This fork has been refactored into a single [`dream.js`](./dream.js) file and is maintained under the MIT License. It includes functions like [`themeFromSourceColors()`](./dream.js#L<line_number>) and [`themeFromImageUsingSources()`](./dream.js#L<line_number>) for multi-seed theme generation. _(Note: Replace `<line_number>` with the actual starting line number of the functions in your `dream.js` file or remove the `#L...` part to link to the file generally)._
+This fork has been refactored into a single [`dream.js`](./dream.js) file and is maintained under the MIT License. It includes functions like [`themeFromSourceColors()`](./dream.js#L<line_number>) and [`themeFromImageUsingSources()`](./dream.js#L<line_number>) for multi-seed theme generation. 
 
 ## Demo
 
