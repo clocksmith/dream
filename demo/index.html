@@ -1739,7 +1739,7 @@
           transform: translateY(calc(100% + 8px));
         }
       }
-      @media (max-width: 1124px) {
+      @media (max-width: 1024px) {
         .component-preview-grid {
           grid-template-columns: 1fr;
         }
@@ -2982,18 +2982,19 @@
         introSequenceIndex: 0,
       };
 
-      const severanceSequenceNotes = [
+      const modifiedExampleSequence = [
         "E4",
         "G4",
         "E4",
         "C4",
         ["E3", "G3", "C4"],
         "G4",
-        "B4",
+        "C3",
         "C5",
         ["C4", "E4", "G4"],
         "E5",
       ];
+
       const severanceSequenceEdges = [
         workflowSteps.SELECT_SOURCE,
         workflowSteps.INPUT_TEXT,
@@ -3006,7 +3007,9 @@
         workflowSteps.MCP_WRAP_GENERATE,
         workflowSteps.DISPLAY_THEME,
       ];
+
       const severanceSequenceTypes = [
+        "note",
         "note",
         "note",
         "note",
@@ -3167,17 +3170,6 @@
           playNote(note, duration, delay + index * stagger)
         );
       }
-      function playWorkflowStepSound(stepType) {
-        if (!audio.isInitialized) return;
-        if (stepType === "error") {
-          playNote(audio.errorNote, 0.25);
-        } else if (!audio.isPlayingIntro) {
-          const note =
-            audio.stepNotes[audio.nextNoteIndex % audio.stepNotes.length];
-          playNote(note, 0.15);
-          audio.nextNoteIndex++;
-        }
-      }
 
       function positionTooltip(targetElement, tooltipElement) {
         if (!targetElement || !tooltipElement) return;
@@ -3290,7 +3282,7 @@
             ...step,
             edge: edgeType || "human",
           });
-          playWorkflowStepSound(step.type);
+          playSeveranceIntroStep();
         } else if (state.currentMinimapSteps.length > 0) {
           state.currentMinimapSteps[state.currentMinimapSteps.length - 1].edge =
             edgeType ||
