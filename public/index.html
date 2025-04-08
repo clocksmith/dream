@@ -1744,6 +1744,40 @@
           grid-template-columns: 1fr;
         }
       }
+      .modal-overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: black;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: black;
+        color: white;
+        margin: auto;
+        padding: 20px;
+        border: 1px dashed white;
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .modal-content h2 {
+        margin-top: 0;
+      }
+
+      .modal-content button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -1752,6 +1786,31 @@
     </button>
 
     <div class="container">
+      <!-- API Key Input Modal -->
+      <div id="apiKeyModal" class="modal-overlay" style="display: none">
+        <div class="modal-content">
+          <h2>Enter Gemini API Key</h2>
+          <p>
+            Please paste your Gemini API key below. It will only be stored for
+            this browser session.
+          </p>
+          <input
+            type="text"
+            id="apiKeyInput"
+            placeholder="Paste your API key here"
+            style="width: 90%; margin-bottom: 10px; padding: 8px"
+          />
+          <div
+            id="apiKeyError"
+            style="color: red; margin-bottom: 10px; min-height: 1em"
+          ></div>
+          <div>
+            <button id="saveApiKeyBtn">Save Key</button>
+            <button id="cancelApiKeyBtn">Cancel (Uses simulation)</button>
+          </div>
+        </div>
+      </div>
+
       <h1>
         MILCHICK: Material Integration Leveraging Creative Human-LLM
         Intelligence Colors Kit
@@ -2466,7 +2525,7 @@
     </div>
 
     <style id="dynamic-theme-styles"></style>
-    <script src="config.js" defer></script>
+    <script src="../config.js" defer></script>
     <script src="dream.js" defer></script>
     <script
       type="module"
@@ -2510,6 +2569,9 @@
         MINIMAP_ANIMATION_DURATION: 400,
       };
 
+      let sessionApiKey = null;
+      let apiKeyPromiseResolver = null;
+
       const state = {
         currentImageFile: null,
         currentInputSource: config.defaultInputSource,
@@ -2527,6 +2589,11 @@
       };
 
       const dom = {
+        apiKeyModal: getEl("apiKeyModal"),
+        apiKeyInput: getEl("apiKeyInput"),
+        apiKeyError: getEl("apiKeyError"),
+        saveApiKeyBtn: getEl("saveApiKeyBtn"),
+        cancelApiKeyBtn: getEl("cancelApiKeyBtn"),
         inputSourceRadios: $$('input[name="inputSource"]'),
         inputSourceSelection: getEl("input-source-selection"),
         textOptionsGroup: getEl("text-options-group"),
@@ -3515,9 +3582,7 @@
             !config.GEMINI_MODEL
           ) {
             config.isApiConfigValid = false;
-            showError(
-              "Gemini API config missing/invalid in config.js. Using simulation where possible."
-            );
+            showApiKeyPopup(); // Show the modal instead of showError
           } else {
             const modelIdBase = config.GEMINI_MODEL.startsWith("models/")
               ? config.GEMINI_MODEL
@@ -4984,6 +5049,41 @@
         }
       }
 
+      function handleCancelApiKey() {
+        console.log("API Key entry cancelled. Using simulation mode.");
+        hideApiKeyPopup();
+        config.isApiConfigValid = false; // Explicitly mark as invalid
+        config.API_KEY = null; // Clear any potentially partially entered key
+        sessionApiKey = null;
+
+        // Ensure simulation checkbox is checked and UI reflects simulation mode
+        if (dom.useSimulationCheckbox) {
+          dom.useSimulationCheckbox.checked = true;
+          disableEl(dom.useSimulationCheckbox, false);
+        }
+        applyFeatureVisibility();
+        showError("API Key not provided. Simulation mode enabled.");
+
+        if (apiKeyPromiseResolver) {
+          apiKeyPromiseResolver.reject(
+            new Error("API key entry cancelled by user.")
+          );
+          apiKeyPromiseResolver = null;
+        }
+      }
+
+      function getApiKey() {
+        return new Promise((resolve, reject) => {
+          if (sessionApiKey && config.isApiConfigValid) {
+            resolve(sessionApiKey);
+          } else {
+            console.log("API Key not found or invalid, prompting user.");
+            apiKeyPromiseResolver = { resolve, reject };
+            showApiKeyPopup();
+          }
+        });
+      }
+
       function handleBackButtonClick() {
         if (state.history.length <= 1) {
           resetMinimapToBase();
@@ -5238,6 +5338,34 @@
         dom.themeToggleButton.addEventListener("click", handleThemeToggle);
 
         dom.backButton.addEventListener("click", handleBackButtonClick);
+
+        if (dom.saveApiKeyBtn) {
+          dom.saveApiKeyBtn.addEventListener("click", handleSaveApiKey);
+        } else {
+          console.warn("Save API Key button not found");
+        }
+        if (dom.cancelApiKeyBtn) {
+          dom.cancelApiKeyBtn.addEventListener("click", handleCancelApiKey);
+        } else {
+          console.warn("Cancel API Key button not found");
+        }
+
+        if (dom.apiKeyInput) {
+          dom.apiKeyInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              handleSaveApiKey();
+            }
+          });
+        }
+
+        if (dom.apiKeyModal) {
+          dom.apiKeyModal.addEventListener("click", (event) => {
+            if (event.target === dom.apiKeyModal) {
+              handleCancelApiKey();
+            }
+          });
+        }
 
         attachSuggestionListeners(dom.suggestionsList);
         attachSuggestionListeners(dom.imageSuggestionsList);
